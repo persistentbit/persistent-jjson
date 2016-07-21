@@ -2,6 +2,7 @@ package com.persistentbit.jjson.readers;
 
 
 
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
 
@@ -42,8 +43,8 @@ public class JJMapReader  implements JJObjectReader
         JJNodeArray arr = node.asArray().get();
         for(JJNode entry : arr){
             JJNodeArray entryArr = entry.asArray().get();
-            Object key = reader.read(entryArr.getValue().get(0),keyClass,keyType);
-            Object value = reader.read(entryArr.getValue().get(1),valueClass,valueType);
+            Object key = reader.read(entryArr.pstream().get(0),keyClass,keyType);
+            Object value = reader.read(entryArr.pstream().get(1),valueClass,valueType);
             result.put(key,value);
         }
 

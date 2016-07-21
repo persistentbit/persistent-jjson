@@ -1,8 +1,8 @@
 package com.persistentbit.jjson.readers;
 
 
-import com.persistentbit.jjson.nodes.JJNode;
-import com.persistentbit.jjson.nodes.JJNodeArray;
+import com.persistentbit.core.collections.PList;
+import com.persistentbit.jjson.nodes.*;
 
 import java.lang.reflect.*;
 import java.math.BigDecimal;
@@ -128,7 +128,7 @@ public class JJReader
 
     <T> Object array(Class<T> itemClass, Type itemType, JJNode node){
         if(node.getType() == JJNode.JType.jsonNull) { return null; }
-        List<JJNode> elements = ((JJNodeArray)node).getValue();
+        PList<JJNode> elements = ((JJNodeArray)node).pstream();
         if(itemClass.equals(int.class)){
             int[] result = new int[elements.size()];
             for(int t = 0; t< result.length;t++){

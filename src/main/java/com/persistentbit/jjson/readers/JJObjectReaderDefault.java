@@ -3,6 +3,7 @@ package com.persistentbit.jjson.readers;
 import com.persistentbit.core.properties.PropertySetter;
 import com.persistentbit.core.properties.PropertySetterField;
 import com.persistentbit.core.properties.PropertySetterMethod;
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeNull;
 import com.persistentbit.jjson.nodes.JJNodeObject;

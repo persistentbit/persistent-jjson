@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.readers;
 
 
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.nodes.JJNode;
 
 import java.lang.reflect.ParameterizedType;

@@ -1,8 +1,8 @@
 package com.persistentbit.jjson.nodes;
 
 
-import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.collections.PStreamable;
+import com.persistentbit.core.Tuple2;
+import com.persistentbit.core.collections.*;
 import com.persistentbit.core.lenses.Lens;
 import com.persistentbit.core.lenses.LensImpl;
 
@@ -14,22 +14,22 @@ import java.util.*;
  * @author Peter Muys
  * @since 21/10/2015
  */
-public class JJNodeObject implements JJNode,PStreamable
+public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
 {
-    private final PMap<String,JJNode> items;
+    private final IPMap<String,JJNode> items;
 
     /**
      * Create a new instance with the provided propery map
      * @param items
      */
-    public JJNodeObject(PMap<String, JJNode> items)
+    public JJNodeObject(IPMap<String, JJNode> items)
     {
-        this.items = Collections.unmodifiableMap(new LinkedHashMap<String, JJNode>(items));
+        this.items = Objects.requireNonNull(items);
     }
 
 
     public JJNodeObject() {
-        this(PMap.empty());
+        this(POrderedMap.empty());
     }
 
 
@@ -37,12 +37,12 @@ public class JJNodeObject implements JJNode,PStreamable
         return Optional.ofNullable(items.get(name));
     }
 
-    public Map<String,JJNode> getValue() {
+    public IPMap<String,JJNode> getValue() {
         return items;
     }
 
     public JJNodeObject plus(String name, JJNode node){
-        return new JJNodeObject(items,name,node);
+        return new JJNodeObject(items.put(name,node));
     }
 
     @Override
@@ -63,6 +63,10 @@ public class JJNodeObject implements JJNode,PStreamable
     }
 
 
+    @Override
+    public PStream<Tuple2<String,JJNode>> pstream() {
+        return items;
+    }
 
     public static Lens<JJNodeObject,JJNodeString> stringLens(String name){
         return createLens(JJNodeString.class,name);
@@ -87,8 +91,8 @@ public class JJNodeObject implements JJNode,PStreamable
     private static <C extends JJNode> Lens<JJNodeObject,C> createLens(Class<C> cls, String name){
         return new LensImpl<>((p)->orNull(cls,p.get(name).orElse(null)),
                 (p,c)-> {
-                    Map<String,JJNode> nm = new HashMap<>(p.items);
-                    nm.put(name,c);
+                    IPMap<String,JJNode> nm = p.items;
+                    nm = nm.put(name,c);
                     return new JJNodeObject(nm);
                 });
     }

@@ -1,5 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
+import com.persistentbit.core.Tuple2;
+
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
@@ -71,7 +73,7 @@ public class JJPrinter
         }
     }
     private void printArray(JJNodeArray node){
-        if(node.getValue().isEmpty()){
+        if(node.pstream().isEmpty()){
             print("[]");
             return;
         }
@@ -100,9 +102,9 @@ public class JJPrinter
         println("{");
         indent();
         boolean first = true;
-        for(Map.Entry<String,JJNode> entry : object.getValue().entrySet()){
+        for(Tuple2<String,JJNode> entry : object.pstream()){
             if(first) { first = false; } else { println(",");}
-            print(jsonString(entry.getKey()));
+            print(jsonString(entry._1));
             if(pretty)
             {
                 print(": ");
@@ -110,7 +112,7 @@ public class JJPrinter
             {
                 print(":");
             }
-            print(entry.getValue());
+            print(entry._2);
         }
         println("");
         outdent();

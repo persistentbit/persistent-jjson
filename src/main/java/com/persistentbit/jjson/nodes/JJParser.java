@@ -1,5 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
+import com.persistentbit.core.collections.POrderedMap;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -54,7 +56,7 @@ public final class JJParser
     }
 
     private JJNodeObject parseObject(){
-        Map<String,JJNode> elements = new HashMap<>();
+        POrderedMap<String,JJNode> elements = POrderedMap.empty();
         next(); //skip {
         skipSpace();
         while( current() != '}')
@@ -67,7 +69,7 @@ public final class JJParser
                 throw new RuntimeException("Expected ':' at " + pos());
             }
             next();//skip ":"
-            elements.put(name,parse());
+            elements = elements.put(name,parse());
             skipSpace();
             if(current() == ','){
                 next();//skipt ,

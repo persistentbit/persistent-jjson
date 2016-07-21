@@ -2,6 +2,7 @@ package com.persistentbit.jjson.readers;
 
 
 
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.nodes.JJNode;
 
 import java.lang.reflect.ParameterizedType;
@@ -29,6 +30,6 @@ public class JJOptionalReader implements JJObjectReader{
         }
         ParameterizedType pt  = (ParameterizedType)type;
         Type itemType = pt.getActualTypeArguments()[0];
-        return Optional.of(reader.read(node,ReflectionUtils.classFromType(itemType),itemType));
+        return Optional.of(reader.read(node, ReflectionUtils.classFromType(itemType),itemType));
     }
 }

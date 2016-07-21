@@ -13,7 +13,7 @@ import java.util.*;
  * @author Peter Muys
  * @since 21/10/2015
  */
-public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable
+public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable<JJNode>
 {
     private final PList<JJNode> elements;
 
@@ -44,8 +44,8 @@ public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable
     }
 
     @Override
-    public <T> PStream<T> asPStream() {
-        return (PStream<T>)elements;
+    public PList<JJNode> pstream() {
+        return elements;
     }
 
     @Override

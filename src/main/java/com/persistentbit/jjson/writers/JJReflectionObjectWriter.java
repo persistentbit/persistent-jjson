@@ -1,5 +1,7 @@
 package com.persistentbit.jjson.writers;
 
+import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.collections.POrderedMap;
 import com.persistentbit.core.properties.PropertyGetter;
 import com.persistentbit.core.properties.PropertyGetterField;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -65,7 +67,7 @@ public class JJReflectionObjectWriter implements JJObjectWriter{
     @Override
     public JJNode write(Object value, JJMasterWriter master)
     {
-        Map<String,JJNode> props = new LinkedHashMap<>();
+        POrderedMap<String,JJNode> props = POrderedMap.empty();
         for(Getter g : getters){
             try
             {
@@ -82,7 +84,7 @@ public class JJReflectionObjectWriter implements JJObjectWriter{
                 {
                     props.put(g.jsonName, propNode);
                 }*/
-                props.put(g.jsonName, propNode);
+                props = props.put(g.jsonName, propNode);
             }catch(Exception e){
                 throw new RuntimeException("Error writing "+ g + " from " + value,e);
             }
