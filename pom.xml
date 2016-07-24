@@ -10,9 +10,9 @@
     <packaging>jar</packaging>
     <name>PERSISTENT-JJSON</name>
     <description>Persistent collections and streams for java</description>
-    <url>https://github.com/petermuys/persistent-jjson.git</url>
+    <url>https://github.com/persistentbit/persistent-jjson.git</url>
     <scm>
-        <url>https://github.com/petermuys/persistent-jjson.git</url>
+        <url>https://github.com/persistentbit/persistent-jjson.git</url>
     </scm>
     <inceptionYear>2016</inceptionYear>
     <developers>
