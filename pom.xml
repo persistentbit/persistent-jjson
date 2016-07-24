@@ -11,8 +11,12 @@
     <name>PERSISTENT-JJSON</name>
     <description>Persistent collections and streams for java</description>
     <url>https://github.com/persistentbit/persistent-jjson.git</url>
+
     <scm>
-        <url>https://github.com/persistentbit/persistent-jjson.git</url>
+        <connection>scm:git:git@github.com:persistentbit/persistent-jjson.git</connection>
+        <url>scm:git:git@github.com:persistentbit/persistent-jjson.git</url>
+        <developerConnection>scm:git:git@github.com:persistentbit/persistent-jjson.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
     <inceptionYear>2016</inceptionYear>
     <developers>
@@ -30,6 +34,7 @@
     </licenses>
     <properties>
         <testng.version>6.9.10</testng.version>
+        <persistent-core.version>1.1.1</persistent-core.version>
     </properties>
 
     <distributionManagement>
@@ -102,7 +107,7 @@
         <dependency>
             <groupId>com.persistentbit</groupId>
             <artifactId>persistent-core</artifactId>
-            <version>1.1.1</version>
+            <version>${persistent-core.version}</version>
         </dependency>
 
     </dependencies>
