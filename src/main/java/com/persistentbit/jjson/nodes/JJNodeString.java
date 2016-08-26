@@ -39,4 +39,20 @@ public class JJNodeString implements JJNode
     }
 
     static public Lens<JJNodeString,String> valueLens = new LensImpl<>((s)-> s.getValue(), (p, c)-> new JJNodeString(c));
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JJNodeString that = (JJNodeString) o;
+
+        return value.equals(that.value);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }

@@ -33,4 +33,20 @@ public class JJNodeNumber implements JJNode
     {
         return Optional.of(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JJNodeNumber that = (JJNodeNumber) o;
+
+        return value.equals(that.value);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }

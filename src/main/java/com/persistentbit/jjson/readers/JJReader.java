@@ -2,6 +2,8 @@ package com.persistentbit.jjson.readers;
 
 
 import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.collections.PSet;
 import com.persistentbit.jjson.nodes.*;
 
 import java.lang.reflect.*;
@@ -32,6 +34,9 @@ public class JJReader
         addReader(java.time.LocalDateTime.class,dr);
         addReader(java.time.LocalDate.class,dr);
         addReader(Optional.class,new JJOptionalReader());
+        addReader(PSet.class,new JJPSetReader());
+        addReader(PList.class,new JJPListReader());
+        addReader(PMap.class,new JJPMapReader());
         addGeneralReader(Exception.class,new JJExceptionReader());
     }
 

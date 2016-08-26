@@ -81,4 +81,20 @@ public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable<JJNode>
     {
         return Optional.of(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JJNodeArray array = (JJNodeArray) o;
+
+        return elements.equals(array.elements);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return elements.hashCode();
+    }
 }

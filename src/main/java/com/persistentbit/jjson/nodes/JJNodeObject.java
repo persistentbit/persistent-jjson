@@ -19,8 +19,8 @@ public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
     private final IPMap<String,JJNode> items;
 
     /**
-     * Create a new instance with the provided propery map
-     * @param items
+     * Create a new instance with the provided property map
+     * @param items properties of the object
      */
     public JJNodeObject(IPMap<String, JJNode> items)
     {
@@ -106,4 +106,19 @@ public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
         return (C)value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JJNodeObject that = (JJNodeObject) o;
+
+        return items.equals(that.items);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return items.hashCode();
+    }
 }

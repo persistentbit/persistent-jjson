@@ -1,6 +1,9 @@
 package com.persistentbit.jjson.writers;
 
 
+import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.collections.PSet;
 import com.persistentbit.jjson.nodes.*;
 
 import java.time.LocalDate;
@@ -28,6 +31,9 @@ public class JJWriter
         customWriters.put(LocalDateTime.class,ds);
         customWriters.put(LocalTime.class,ds);
         customWriters.put(Optional.class,new JJOptionalWriter());
+        customWriters.put(PList.class,new JJPListWriter());
+        customWriters.put(PSet.class,new JJPSetWriter());
+        customWriters.put(PMap.class,new JJPMapWriter());
         JJExceptionWriter exceptionWriter = new JJExceptionWriter();
         generalWriters.put(Throwable.class,exceptionWriter);
     }
