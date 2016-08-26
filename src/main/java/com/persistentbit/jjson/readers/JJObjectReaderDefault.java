@@ -45,7 +45,7 @@ public class JJObjectReaderDefault implements JJObjectReader
             Class cls = setter.getPropertyClass();
             Type type = setter.getPropertyType();
             if(cls == Object.class){
-                //Let's try matching then container generic types to the property type
+                //Let's try matching the container generic types to the property type
                 //to resolve Object...
 
                 //System.out.println("Container objectType " + containerType);

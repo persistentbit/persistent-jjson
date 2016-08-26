@@ -4,11 +4,13 @@ package com.persistentbit.jjson.readers;
 
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.nodes.JJNode;
+import com.persistentbit.jjson.nodes.JJNodeArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: petermuys
@@ -35,8 +37,13 @@ public class JJSetReader  implements JJObjectReader
         }
         ParameterizedType pt  = (ParameterizedType)t;
         Type itemType = pt.getActualTypeArguments()[0];
-        Object[] elements = (Object[])reader.array(ReflectionUtils.classFromType(itemType),itemType,node);
-        return new HashSet(Arrays.asList(elements));
+        Class cls = ReflectionUtils.classFromType(itemType);
+        JJNodeArray arr = node.asArray().get();
+        Set result = new HashSet();
+        for(JJNode i : arr){
+            result.add(reader.read(i,cls,itemType));
+        }
+        return result;
     }
 
 

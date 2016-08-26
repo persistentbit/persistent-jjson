@@ -3,9 +3,12 @@ package com.petsistentbit.jjson;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
+import com.persistentbit.jjson.JJReaderWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;
+import com.persistentbit.jjson.readers.JJDefaultReader;
 import com.persistentbit.jjson.readers.JJReader;
+import com.persistentbit.jjson.writers.JJDefaultWriter;
 import com.persistentbit.jjson.writers.JJWriter;
 import org.testng.annotations.Test;
 
@@ -39,12 +42,11 @@ public class TestJJSon {
                 PSet.<Double>empty().plusAll(1.2,2.3,3.4),
                 PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map()
         );
-        JJWriter w = new JJWriter();
-        JJReader r = new JJReader();
-        JJNode node = w.write(t1);
+        JJReaderWriter  rw = new JJReaderWriter();
+        JJNode node = rw.write(t1);
         System.out.println(JJPrinter.print(true,node));
-        JJTest t2 = r.read(node,JJTest.class);
-        JJNode node2 = w.write(t2);
+        JJTest t2 = rw.read(node,JJTest.class);
+        JJNode node2 = rw.write(t2);
         System.out.println(JJPrinter.print(true,node2));
         assert node.equals(node2);
         assert t1.equals(t2);
