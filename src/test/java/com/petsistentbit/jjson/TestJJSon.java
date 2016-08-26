@@ -6,16 +6,10 @@ import com.persistentbit.core.collections.PSet;
 import com.persistentbit.jjson.JJReaderWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;
-import com.persistentbit.jjson.readers.JJDefaultReader;
-import com.persistentbit.jjson.readers.JJReader;
-import com.persistentbit.jjson.writers.JJDefaultWriter;
-import com.persistentbit.jjson.writers.JJWriter;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User: petermuys
