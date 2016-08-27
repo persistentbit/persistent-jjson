@@ -19,10 +19,6 @@ import java.time.format.DateTimeFormatter;
  */
 public class JJDateReader implements JJObjectReader {
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    @Override
-    public boolean canRead(JJNode node) {
-        return node.getType() == JJNode.JType.jsonNull || node.getType() == JJNode.JType.jsonString;
-    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {

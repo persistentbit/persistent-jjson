@@ -19,11 +19,7 @@ import java.util.Set;
 public class JJArrayListReader implements JJObjectReader
 {
 
-    @Override
-    public boolean canRead(JJNode node)
-    {
-        return node.getType() == JJNode.JType.jsonNull || node.getType() == JJNode.JType.jsonArray;
-    }
+
 
     @Override
     public Object read(Type t, JJNode node, JJReader reader)

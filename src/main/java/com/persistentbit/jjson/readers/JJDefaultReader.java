@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.readers;
 
+import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
@@ -12,16 +13,15 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * User: petermuys
- * Date: 26/08/16
- * Time: 09:33
+ *
+ * @author Peter Muys
  */
+@Immutable
 public class JJDefaultReader  implements JJReader{
-    private Map<Class<?>,JJObjectReader> readers = new HashMap<>();
-    private Map<Class<?>,JJObjectReader> generalReaders = new HashMap<>();
-    private List<JJReaderMapper> mappers = new ArrayList<>();
+    private final PMap<Class<?>,JJObjectReader> readers = new HashMap<>();
+    private final PMap<Class<?>,JJObjectReader> generalReaders = new HashMap<>();
+    //private final List<JJReaderMapper> mappers = new ArrayList<>();
     public JJDefaultReader(){
-        //addReader(Object.class,new JJObjectObjectReader());
         JJArrayListReader listReader = new JJArrayListReader();
         addReader(List.class,listReader);
         addReader(Set.class,new JJSetReader());
@@ -49,12 +49,7 @@ public class JJDefaultReader  implements JJReader{
         //return null;
         //}
 
-        for(JJReaderMapper m : mappers){
-            JJReaderMapper.Result r = m.read(cls,type,node,this);
-            if(r.isDone()){
-                return (T)r.getValue();
-            }
-        }
+
 
 
 
@@ -212,14 +207,7 @@ public class JJDefaultReader  implements JJReader{
     }
 
     public JJDefaultReader addReader(Class<?> cls, JJObjectReader reader){
-        JJObjectReader existing = readers.get(cls);
-        if(existing != null){
-            if(existing instanceof  JJObjectReaderGroup){
-                reader = ((JJObjectReaderGroup)existing).add(reader);
-            } else {
-                reader = new JJObjectReaderGroup(reader, existing);
-            }
-        }
+
         this.readers.put(cls,reader);
         return this;
     }
@@ -248,10 +236,7 @@ public class JJDefaultReader  implements JJReader{
         return ((JJNodeString)node).getValue();
     }
 
-    public JJReader addMapper(JJReaderMapper mapper){
-        mappers.add(mapper);
-        return this;
-    }
+
 
 
 }

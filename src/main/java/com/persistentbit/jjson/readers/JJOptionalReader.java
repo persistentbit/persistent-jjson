@@ -15,10 +15,6 @@ import java.util.Optional;
  * Time: 17:31
  */
 public class JJOptionalReader implements JJObjectReader{
-    @Override
-    public boolean canRead(JJNode node) {
-        return true;
-    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {

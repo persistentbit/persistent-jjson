@@ -15,10 +15,6 @@ import java.lang.reflect.Type;
  * Time: 08:57
  */
 public class JJPSetReader implements JJObjectReader{
-    @Override
-    public boolean canRead(JJNode node) {
-        return true;
-    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {

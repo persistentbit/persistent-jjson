@@ -13,18 +13,6 @@ import java.lang.reflect.Type;
 public class JJExceptionReader implements JJObjectReader
 {
 
-    @Override
-    public boolean canRead(JJNode node)
-    {
-        if(node.getType() == JJNode.JType.jsonNull){
-            return true;
-        }
-        if(node.getType() != JJNode.JType.jsonObject){
-            return false;
-        }
-        JJNodeObject obj = (JJNodeObject)node;
-        return obj.get("exceptionType").isPresent() && obj.get("message").isPresent();
-    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader)

@@ -332,28 +332,6 @@ public class JJObjectReaderDefault implements JJObjectReader
     }
 
 
-    @Override
-    public boolean canRead(JJNode node)
-    {
-        if(node.getType() == JJNode.JType.jsonNull){
-            return true;
-        }
-        if(node.getType() != JJNode.JType.jsonObject){
-            return false;
-        }
-        JJNodeObject jobj = (JJNodeObject)node;
-        for(PropertyDef pd : properties.values()){
-            if(jobj.get(pd.propName).isPresent() == false){
-                return false;
-            }
-        }
-        for(PropertyDef pd : constructorProperities){
-            if(jobj.get(pd.propName).isPresent() == false){
-                return false;
-            }
-        }
-        return true;
-    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader)

@@ -1,24 +1,25 @@
 package com.persistentbit.jjson;
 
+import com.persistentbit.core.Immutable;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.readers.JJDefaultReader;
 import com.persistentbit.jjson.readers.JJObjectReader;
 import com.persistentbit.jjson.readers.JJReader;
-import com.persistentbit.jjson.readers.JJReaderMapper;
 import com.persistentbit.jjson.writers.JJDefaultWriter;
 import com.persistentbit.jjson.writers.JJWriter;
-import com.persistentbit.jjson.writers.JJWriterObjectMapper;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * User: petermuys
  * Date: 26/08/16
  * Time: 09:53
  */
+@Immutable
 public class JJReaderWriter implements JJReader,JJWriter{
-    private final JJDefaultReader  reader;
+    private final JJDefaultReader reader;
     private final JJDefaultWriter writer;
 
     public JJReaderWriter(JJDefaultReader reader, JJDefaultWriter writer) {
@@ -30,10 +31,9 @@ public class JJReaderWriter implements JJReader,JJWriter{
     }
 
 
-    @Override
-    public JJReaderWriter addMapper(JJWriterObjectMapper mapper) {
-        writer.addMapper(mapper);
-        return this;
+
+    public JJReaderWriter withWriteMapper(Function<Object,Object> mapper) {
+        return new JJReaderWriter(reader,writer.withMapper(mapper));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class JJReaderWriter implements JJReader,JJWriter{
         return reader.read(node,cls,type);
     }
 
-    public JJReaderWriter addGeneralReader(Class<?> cls, JJObjectReader oreader) {
+    public JJReaderWriter withGeneralReader(Class<?> cls, JJObjectReader oreader) {
         reader.addGeneralReader(cls,oreader);
         return this;
     }

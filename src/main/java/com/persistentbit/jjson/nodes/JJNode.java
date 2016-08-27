@@ -3,9 +3,13 @@ package com.persistentbit.jjson.nodes;
 import java.util.Optional;
 
 /**
- * JSON Node representation
+ * JSON Node representation.<br>
+ * A json file can be parsed and translated to a JJNode by using {@link JJParser}.<br>
+ * A JJNode can be translated to a json file using {@link JJPrinter}.<br>
  *
  * @author Peter Muys
+ * @see JJParser
+ * @see JJPrinter
  */
 public interface JJNode
 {

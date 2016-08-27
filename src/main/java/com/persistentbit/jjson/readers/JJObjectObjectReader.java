@@ -13,11 +13,7 @@ import java.lang.reflect.Type;
 public class JJObjectObjectReader implements JJObjectReader
 {
 
-    @Override
-    public boolean canRead(JJNode node)
-    {
-        return node.getType()== JJNode.JType.jsonNull || node.getType() == JJNode.JType.jsonObject || node.getType() == JJNode.JType.jsonString;
-    }
+
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader)

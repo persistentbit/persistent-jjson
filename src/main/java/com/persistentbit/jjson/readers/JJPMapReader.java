@@ -16,10 +16,7 @@ import java.lang.reflect.Type;
  * Time: 09:00
  */
 public class JJPMapReader   implements JJObjectReader{
-    @Override
-    public boolean canRead(JJNode node) {
-        return true;
-    }
+
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {
