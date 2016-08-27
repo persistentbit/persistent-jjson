@@ -18,10 +18,10 @@ import java.util.Objects;
  * Time: 09:53
  */
 public class JJReaderWriter implements JJReader,JJWriter{
-    private final JJReader  reader;
-    private final JJWriter writer;
+    private final JJDefaultReader  reader;
+    private final JJDefaultWriter writer;
 
-    public JJReaderWriter(JJReader reader, JJWriter writer) {
+    public JJReaderWriter(JJDefaultReader reader, JJDefaultWriter writer) {
         this.reader = Objects.requireNonNull(reader);
         this.writer = Objects.requireNonNull(writer);
     }
@@ -46,20 +46,17 @@ public class JJReaderWriter implements JJReader,JJWriter{
         return reader.read(node,cls,type);
     }
 
-    @Override
     public JJReaderWriter addGeneralReader(Class<?> cls, JJObjectReader oreader) {
         reader.addGeneralReader(cls,oreader);
         return this;
     }
 
-    @Override
     public JJReaderWriter addReader(Class<?> cls, JJObjectReader oreader) {
         reader.addReader(cls,oreader);
         return this;
 
     }
 
-    @Override
     public JJReaderWriter addMapper(JJReaderMapper mapper) {
         reader.addMapper(mapper);
         return this;

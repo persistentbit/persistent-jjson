@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class JJPListWriter implements JJObjectWriter{
     @Override
-    public JJNode write(Object value, JJMasterWriter masterWriter) {
+    public JJNode write(Object value, JJWriter masterWriter) {
         PList v = (PList)value;
         return new JJNodeArray(v.lazy().map(i -> masterWriter.write(i)));
 

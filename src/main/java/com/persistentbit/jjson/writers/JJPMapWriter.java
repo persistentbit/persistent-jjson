@@ -12,7 +12,7 @@ import com.persistentbit.jjson.nodes.JJNodeArray;
  */
 public class JJPMapWriter  implements JJObjectWriter {
     @Override
-    public JJNode write(Object value, JJMasterWriter masterWriter) {
+    public JJNode write(Object value, JJWriter masterWriter) {
         PMap<Object,Object> v = (PMap) value;
         return new JJNodeArray(v.lazy().map(i  -> new JJNodeArray(masterWriter.write(i._1),masterWriter.write(i._2))));
 

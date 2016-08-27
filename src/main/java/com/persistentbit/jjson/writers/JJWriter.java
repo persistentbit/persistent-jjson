@@ -12,11 +12,21 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
+ * Represents a translater from a Java Object to a Json structure ({@link JJNode}.<br>
+ * This structure can than be used to create a Json file: {@link JJPrinter}
  * @author Peter Muys
- * @since 22/10/2015
+ * @see JJNode
+ * @see com.persistentbit.jjson.readers.JJReader
+ * @see JJPrinter
  */
 public interface JJWriter
 {
-    JJWriter addMapper(JJWriterObjectMapper mapper);
+
+
+    /**
+     * Convert a java object to a Json representation
+     * @param value
+     * @return
+     */
     JJNode write(Object value);
 }

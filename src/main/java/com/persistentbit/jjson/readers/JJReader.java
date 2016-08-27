@@ -11,9 +11,14 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
+ * Interface representing a Reader that can translate a {@link JJNode} object to a Java Object.
+ *
  * @author Peter Muys
- * @since 23/10/2015
+ * @see com.persistentbit.jjson.writers.JJWriter
+ * @see JJNode
+ * @see JJDefaultReader
  */
+@FunctionalInterface
 public interface JJReader
 {
     default <T>T read(JJNode node, Class<T> cls){
@@ -21,8 +26,4 @@ public interface JJReader
     }
 
     <T>T read(JJNode node, Class<T> cls, Type type);
-    JJReader addGeneralReader(Class<?> cls, JJObjectReader reader);
-
-    JJReader addReader(Class<?> cls, JJObjectReader reader);
-    JJReader addMapper(JJReaderMapper mapper);
 }

@@ -65,7 +65,7 @@ public class JJReflectionObjectWriter implements JJObjectWriter{
         getters.add(new Getter(new PropertyGetterField(f),f.getName()));
     }
     @Override
-    public JJNode write(Object value, JJMasterWriter master)
+    public JJNode write(Object value, JJWriter master)
     {
         POrderedMap<String,JJNode> props = POrderedMap.empty();
         for(Getter g : getters){

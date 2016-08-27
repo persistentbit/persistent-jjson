@@ -17,7 +17,7 @@ public class JJDateWriter implements JJObjectWriter
 {
     private final DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     @Override
-    public JJNode write(Object value, JJMasterWriter master)
+    public JJNode write(Object value, JJWriter master)
     {
         if(value instanceof java.sql.Date){
             java.sql.Date sd = (java.sql.Date) value;

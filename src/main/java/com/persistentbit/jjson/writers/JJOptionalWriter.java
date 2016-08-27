@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class JJOptionalWriter implements JJObjectWriter{
     @Override
-    public JJNode write(Object value, JJMasterWriter masterWriter) {
+    public JJNode write(Object value, JJWriter masterWriter) {
         Optional v = (Optional)value;
         if(v.isPresent()){
             return masterWriter.write(v.get());

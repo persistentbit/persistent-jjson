@@ -253,9 +253,5 @@ public class JJDefaultReader  implements JJReader{
         return this;
     }
 
-    List<Optional<String>> test() {
-        return null;
-    }
-
 
 }

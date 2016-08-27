@@ -6,7 +6,6 @@ import java.util.Optional;
  * JSON Node representation
  *
  * @author Peter Muys
- * @since 21/10/2015
  */
 public interface JJNode
 {

@@ -8,11 +8,8 @@ import com.persistentbit.jjson.nodes.JJNode;
  * Date: 24/10/15
  * Time: 18:30
  */
+@FunctionalInterface
 public interface JJObjectWriter{
 
-    interface JJMasterWriter{
-        JJNode write(Object value);
-    }
-
-    JJNode write(Object value, JJMasterWriter masterWriter);
+    JJNode write(Object value, JJWriter masterWriter);
 }

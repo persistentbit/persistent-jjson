@@ -14,7 +14,7 @@ public class JJExceptionWriter implements JJObjectWriter
 {
 
     @Override
-    public JJNode write(Object value, JJMasterWriter masterWriter)
+    public JJNode write(Object value, JJWriter masterWriter)
     {
         if(value == null){
             return JJNodeNull.Null;

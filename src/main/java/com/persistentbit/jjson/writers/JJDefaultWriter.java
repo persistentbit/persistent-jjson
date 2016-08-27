@@ -11,9 +11,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
- * User: petermuys
- * Date: 26/08/16
- * Time: 09:46
+ *
  */
 public class JJDefaultWriter implements JJWriter{
     private final Map<Class<?>,JJObjectWriter> customWriters = new HashMap<>();
@@ -75,11 +73,15 @@ public class JJDefaultWriter implements JJWriter{
         }
     }
 
-    private class JJWriterWriter implements JJObjectWriter.JJMasterWriter{
+    private class JJWriterWriter implements JJWriter{
         private Set<Object> done = new HashSet<>();
         private Map<CachedNode,JJNode> existing = new HashMap<>();
 
-
+        @Override
+        public JJWriter addMapper(JJWriterObjectMapper mapper) {
+            JJDefaultWriter.this.addMapper(mapper);
+            return this;
+        }
 
         public JJNode write(Object value) {
             if(value == null){
