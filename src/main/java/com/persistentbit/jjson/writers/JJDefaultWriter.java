@@ -5,6 +5,7 @@ import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
 import com.persistentbit.core.utils.ImTools;
+import com.persistentbit.jjson.JJsonException;
 import com.persistentbit.jjson.nodes.*;
 
 import java.time.LocalDate;
@@ -23,83 +24,21 @@ import java.util.function.Function;
  */
 @Immutable
 public class JJDefaultWriter implements JJWriter{
-    static private final ImTools<JJDefaultWriter>   im = ImTools.get(JJDefaultWriter.class);
+    private final JJObjectWriterSupplier    writerSupplier;
 
-    private final PMap<Class<?>,JJObjectWriter> customWriters;
-    private final PMap<Class<?>,JJObjectWriter> generalWriters;
-    private final Function<Object,Object> objectMapper;
-    private final Function<Class<?>,JJObjectWriter> defaultWriterSupplier;
-
-    private PMap<Class<?>,JJObjectWriter>   writersCache;
-
-
-    public JJDefaultWriter(
-            Function<Class<?>,JJObjectWriter> defaultWriterSupplier,
-            Function<Object,Object> objectMapper,
-            PMap<Class<?>,JJObjectWriter> customWriters,
-            PMap<Class<?>,JJObjectWriter> generalWriters
-    ){
-        this.defaultWriterSupplier = Objects.requireNonNull(defaultWriterSupplier);
-        this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.customWriters = Objects.requireNonNull(customWriters);
-        this.generalWriters = Objects.requireNonNull(generalWriters);
-        this.writersCache = customWriters;
+    public JJDefaultWriter(JJObjectWriterSupplier writerSupplier){
+        this.writerSupplier = writerSupplier;
     }
 
     public JJDefaultWriter() {
-        this((cls) -> new JJReflectionObjectWriter(cls));
+        this(new JJDefaultObjectWriterSupplier().addCoreWriters());
     }
 
-    static private PMap<Class<?>,JJObjectWriter> createDefaultCustomWriters()  {
-        JJDateWriter ds = new JJDateWriter();
-        return  PMap.<Class<?>,JJObjectWriter>empty()
-                .put(Date.class,ds)
-                .put(java.sql.Date.class,ds)
-                .put(java.sql.Time.class,ds)
-                .put(java.sql.Timestamp.class,ds)
-                .put(LocalDate.class,ds)
-                .put(LocalDateTime.class,ds)
-                .put(LocalTime.class,ds)
-                .put(Optional.class,new JJOptionalWriter())
-                .put(PList.class,new JJPListWriter())
-                .put(PSet.class,new JJPSetWriter())
-                .put(PMap.class,new JJPMapWriter());
+
+    public JJObjectWriterSupplier   getWriterSupplier() {
+        return writerSupplier;
     }
 
-    public JJDefaultWriter(Function<Class<?>,JJObjectWriter> defaultWriterSupplier) {
-        this(
-                defaultWriterSupplier,
-                o -> o,
-                createDefaultCustomWriters(),
-                PMap.<Class<?>,JJObjectWriter>empty().put(Throwable.class,new JJExceptionWriter())
-        );
-    }
-
-    /**
-     * Add an object mapper.<br>
-     * Every mapper has a chance to replace an object with an other object before the json writer is
-     * called.<br>
-     * @param mapper The Mapper to add
-     * @return The NEW JJDefaultWriter with the added mapper
-     */
-    public JJDefaultWriter withMapper(Function<Object,Object> mapper){
-        return im.copyWith(this,"objectMapper",objectMapper.andThen(mapper));
-    }
-
-    /**
-     * Add a custom writer for a class.<br>
-     *
-     * @param cls The class for this writer
-     * @param writer The writer
-     * @return The NEW JJDefaultWriter with the added custom writer
-     */
-    public JJDefaultWriter withWriter(Class<?> cls, JJObjectWriter writer){
-        return im.copyWith(this,"customWriters",customWriters.put(cls,writer));
-    }
-
-    public JJDefaultWriter withGeneralWriter(Class<?> cls,JJObjectWriter generalWriter){
-        return im.copyWith(this,"generalWriters",generalWriters.put(cls,generalWriter));
-    }
 
     /**
      * Added this CacheNode because we can not cache equal Objects
@@ -144,7 +83,6 @@ public class JJDefaultWriter implements JJWriter{
             if(value == null){
                 return JJNodeNull.Null;
             }
-            value = objectMapper.apply(value);
             CachedNode cachedNode = new CachedNode(value);
             JJNode e = existing.get(cachedNode);
             if(e != null){
@@ -270,23 +208,11 @@ public class JJDefaultWriter implements JJWriter{
                 return n;
             }
 
-            JJObjectWriter writer = writersCache.get(value.getClass());
+            JJObjectWriter writer = writerSupplier.getWriterForClass(value.getClass());
             if(writer == null){
-                Class<?> valueClass = value.getClass();
-                writer = generalWriters.find(t-> t._1.isAssignableFrom(valueClass)).map(t -> t._2).orElseGet(() -> defaultWriterSupplier.apply(valueClass));
-                /*for(Map.Entry<Class<?>,JJObjectWriter> entry : generalWriters.entrySet()){
-                    if(entry.getKey().isAssignableFrom(value.getClass())){
-                        customWriters.put(value.getClass(),entry.getValue());
-                        writer = entry.getValue();
-                        break;
-                    }
-                }
-                if(writer == null)
-                {
-                    writer = defaultWriterSupplier.apply(value.getClass());
-                }*/
-                writersCache = writersCache.put(value.getClass(),writer);
+                throw new JJsonException("Don't know how to translate a " + value.getClass().getName() + " to json");
             }
+
             JJNode result =  writer.write(value,this);
             existing.put(cachedNode,result);
             done.remove(value);
@@ -298,9 +224,4 @@ public class JJDefaultWriter implements JJWriter{
     public JJNode write(Object value){
         return new JJWriterWriter().write(value);
     }
-
-
-
-
-
 }

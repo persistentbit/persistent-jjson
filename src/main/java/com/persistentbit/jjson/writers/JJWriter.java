@@ -19,6 +19,7 @@ import java.util.*;
  * @see com.persistentbit.jjson.readers.JJReader
  * @see JJPrinter
  */
+@FunctionalInterface
 public interface JJWriter
 {
 

@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.writers;
 
+import com.persistentbit.core.collections.IPMap;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -13,7 +14,7 @@ import com.persistentbit.jjson.nodes.JJNodeArray;
 public class JJPMapWriter  implements JJObjectWriter {
     @Override
     public JJNode write(Object value, JJWriter masterWriter) {
-        PMap<Object,Object> v = (PMap) value;
+        IPMap<Object,Object> v = (IPMap) value;
         return new JJNodeArray(v.lazy().map(i  -> new JJNodeArray(masterWriter.write(i._1),masterWriter.write(i._2))));
 
     }

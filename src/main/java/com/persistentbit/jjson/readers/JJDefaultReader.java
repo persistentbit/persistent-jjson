@@ -45,13 +45,6 @@ public class JJDefaultReader  implements JJReader{
 
     public <T>T read(JJNode node, Class<T> cls, Type type){
         boolean isNull = node.getType() == JJNode.JType.jsonNull;
-        //if(node.getType() == JJNode.JType.jsonNull){
-        //return null;
-        //}
-
-
-
-
 
         if(cls.equals(int.class) || cls.equals(Integer.class)){
             return isNull ? null : (T) Integer.valueOf(number(node).intValue());

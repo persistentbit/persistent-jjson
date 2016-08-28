@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.writers;
 
+import com.persistentbit.core.collections.IPList;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class JJPListWriter implements JJObjectWriter{
     @Override
     public JJNode write(Object value, JJWriter masterWriter) {
-        PList v = (PList)value;
+        IPList v = (IPList)value;
         return new JJNodeArray(v.lazy().map(i -> masterWriter.write(i)));
 
     }
