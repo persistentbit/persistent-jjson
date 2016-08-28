@@ -2,15 +2,13 @@ package com.persistentbit.jjson.readers;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.collections.PSet;
 import com.persistentbit.jjson.nodes.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.function.Function;
 
 /**
  *
@@ -18,27 +16,13 @@ import java.util.*;
  */
 @Immutable
 public class JJDefaultReader  implements JJReader{
-    private final PMap<Class<?>,JJObjectReader> readers = new HashMap<>();
-    private final PMap<Class<?>,JJObjectReader> generalReaders = new HashMap<>();
-    //private final List<JJReaderMapper> mappers = new ArrayList<>();
-    public JJDefaultReader(){
-        JJArrayListReader listReader = new JJArrayListReader();
-        addReader(List.class,listReader);
-        addReader(Set.class,new JJSetReader());
-        addReader(Map.class,new JJMapReader());
-        JJDateReader dr = new JJDateReader();
-        addReader(java.util.Date.class,dr);
-        addReader(java.sql.Date.class,dr);
-        addReader(java.sql.Timestamp.class,dr);
-        addReader(java.sql.Time.class,dr);
-        addReader(java.time.LocalTime.class,dr);
-        addReader(java.time.LocalDateTime.class,dr);
-        addReader(java.time.LocalDate.class,dr);
-        addReader(Optional.class,new JJOptionalReader());
-        addReader(PSet.class,new JJPSetReader());
-        addReader(PList.class,new JJPListReader());
-        addReader(PMap.class,new JJPMapReader());
-        addGeneralReader(Exception.class,new JJExceptionReader());
+    JJObjectReaderSupplier supplier;
+    public JJDefaultReader(JJObjectReaderSupplier supplier){
+        this.supplier = supplier;
+    }
+
+    public JJDefaultReader() {
+        this(new JJObjectReaderSupplier().addCoreReaders());
     }
 
 
@@ -95,7 +79,7 @@ public class JJDefaultReader  implements JJReader{
         try {
 
             if(Enum.class.isAssignableFrom(cls)){
-                JJObjectReader r = readers.get(cls);
+                JJObjectReader r = supplier.apply(cls);
                 if(r != null){
                     return (T)r.read(type,node,this);
                 }
@@ -111,7 +95,7 @@ public class JJDefaultReader  implements JJReader{
                 }
             }
 
-            JJObjectReader reader = getObjectReader(cls);
+            JJObjectReader reader = supplier.apply(cls);
             return (T) reader.read(type, node, this);
         }catch(Exception e){
             throw new RuntimeException("Error reading "  + node,e);
@@ -179,31 +163,7 @@ public class JJDefaultReader  implements JJReader{
     }
 
 
-    public JJObjectReader getObjectReader(Class<?> cls){
-        JJObjectReader r = readers.get(cls);
-        if(r == null){
-            for(Map.Entry<Class<?>,JJObjectReader> entry : generalReaders.entrySet()){
-                if(entry.getKey().isAssignableFrom(cls)){
-                    readers.put(cls,entry.getValue());
-                    return entry.getValue();
-                }
-            }
-            r = new JJObjectReaderDefault(cls);
-            readers.put(cls,r);
-        }
-        return r;
-    }
 
-    public JJDefaultReader addGeneralReader(Class<?> cls, JJObjectReader reader){
-        generalReaders.put(cls,reader);
-        return this;
-    }
-
-    public JJDefaultReader addReader(Class<?> cls, JJObjectReader reader){
-
-        this.readers.put(cls,reader);
-        return this;
-    }
 
     public Number number(JJNode node){
         if(node.getType() == JJNode.JType.jsonNull) { return null; }
@@ -230,6 +190,24 @@ public class JJDefaultReader  implements JJReader{
     }
 
 
+    public JJDefaultReader withForClass(Class<?> cls, JJObjectReader ow){
+        return new JJDefaultReader(supplier.withForClass(cls,ow));
+    }
 
+    public JJDefaultReader withAssignableTo(Class<?> clsAssignableTo, JJObjectReader ow){
+        return new JJDefaultReader(supplier.withAssignableTo(clsAssignableTo,ow));
+    }
+
+    public JJDefaultReader withNextSupplier(Function<Class<?>,JJObjectReader>...next){
+        return new JJDefaultReader(supplier.withNextSupplier(next));
+    }
+
+    public JJDefaultReader withPrevSupplier(Function<Class<?>,JJObjectReader>...prev){
+        return new JJDefaultReader(supplier.withPrevSupplier(prev));
+    }
+
+    public JJDefaultReader withFallbackSupplier(Function<Class<?>,JJObjectReader> fallBack){
+        return new JJDefaultReader(supplier.withFallbackSupplier(fallBack));
+    }
 
 }

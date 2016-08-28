@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.readers;
 
 import com.persistentbit.core.Tuple2;
+import com.persistentbit.core.collections.IPMap;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
@@ -9,6 +10,7 @@ import com.persistentbit.jjson.nodes.JJNodeArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.function.Supplier;
 
 /**
  * User: petermuys
@@ -17,6 +19,11 @@ import java.lang.reflect.Type;
  */
 public class JJPMapReader   implements JJObjectReader{
 
+    private Supplier<IPMap> ipMapSupplier;
+
+    public JJPMapReader(Supplier<IPMap> ipMapSupplier) {
+        this.ipMapSupplier = ipMapSupplier;
+    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {
@@ -33,7 +40,7 @@ public class JJPMapReader   implements JJObjectReader{
         Class clsKey = ReflectionUtils.classFromType(keyType);
         Class clsValue = ReflectionUtils.classFromType(valueType);
         JJNodeArray arr = node.asArray().get();
-        return  PMap.empty().plusAll(arr.pstream().map(n -> {
+        return  ipMapSupplier.get().plusAll(arr.pstream().map(n -> {
             JJNodeArray itemArr = n.asArray().get();
             Object[] tupleNodes = itemArr.pstream().toArray();
             return new Tuple2(reader.read((JJNode)tupleNodes[0],clsKey,keyType),reader.read((JJNode)tupleNodes[1],clsValue,valueType));

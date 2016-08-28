@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.readers;
 
+import com.persistentbit.core.collections.IPSet;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PSet;
 import com.persistentbit.core.utils.ReflectionUtils;
@@ -8,6 +9,7 @@ import com.persistentbit.jjson.nodes.JJNodeArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.function.Supplier;
 
 /**
  * User: petermuys
@@ -15,6 +17,11 @@ import java.lang.reflect.Type;
  * Time: 08:57
  */
 public class JJPSetReader implements JJObjectReader{
+    private final Supplier<IPSet>   supplier;
+
+    public JJPSetReader(Supplier<IPSet> supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {
@@ -28,6 +35,6 @@ public class JJPSetReader implements JJObjectReader{
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
         JJNodeArray arr = node.asArray().get();
-        return  PSet.empty().plusAll(arr.pstream().map(n -> reader.read(n,cls,itemType)));
+        return  supplier.get().plusAll(arr.pstream().map(n -> reader.read(n,cls,itemType)));
     }
 }

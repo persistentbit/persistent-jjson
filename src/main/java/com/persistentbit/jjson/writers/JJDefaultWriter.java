@@ -1,16 +1,9 @@
 package com.persistentbit.jjson.writers;
 
 import com.persistentbit.core.Immutable;
-import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.collections.PSet;
-import com.persistentbit.core.utils.ImTools;
 import com.persistentbit.jjson.JJsonException;
 import com.persistentbit.jjson.nodes.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -24,21 +17,40 @@ import java.util.function.Function;
  */
 @Immutable
 public class JJDefaultWriter implements JJWriter{
-    private final JJObjectWriterSupplier    writerSupplier;
+    private final JJObjectWriterSupplier writerSupplier;
 
     public JJDefaultWriter(JJObjectWriterSupplier writerSupplier){
         this.writerSupplier = writerSupplier;
     }
 
     public JJDefaultWriter() {
-        this(new JJDefaultObjectWriterSupplier().addCoreWriters());
+        this(new JJObjectWriterSupplier().addCoreWriters());
     }
 
 
-    public JJObjectWriterSupplier   getWriterSupplier() {
+    public JJObjectWriterSupplier getWriterSupplier() {
         return writerSupplier;
     }
 
+    public JJDefaultWriter withForClass(Class<?> cls,JJObjectWriter ow){
+        return new JJDefaultWriter(writerSupplier.withForClass(cls,ow));
+    }
+
+    public JJDefaultWriter withAssignableTo(Class<?> clsAssignableTo,JJObjectWriter ow){
+        return new JJDefaultWriter(writerSupplier.withAssignableTo(clsAssignableTo,ow));
+    }
+
+    public JJDefaultWriter    withNextSupplier(Function<Class<?>,JJObjectWriter>...next){
+        return new JJDefaultWriter(writerSupplier.withNextSupplier(next));
+    }
+
+    public JJDefaultWriter withPrevSupplier(Function<Class<?>,JJObjectWriter>...prev){
+        return new JJDefaultWriter(writerSupplier.withPrevSupplier(prev));
+    }
+
+    public JJDefaultWriter withFallbackSupplier(Function<Class<?>,JJObjectWriter> fallback){
+        return new JJDefaultWriter(writerSupplier.withFallbackSupplier(fallback));
+    }
 
     /**
      * Added this CacheNode because we can not cache equal Objects
@@ -208,7 +220,7 @@ public class JJDefaultWriter implements JJWriter{
                 return n;
             }
 
-            JJObjectWriter writer = writerSupplier.getWriterForClass(value.getClass());
+            JJObjectWriter writer = writerSupplier.apply(value.getClass());
             if(writer == null){
                 throw new JJsonException("Don't know how to translate a " + value.getClass().getName() + " to json");
             }

@@ -16,7 +16,7 @@ import java.util.*;
  * @author Peter Muys
  * @since 29/10/2015
  */
-public class JJObjectReaderDefault implements JJObjectReader
+public class JJReflectionObjectReader implements JJObjectReader
 {
 
     public static  class PropertyDef{
@@ -89,14 +89,14 @@ public class JJObjectReaderDefault implements JJObjectReader
 
 
 
-    public JJObjectReaderDefault(Class<?> cls){
+    public JJReflectionObjectReader(Class<?> cls){
         objectClass = cls;
         addFields();
         setBestConstructor();
     }
 
 
-    public JJObjectReaderDefault reset() {
+    public JJReflectionObjectReader reset() {
         constructorProperities.clear();
         properties.clear();
         constructor = null;
@@ -104,7 +104,7 @@ public class JJObjectReaderDefault implements JJObjectReader
     }
 
 
-    public JJObjectReaderDefault    setCustomPropertyReader(String propName, PropertyDef.PropertyReader reader){
+    public JJReflectionObjectReader setCustomPropertyReader(String propName, PropertyDef.PropertyReader reader){
         PropertyDef def = properties.get(propName);
         if(def == null){
             for(PropertyDef pd : constructorProperities){
@@ -133,7 +133,7 @@ public class JJObjectReaderDefault implements JJObjectReader
         }
     }
 
-    public JJObjectReaderDefault    removeProp(String propName){
+    public JJReflectionObjectReader removeProp(String propName){
         properties.remove(propName);
         for(PropertyDef pd : constructorProperities){
             if(pd.propName.equals(propName)){
@@ -142,10 +142,10 @@ public class JJObjectReaderDefault implements JJObjectReader
         }
         return this;
     }
-    public JJObjectReaderDefault    addFieldProp(String propName){
+    public JJReflectionObjectReader addFieldProp(String propName){
         return addFieldProp(propName,propName);
     }
-    public JJObjectReaderDefault    addFieldProp(String propName, String fieldName){
+    public JJReflectionObjectReader addFieldProp(String propName, String fieldName){
         assertPropertyDoesNotExist(propName,"Can't add new field property");
         Class<?> cls = objectClass;
         while(cls != null && cls.equals(Object.class) == false){
@@ -163,14 +163,14 @@ public class JJObjectReaderDefault implements JJObjectReader
     }
 
 
-    public JJObjectReaderDefault    addMethodProp(String propName){
+    public JJReflectionObjectReader addMethodProp(String propName){
         return addMethodProp(propName,"set" + firstCharToUpper(propName),propName);
     }
-    public JJObjectReaderDefault    addMethodProp(String propName, String methodName){
+    public JJReflectionObjectReader addMethodProp(String propName, String methodName){
         return addMethodProp(propName,"set" + firstCharToUpper(propName),propName);
     }
 
-    public JJObjectReaderDefault    addMethodProp(String propName, String methodName, String javaName){
+    public JJReflectionObjectReader addMethodProp(String propName, String methodName, String javaName){
         assertPropertyDoesNotExist(propName,"Can't add new Method property");
 
         Method m = findMethod(methodName);
@@ -199,7 +199,7 @@ public class JJObjectReaderDefault implements JJObjectReader
         return null;
     }
 
-    public JJObjectReaderDefault addFields(){
+    public JJReflectionObjectReader addFields(){
         Class<?> cls = objectClass;
         while(cls != null && cls.equals(Object.class) == false){
             for(Field f : cls.getDeclaredFields()){
@@ -225,7 +225,7 @@ public class JJObjectReaderDefault implements JJObjectReader
         return this;
     }
 
-    public JJObjectReaderDefault addMethods(){
+    public JJReflectionObjectReader addMethods(){
 
         Class<?> cls = objectClass;
         while(cls != null && cls.equals(Object.class) == false){
@@ -245,7 +245,7 @@ public class JJObjectReaderDefault implements JJObjectReader
         return this;
     }
 
-    public JJObjectReaderDefault setBestConstructor(){
+    public JJReflectionObjectReader setBestConstructor(){
         constructor = null;
         constructorProperities.clear();
         for(Constructor<?> c : objectClass.getDeclaredConstructors()){
@@ -283,7 +283,7 @@ public class JJObjectReaderDefault implements JJObjectReader
 
         return this;
     }
-    public JJObjectReaderDefault setConstructor(String...names){
+    public JJReflectionObjectReader setConstructor(String...names){
         for(Constructor<?> c : objectClass.getConstructors()){
             if(constructor.getParameterCount() != names.length){
                 continue;
