@@ -50,6 +50,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         s = s.withForClass(PMap.class,new JJPMapReader(() -> PMap.empty()));
         s = s.withForClass(POrderedMap.class,new JJPMapReader(() -> POrderedMap.empty()));
         s = s.withAssignableTo(Exception.class,new JJExceptionReader());
+        s = s.withAssignableTo(Enum.class,new JJEnumReader());
         return s;
     }
 

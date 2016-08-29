@@ -13,7 +13,8 @@ import java.util.function.Function;
 
 
 /**
- * Created by petermuys on 27/08/16.
+ * A {@link JJObjectWriterSupplier} is used by {@link JJDefaultWriter} to get a Class specific Object to JSON translator<br>
+ * @see JJDefaultWriter
  */
 @Immutable
 public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter> {
@@ -39,6 +40,10 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         this(PList.empty());
     }
 
+    /**
+     *
+     * @return A new {@link JJObjectWriterSupplier} with writers added for general classes like Date, LocalTime, PList,Optional...
+     */
     public JJObjectWriterSupplier addCoreWriters(){
         JJObjectWriterSupplier s = this;
         JJDateWriter dw = new JJDateWriter();
@@ -63,8 +68,11 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
     }
 
 
-
-
+    /**
+     * Get the Object Writer for the given cls
+     * @param cls The class to get an Object writer for
+     * @return the {@link JJObjectWriter} for the given class
+     */
     public JJObjectWriter apply(Class<?> cls) {
         JJObjectWriter ow = cache.get(cls);
         if(ow != null){
@@ -80,6 +88,12 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         return fallBack == null ? null : fallBack.apply(cls);
     }
 
+    /**
+     * Add a specific custom {@link JJObjectWriter} for the given class
+     * @param cls The class
+     * @param ow The Object Writer
+     * @return a new {@link JJObjectWriterSupplier} with the added class Object Writer.
+     */
     public JJObjectWriterSupplier withForClass(Class<?> cls, JJObjectWriter ow){
         return withPrevSupplier(c -> cls.equals(c) ? ow : null);
     }

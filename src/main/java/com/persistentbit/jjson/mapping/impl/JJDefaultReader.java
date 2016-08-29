@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.function.Function;
 
 /**
- *
+ * Default {@link JJReader} implementation.
  * @author Peter Muys
  */
 @Immutable
@@ -22,6 +22,12 @@ public class JJDefaultReader  implements JJReader {
         this.supplier = supplier;
     }
 
+    /**
+     * Create a new JJDefaultReader with some registered create object readers and
+     * a reflection based Object resolver
+     * @see JJReflectionObjectReader
+     * @see JJObjectReaderSupplier#addCoreReaders()
+     */
     public JJDefaultReader() {
         this(new JJObjectReaderSupplier().addCoreReaders());
     }
@@ -79,22 +85,7 @@ public class JJDefaultReader  implements JJReader {
         }
         try {
 
-            if(Enum.class.isAssignableFrom(cls)){
-                JJObjectReader r = supplier.apply(cls);
-                if(r != null){
-                    return (T)r.read(type,node,this);
-                }
-                if(node.asNull().isPresent()){
-                    return null;
-                }
-                String name = string(node);
 
-                try {
-                    return (T) cls.getDeclaredField(name).get(null);
-                }catch(Exception e){
-                    throw new JJsonException("Error reading field " + name + " for enum " + cls,e);
-                }
-            }
 
             JJObjectReader reader = supplier.apply(cls);
             return (T) reader.read(type, node, this);
