@@ -1,20 +1,16 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping;
 
 
-import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.collections.PSet;
-import com.persistentbit.jjson.nodes.*;
+import com.persistentbit.jjson.nodes.JJNode;
+import com.persistentbit.jjson.mapping.impl.JJDefaultReader;
 
-import java.lang.reflect.*;
-import java.math.BigDecimal;
-import java.util.*;
+import java.lang.reflect.Type;
 
 /**
  * Interface representing a Reader that can translate a {@link JJNode} object to a Java Object.
  *
  * @author Peter Muys
- * @see com.persistentbit.jjson.writers.JJWriter
+ * @see JJWriter
  * @see JJNode
  * @see JJDefaultReader
  */

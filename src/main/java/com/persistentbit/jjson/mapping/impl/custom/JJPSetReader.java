@@ -1,9 +1,9 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.IPSet;
-import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.collections.PSet;
 import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
 
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * Date: 26/08/16
  * Time: 08:57
  */
-public class JJPSetReader implements JJObjectReader{
+public class JJPSetReader implements JJObjectReader {
     private final Supplier<IPSet>   supplier;
 
     public JJPSetReader(Supplier<IPSet> supplier) {

@@ -3,7 +3,7 @@ package com.petsistentbit.jjson;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
-import com.persistentbit.jjson.JJReaderWriter;
+import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;
 import org.testng.annotations.Test;
@@ -36,7 +36,7 @@ public class TestJJSon {
                 PSet.<Double>empty().plusAll(1.2,2.3,3.4),
                 PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map()
         );
-        JJReaderWriter  rw = new JJReaderWriter();
+        JJMapper rw = new JJMapper();
         JJNode node = rw.write(t1);
         System.out.println(JJPrinter.print(true,node));
         JJTest t2 = rw.read(node,JJTest.class);

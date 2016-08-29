@@ -1,8 +1,8 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.IPMap;
-import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.collections.PSet;
+import com.persistentbit.jjson.mapping.JJWriter;
+import com.persistentbit.jjson.mapping.impl.JJObjectWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
 

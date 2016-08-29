@@ -1,16 +1,16 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping.impl.custom;
 
 
 import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Peter Muys

@@ -2,12 +2,10 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.Tuple2;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Map;
+import java.io.*;
 
 /**
- * @author Peter Muys
+ * Translate a {@link JJNode} json representation to json.
  * @since 22/10/2015
  */
 public class JJPrinter
@@ -26,11 +24,21 @@ public class JJPrinter
     static public void print(boolean pretty,JJNode node,Writer out){
         new JJPrinter(out,pretty).print(node);
     }
+
     static public String print(boolean pretty, JJNode node){
         StringWriter sw = new StringWriter();
         print(pretty,node,sw);
         return sw.toString();
     }
+
+    static public void print(boolean pretty,JJNode node,File file){
+        try(FileWriter fw = new FileWriter(file)){
+            print(pretty,node,fw);
+        }catch (IOException e){
+            throw new RuntimeException("Error writing json to file " + file.getAbsolutePath(), e);
+        }
+    }
+
     private void println(String line){
         print(line);
         if(pretty)

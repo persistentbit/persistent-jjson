@@ -1,7 +1,8 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.jjson.JJsonException;
+import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.nodes.*;
 
 import java.util.*;

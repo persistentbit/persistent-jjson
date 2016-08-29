@@ -1,7 +1,8 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.*;
+import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

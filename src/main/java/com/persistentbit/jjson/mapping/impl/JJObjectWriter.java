@@ -1,6 +1,7 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl;
 
 
+import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 
 /**

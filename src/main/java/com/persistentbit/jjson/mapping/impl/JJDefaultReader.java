@@ -1,7 +1,8 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
+import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.nodes.*;
 
 import java.lang.reflect.Array;
@@ -15,7 +16,7 @@ import java.util.function.Function;
  * @author Peter Muys
  */
 @Immutable
-public class JJDefaultReader  implements JJReader{
+public class JJDefaultReader  implements JJReader {
     JJObjectReaderSupplier supplier;
     public JJDefaultReader(JJObjectReaderSupplier supplier){
         this.supplier = supplier;

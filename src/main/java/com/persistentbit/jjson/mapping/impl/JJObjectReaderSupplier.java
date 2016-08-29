@@ -1,8 +1,7 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.collections.*;
-import com.persistentbit.jjson.writers.JJObjectWriter;
-import com.persistentbit.jjson.writers.JJObjectWriterSupplier;
+import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.util.*;
 import java.util.function.Function;

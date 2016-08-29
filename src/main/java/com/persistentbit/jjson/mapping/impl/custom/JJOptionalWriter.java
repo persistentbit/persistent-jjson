@@ -1,7 +1,9 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl.custom;
 
 
 
+import com.persistentbit.jjson.mapping.JJWriter;
+import com.persistentbit.jjson.mapping.impl.JJObjectWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeNull;
 
@@ -12,7 +14,7 @@ import java.util.Optional;
  * Date: 24/10/15
  * Time: 19:29
  */
-public class JJOptionalWriter implements JJObjectWriter{
+public class JJOptionalWriter implements JJObjectWriter {
     @Override
     public JJNode write(Object value, JJWriter masterWriter) {
         Optional v = (Optional)value;

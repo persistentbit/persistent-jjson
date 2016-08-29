@@ -1,7 +1,8 @@
-package com.persistentbit.jjson.readers;
+package com.persistentbit.jjson.mapping.impl;
 
 
 
+import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.nodes.JJNode;
 
 import java.lang.reflect.Type;

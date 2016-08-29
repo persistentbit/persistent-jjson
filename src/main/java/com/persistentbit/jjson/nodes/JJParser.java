@@ -2,17 +2,13 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.collections.POrderedMap;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * @author Peter Muys
+ * Parse a JSON stream into a {@link JJNode} structure
  * @since 22/10/2015
  */
 public final class JJParser
@@ -44,16 +40,39 @@ public final class JJParser
         }
     }
 
+
+    /**
+     * Read and parse json from the provided file
+     * @param file The file to read
+     * @return The {@link JJNode} representing the json from the file
+     */
+    static public JJNode parse(File file){
+        try(FileReader fr = new FileReader(file)){
+            return parse(fr);
+        }catch (IOException e){
+            throw new JJParserException(1,1,"IO exception",e);
+        }
+    }
+
+    /**
+     * Read and parse json from the provided reader.<br>
+     * <strong>Warning: This does not close the Reader</strong>
+     * @param r The {@link Reader}
+     * @return The {@link JJNode} read from the json stream;
+     */
     static public JJNode parse(Reader r){
         return new JJParser(r).parse();
     }
+    /**
+     * Read and parse json from the provided string.<br>
+     * @param str The json string to read
+     * @return The {@link JJNode} read from the json stream;
+     */
     static public JJNode parse(String str){
         return new JJParser(new StringReader(str)).parse();
     }
 
-    private String pos() {
-        return "(column:" + col + ", row:" + row + ")";
-    }
+
 
     private JJNodeObject parseObject(){
         POrderedMap<String,JJNode> elements = POrderedMap.empty();
@@ -66,7 +85,7 @@ public final class JJParser
             skipSpace();
             if (current() != ':')
             {
-                throw new RuntimeException("Expected ':' at " + pos());
+                throw new JJParserException(row,col,"Expected ':' while parsing json object property '" + name + "'");
             }
             next();//skip ":"
             elements = elements.put(name,parse());
@@ -150,14 +169,14 @@ public final class JJParser
         {
             return new JJNodeNumber(new BigDecimal(sb.toString()));
         }catch(NumberFormatException nfe){
-            throw new RuntimeException("Expected a number, not '" + sb.toString() +"' at " + pos());
+            throw new JJParserException(row,col,"Expected a number, not '" + sb.toString() +"'");
         }
     }
 
     private String readString() {
         StringBuilder sb = new StringBuilder(10);
         if(current() != '\"'){
-            throw new RuntimeException("Expected a string at " + pos() + " not '" + current() + "'");
+            throw new JJParserException(row,col,"Expected a string, not '" + current() + "'");
         }
         char c = next();//skip "
         while(c != '"'){
@@ -184,7 +203,7 @@ public final class JJParser
                         sb.append(Character.toChars(Integer.parseInt(hn,16)));
                         break;
                     default:
-                        throw new RuntimeException("Invalid escape sequence: \\" + c + " at " + pos());
+                        throw new JJParserException(row,col,"Invalid escape sequence: \\" + c );
                 }
             } else {
 
@@ -214,14 +233,14 @@ public final class JJParser
 
     private char next(char checkCurrentCharValue){
         if(c != checkCurrentCharValue){
-            throw new RuntimeException("Expected '" + checkCurrentCharValue + "', not '" + c + "' at " + pos());
+            throw new JJParserException(row,col, "Expected '" + checkCurrentCharValue + "', not '" + c + "'");
         }
         return next();
     }
 
     private char next(){
         if(c == -1){
-            throw new RuntimeException("Unexpected EOF");
+            throw new JJParserException(row,col,"Unexpected end-of-stream");
         }
         try
         {
@@ -240,7 +259,7 @@ public final class JJParser
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Error parsing json",e);
+            throw new JJParserException(row,col,"Error parsing json",e);
         }
 
     }

@@ -1,26 +1,23 @@
-package com.persistentbit.jjson.writers;
+package com.persistentbit.jjson.mapping.impl;
 
-import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.POrderedMap;
 import com.persistentbit.core.properties.PropertyGetter;
 import com.persistentbit.core.properties.PropertyGetterField;
+import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeObject;
-
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: petermuys
  * Date: 24/10/15
  * Time: 18:32
  */
-public class JJReflectionObjectWriter implements JJObjectWriter{
+public class JJReflectionObjectWriter implements JJObjectWriter {
 
 
     private static class Getter {
