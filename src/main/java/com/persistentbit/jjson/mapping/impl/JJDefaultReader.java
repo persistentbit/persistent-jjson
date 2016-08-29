@@ -92,14 +92,14 @@ public class JJDefaultReader  implements JJReader {
                 try {
                     return (T) cls.getDeclaredField(name).get(null);
                 }catch(Exception e){
-                    throw new RuntimeException("Error reading field " + name + " for enum " + cls,e);
+                    throw new JJsonException("Error reading field " + name + " for enum " + cls,e);
                 }
             }
 
             JJObjectReader reader = supplier.apply(cls);
             return (T) reader.read(type, node, this);
         }catch(Exception e){
-            throw new RuntimeException("Error reading "  + node,e);
+            throw new JJsonException("Error reading "  + node,e);
         }
     }
 
@@ -172,7 +172,7 @@ public class JJDefaultReader  implements JJReader {
             try{
                 return new BigDecimal(string(node));
             }catch (NumberFormatException nfe){
-                throw new RuntimeException(nfe);
+                throw new JJsonException(nfe);
             }
         }
         return ((JJNodeNumber)node).getValue();

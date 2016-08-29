@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
+import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeObject;
 
@@ -36,7 +37,7 @@ public class JJObjectObjectReader implements JJObjectReader
         }
         catch (ClassNotFoundException e)
         {
-            throw new RuntimeException(e);
+            throw new JJsonException(e);
         }
     }
 }

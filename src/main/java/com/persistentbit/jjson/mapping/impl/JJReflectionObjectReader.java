@@ -116,7 +116,7 @@ public class JJReflectionObjectReader implements JJObjectReader
             }
         }
         if(def == null){
-            throw new RuntimeException("Can't find property '" + propName + "'");
+            throw new JJsonException("Can't find property '" + propName + "'");
         }
         def.setCustomReader(reader);
         return this;
@@ -160,7 +160,7 @@ public class JJReflectionObjectReader implements JJObjectReader
             }
             cls = cls.getSuperclass();
         }
-        throw new RuntimeException("Can't find field " + fieldName + " in " + objectClass);
+        throw new JJsonException("Can't find field " + fieldName + " in " + objectClass);
     }
 
 
@@ -341,7 +341,7 @@ public class JJReflectionObjectReader implements JJObjectReader
             return null;
         }
         if(node instanceof JJNodeObject == false){
-            throw new RuntimeException("Can't cast to JJNodeObject: " + node + " for type " + type);
+            throw new JJsonException("Can't cast to JJNodeObject: " + node + " for type " + type);
         }
         JJNodeObject jobj = (JJNodeObject)node;
 
@@ -372,7 +372,7 @@ public class JJReflectionObjectReader implements JJObjectReader
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException e)
         {
-            throw new RuntimeException("Reading " + objectClass,e);
+            throw new JJsonException("Reading " + objectClass,e);
         }
     }
 

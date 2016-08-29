@@ -1,4 +1,4 @@
-package com.persistentbit.jjson;
+package com.persistentbit.jjson.mapping.impl;
 
 /**
  * Created by petermuys on 27/08/16.

@@ -54,7 +54,7 @@ public class JJReflectionObjectWriter implements JJObjectWriter {
             }
 
         }catch(Exception e){
-            throw new RuntimeException(e);
+            throw new JJsonException(e);
         }
     }
     private void addPropertie(Field f){
@@ -83,7 +83,7 @@ public class JJReflectionObjectWriter implements JJObjectWriter {
                 }*/
                 props = props.put(g.jsonName, propNode);
             }catch(Exception e){
-                throw new RuntimeException("Error writing "+ g + " from " + value,e);
+                throw new JJsonException("Error writing "+ g + " from " + value,e);
             }
         }
         JJNodeObject n = new JJNodeObject(props);

@@ -9,15 +9,21 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * User: petermuys
- * Date: 26/08/16
- * Time: 09:53
+ * Mapper between Java Objects and {@link JJNode} json representations.<br>
+ * This mapper is a combination of a {@link JJReader} and a {@link JJWriter}  implemented
+ * by a {@link JJDefaultReader} and {@link JJDefaultWriter}.<br>
+ *
  */
 @Immutable
 public class JJMapper implements JJReader,JJWriter{
     private final JJDefaultReader reader;
     private final JJDefaultWriter writer;
 
+    /**
+     * Construct this mapper with custom {@link JJDefaultReader} and {@link JJDefaultWriter} instances.
+     * @param reader The reader to use
+     * @param writer The writer to use
+     */
     public JJMapper(JJDefaultReader reader, JJDefaultWriter writer) {
         this.reader = Objects.requireNonNull(reader);
         this.writer = Objects.requireNonNull(writer);

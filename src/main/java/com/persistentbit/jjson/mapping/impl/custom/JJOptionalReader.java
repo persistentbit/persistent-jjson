@@ -5,6 +5,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
+import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 
 import java.lang.reflect.ParameterizedType;
@@ -24,7 +25,7 @@ public class JJOptionalReader implements JJObjectReader {
             return Optional.empty();
         }
         if(type instanceof ParameterizedType == false){
-            throw new RuntimeException("Expected a parameterized Optional, not just a Optional");
+            throw new JJsonException("Expected a parameterized Optional, not just a Optional");
         }
         ParameterizedType pt  = (ParameterizedType)type;
         Type itemType = pt.getActualTypeArguments()[0];

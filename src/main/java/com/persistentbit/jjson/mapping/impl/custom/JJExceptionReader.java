@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
+import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeObject;
 
@@ -26,7 +27,7 @@ public class JJExceptionReader implements JJObjectReader
         try{
             return getClass().getClassLoader().loadClass(className).getDeclaredConstructor(String.class).newInstance(message);
         }catch(Exception e){
-            throw new RuntimeException(e);
+            throw new JJsonException(e);
         }
     }
 }

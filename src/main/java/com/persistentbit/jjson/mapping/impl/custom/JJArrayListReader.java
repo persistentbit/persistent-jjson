@@ -4,6 +4,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
+import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
 
@@ -28,7 +29,7 @@ public class JJArrayListReader implements JJObjectReader
             return null;
         }
         if(t instanceof ParameterizedType == false){
-            throw new RuntimeException("Expected a parameterized List, not just a List");
+            throw new JJsonException("Expected a parameterized List, not just a List");
         }
 
         ParameterizedType pt  = (ParameterizedType)t;

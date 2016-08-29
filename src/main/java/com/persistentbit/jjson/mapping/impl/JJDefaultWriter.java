@@ -1,7 +1,6 @@
 package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
-import com.persistentbit.jjson.JJsonException;
 import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.nodes.*;
 
@@ -122,7 +121,7 @@ public class JJDefaultWriter implements JJWriter{
             }
 
             if(done.contains(value) && (value instanceof Collection == false && ((Collection)value).isEmpty() == false)){
-                throw new RuntimeException("Cyclic data: " + value );
+                throw new JJsonException("Cyclic data: " + value );
             }
             done.add(value);
 
