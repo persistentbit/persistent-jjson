@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl;
 
 
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.nodes.JJNode;
 
 import java.lang.reflect.Type;
@@ -14,7 +15,7 @@ import java.lang.reflect.Type;
  * @since 23/10/2015
  * @see JJDefaultReader
  */
-@FunctionalInterface
+
 public interface JJObjectReader
 {
     /**
@@ -25,4 +26,6 @@ public interface JJObjectReader
      * @return a new Java Object corresponding to the provided Type.
      */
     Object read(Type type, JJNode node, JJReader masterReader);
+
+
 }

@@ -1,8 +1,12 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 
+import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -17,7 +21,7 @@ import java.util.List;
  * @author Peter Muys
  * @since 23/10/2015
  */
-public class JJArrayListReader implements JJObjectReader
+public class JJArrayListReader implements JJObjectReader,JJDescriber
 {
 
 
@@ -43,5 +47,16 @@ public class JJArrayListReader implements JJObjectReader
         return result;
     }
 
+    @Override
+    public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
 
+        //ParameterizedType pt  = (ParameterizedType)type;
+        //Type itemType = pt.getActualTypeArguments()[0];
+        //JJTypeSignature itemTypeSig =  masterDescriber.describe(itemType,masterDescriber).getTypeSignature();
+
+        //PStream<Type> genParams = PStream.from(pt.getActualTypeArguments());
+        //PMap<String,JJTypeSignature> td = genParams.groupByOneValue(i -> i.getTypeName(), i -> describe(i,masterDescriber).getTypeSignature());
+        PMap<String,JJTypeSignature> td = PMap.empty();
+        return new JJTypeDescription(new JJTypeSignature(ArrayList.class.getName(), JJNode.JType.jsonArray, td));
+    }
 }

@@ -47,4 +47,6 @@ public class JJPMapReader   implements JJObjectReader {
             return new Tuple2(reader.read((JJNode)tupleNodes[0],clsKey,keyType),reader.read((JJNode)tupleNodes[1],clsValue,valueType));
         }));
     }
+
+
 }

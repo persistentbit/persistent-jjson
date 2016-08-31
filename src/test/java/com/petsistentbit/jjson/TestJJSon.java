@@ -1,5 +1,6 @@
 package com.petsistentbit.jjson;
 
+import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
@@ -34,7 +35,8 @@ public class TestJJSon {
                 PList.forString().plusAll("Hello","World","From","Peter"),
                 PMap.<Integer,String>empty().put(1,"Peter").put(2,"Muys"),
                 PSet.<Double>empty().plusAll(1.2,2.3,3.4),
-                PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map()
+                PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map(), JJTest.EnumTest.enum2,new Tuple2<>(1234,567.8f)
+
         );
         JJMapper rw = new JJMapper();
         JJNode node = rw.write(t1);

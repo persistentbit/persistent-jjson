@@ -2,7 +2,11 @@ package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.nodes.*;
 
 import java.lang.reflect.Array;
@@ -202,4 +206,58 @@ public class JJDefaultReader  implements JJReader {
         return new JJDefaultReader(supplier.withFallbackSupplier(fallBack));
     }
 
+    public JJTypeDescription    describe(Class<?> cls,Type type){
+
+
+        if(cls.equals(int.class) || cls.equals(Integer.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(long.class) || cls.equals(Long.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(short.class) || cls.equals(Short.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(byte.class) || cls.equals(Byte.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(float.class) || cls.equals(Float.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(double.class) || cls.equals(Double.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonNumber));
+        }
+        if(cls.equals(char.class) || cls.equals(Character.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonString));
+        }
+        if(cls.equals(String.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonString));
+        }
+        if(cls.equals(Boolean.class) || cls.equals(boolean.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonBoolean));
+        }
+        if(cls.equals(Class.class)){
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonString));
+        }
+        if(type instanceof GenericArrayType){
+            GenericArrayType gat = (GenericArrayType)type;
+            JJTypeDescription itemTd = describe(cls.getComponentType(),gat.getGenericComponentType());
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray, PMap.<String,JJTypeSignature>empty().put("ITEM",itemTd.getTypeSignature())));
+        }
+        if(cls.isArray()){
+            JJTypeDescription itemTd = describe(cls.getComponentType(),cls.getComponentType());
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray,PMap.<String,JJTypeSignature>empty().put("ITEM",itemTd.getTypeSignature())));
+        }
+        try {
+            JJObjectReader reader = supplier.apply(cls);
+            if(reader instanceof JJDescriber){
+                JJDescriber describer = (JJDescriber)reader;
+                return describer.describe(type,(t,md)-> describe(ReflectionUtils.classFromType(t),t));
+            }
+            return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonObject),PList.<String>empty().plus("Don't know how to describe!"));
+        }catch(Exception e){
+            throw new JJsonException("Error describing "  + type,e);
+        }
+
+    }
 }

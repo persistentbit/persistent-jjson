@@ -1,9 +1,13 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 
-
+import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -19,7 +23,7 @@ import java.util.Map;
  * Date: 24/10/15
  * Time: 13:36
  */
-public class JJMapReader  implements JJObjectReader
+public class JJMapReader  implements JJObjectReader,JJDescriber
 {
 
 
@@ -49,5 +53,23 @@ public class JJMapReader  implements JJObjectReader
         return result;
     }
 
+    @Override
+    public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
+        Class cls = ReflectionUtils.classFromType(t);
 
+
+        PMap<String,JJTypeSignature> td = JJDescriber.getGenericsParams(t,masterDescriber);
+
+
+
+        //Type keyType = pt.getActualTypeArguments()[0];
+        //Type valueType = pt.getActualTypeArguments()[1];
+        //JJTypeSignature keySig = masterDescriber.describe(keyType,masterDescriber).getTypeSignature();
+        //JJTypeSignature valueSig = masterDescriber.describe(valueType,masterDescriber).getTypeSignature();
+        //JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray, PList.<JJTypeSignature>empty().put("KEY",keySig,valueSig));
+        JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray, td);
+        PList<String> doc = PList.empty();
+
+        return new JJTypeDescription(sig,doc);
+    }
 }

@@ -1,20 +1,24 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
+import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 /**
  * @author Peter Muys
  * @since 29/08/2016
  */
-public class JJEnumReader implements JJObjectReader {
+public class JJEnumReader implements JJObjectReader,JJDescriber {
 
     @Override
     public Object read(Type type, JJNode node, JJReader reader) {
@@ -30,5 +34,17 @@ public class JJEnumReader implements JJObjectReader {
         }
     }
 
-
+    @Override
+    public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
+        PList<String> doc = PList.empty();
+        Class cls = ReflectionUtils.classFromType(t);
+        PList<String> values = PList.empty();
+        for(Field f : cls.getDeclaredFields()){
+            if(Modifier.isStatic(f.getModifiers()) && cls.isAssignableFrom(f.getType())){
+                values = values.plus(f.getName());
+            }
+        }
+        doc = doc.plus("This is an enum with following possible values: " + values.toString(", "));
+        return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonString),doc);
+    }
 }

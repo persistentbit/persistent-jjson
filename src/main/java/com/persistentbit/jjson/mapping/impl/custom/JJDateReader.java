@@ -4,6 +4,9 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -20,7 +23,7 @@ import java.time.format.DateTimeFormatter;
  * Date: 24/10/15
  * Time: 13:53
  */
-public class JJDateReader implements JJObjectReader {
+public class JJDateReader implements JJObjectReader,JJDescriber {
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 
     @Override
@@ -51,5 +54,10 @@ public class JJDateReader implements JJObjectReader {
             return LocalTime.from(inst);
         }
         throw new JJsonException("Not Yet implemented " + cls.getName());
+    }
+
+    @Override
+    public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
+        return new JJTypeDescription(new JJTypeSignature(ReflectionUtils.classFromType(t).getName(), JJNode.JType.jsonString));
     }
 }
