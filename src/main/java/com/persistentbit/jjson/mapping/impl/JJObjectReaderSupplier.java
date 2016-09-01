@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl;
 import com.persistentbit.core.collections.*;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 
@@ -20,7 +21,14 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         this.fallBack = fallBack;
     }
     public JJObjectReaderSupplier(PList<Function<Class<?>,JJObjectReader>> suppliers){
-        this(suppliers,c -> new JJReflectionObjectReader(c));
+        this(suppliers,c -> {
+            try {
+                Field f =c.getDeclaredField("jsonReader");
+                return (JJObjectReader)f.get(null);
+            } catch (NoSuchFieldException | IllegalAccessException| ClassCastException e) {
+                return new JJReflectionObjectReader(c);
+            }
+        });
     }
 
     public JJObjectReaderSupplier() {

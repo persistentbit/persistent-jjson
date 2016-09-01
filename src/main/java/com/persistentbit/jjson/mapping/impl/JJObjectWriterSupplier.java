@@ -4,6 +4,7 @@ import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.*;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +33,14 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         this.fallBack = fallBack;
     }
     public JJObjectWriterSupplier(PList<Function<Class<?>,JJObjectWriter>> suppliers){
-        this(suppliers,c -> new JJReflectionObjectWriter(c));
+        this(suppliers,c ->{
+            try {
+                Field f =c.getDeclaredField("jsonWriter");
+                return (JJObjectWriter)f.get(null);
+            } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+                return new JJReflectionObjectWriter(c);
+            }
+        });
     }
 
     public JJObjectWriterSupplier() {
