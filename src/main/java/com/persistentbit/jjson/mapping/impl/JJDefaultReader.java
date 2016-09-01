@@ -36,6 +36,17 @@ public class JJDefaultReader  implements JJReader {
         this(new JJObjectReaderSupplier().addCoreReaders());
     }
 
+    static private PMap<String,Class> primitiveClassNamesMapping = PMap.<String,Class>empty()
+            .put("int",int.class)
+            .put("float",float.class)
+            .put("double",double.class)
+            .put("long",long.class)
+            .put("boolean",boolean.class)
+            .put("void",void.class)
+            .put("short",short.class)
+            .put("char",char.class)
+            .put("byte",byte.class)
+            ;
 
 
     public <T>T read(JJNode node, Class<T> cls, Type type){
@@ -68,17 +79,23 @@ public class JJDefaultReader  implements JJReader {
         if(cls.equals(Boolean.class) || cls.equals(boolean.class)){
             return isNull ? null :(T) bool(node);
         }
+
         if(cls.equals(Class.class)){
             if(isNull) {
                 return null;
             }
-            try {
+            String className = ((JJNodeString)node).getValue();
+            return (T)primitiveClassNamesMapping.getOpt(className).orElseGet(() ->{
+                try {
 
-                return (T)this.getClass().getClassLoader().loadClass(((JJNodeString)node).getValue());
+                    return this.getClass().getClassLoader().loadClass(className);
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+                } catch (ClassNotFoundException e) {
+                    throw new JJsonException(e);
+                }
+            });
+
+
         }
         if(type instanceof GenericArrayType){
             GenericArrayType gat = (GenericArrayType)type;
