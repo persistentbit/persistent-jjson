@@ -32,11 +32,15 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
 
 
 
-        s = s.withForClass(List.class,new JJListReader(()-> new ArrayList()));
+
         s = s.withForClass(ArrayList.class,new JJListReader(()-> new ArrayList()));
         s = s.withForClass(LinkedList.class,new JJListReader(() -> new LinkedList()));
-        s = s.withForClass(Set.class,new JJSetReader());
-        s = s.withForClass(Map.class,new JJMapReader(() -> new LinkedHashMap()));//Linked so order of items stay the same after writing/reading
+        s = s.withAssignableTo(Set.class,new JJSetReader(() -> new LinkedHashSet()));
+
+        s = s.withAssignableTo(HashSet.class, new JJSetReader(()-> new HashSet()));
+        s = s.withAssignableTo(TreeSet.class,new JJSetReader(() -> new TreeSet()));
+
+        s = s.withAssignableTo(Map.class,new JJMapReader(() -> new LinkedHashMap()));//Linked so order of items stay the same after writing/reading
         s = s.withForClass(HashMap.class,new JJMapReader(()-> new HashMap()));
         s = s.withForClass(TreeMap.class, new JJMapReader(() -> new TreeMap()));
         s = s.withForClass(LinkedHashMap.class, new JJMapReader(() -> new LinkedHashMap()));
@@ -56,6 +60,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         s = s.withForClass(POrderedMap.class,new JJPMapReader(() -> POrderedMap.empty()));
         s = s.withAssignableTo(Exception.class,new JJExceptionReader());
         s = s.withAssignableTo(Enum.class,new JJEnumReader());
+        s = s.withAssignableTo(List.class,new JJListReader(()-> new ArrayList()));
         return s;
     }
 
@@ -74,7 +79,12 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
                 return ow;
             }
         }
-        return fallBack == null ? null : fallBack.apply(cls);
+        if(fallBack != null){
+            ow =fallBack.apply(cls);
+            cache = cache.put(cls,ow);
+            return ow;
+        }
+        return null;
     }
 
     public JJObjectReaderSupplier withForClass(Class<?> cls, JJObjectReader ow){

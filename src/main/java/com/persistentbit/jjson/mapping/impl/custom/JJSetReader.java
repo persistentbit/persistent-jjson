@@ -23,8 +23,12 @@ import java.util.function.Supplier;
  */
 public class JJSetReader  implements JJObjectReader,JJDescriber
 {
-    public Supplier<Set> supplier;
+    public final Supplier<Set> supplier;
 
+
+    public JJSetReader(Supplier<Set> supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public Object read(Type t, JJNode node, JJReader reader)

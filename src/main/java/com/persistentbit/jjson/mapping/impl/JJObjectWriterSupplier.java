@@ -53,16 +53,19 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(LocalDate.class,dw);
         s = s.withForClass(LocalDateTime.class,dw);
         s = s.withForClass(LocalTime.class,dw);
-        s = s.withAssignableTo(Map.class,new JJMapWriter());
+
+
+        JJMapWriter mw = new JJMapWriter();
+        s = s.withAssignableTo(Map.class,mw);
 
 
         s = s.withForClass(Optional.class,new JJOptionalWriter());
 
         JJSetWriter sw = new JJSetWriter();
-        s = s.withForClass(Set.class,sw).withForClass(HashSet.class,sw).withForClass(LinkedHashSet.class,sw);
+        s = s.withAssignableTo(Set.class,sw);
 
         JJListWriter lw = new JJListWriter();
-        s = s.withForClass(List.class,lw).withForClass(ArrayList.class,lw).withForClass(LinkedList.class,lw);
+        s = s.withAssignableTo(List.class,lw);
 
         JJPListWriter plw = new JJPListWriter();
         s = s.withForClass(PList.class,plw).withForClass(LList.class,plw);
@@ -70,8 +73,9 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         JJPSetWriter psw = new JJPSetWriter();
         s = s.withForClass(PSet.class,psw).withForClass(POrderedSet.class,psw);
 
-        JJPMapWriter mw = new JJPMapWriter();
-        s = s.withForClass(PMap.class,mw).withForClass(POrderedMap.class,mw);
+        JJPMapWriter pmw = new JJPMapWriter();
+        s = s.withForClass(PMap.class,pmw).withForClass(POrderedMap.class,pmw);
+
         s = s.withAssignableTo(Throwable.class,new JJExceptionWriter());
 
         return s;
@@ -95,7 +99,12 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
                 return ow;
             }
         }
-        return fallBack == null ? null : fallBack.apply(cls);
+        if(fallBack != null){
+            ow = fallBack.apply(cls);
+            cache = cache.put(cls,ow);
+            return ow;
+        }
+        return null;
     }
 
     /**
