@@ -12,7 +12,7 @@ import java.util.function.Function;
  * Mapper between Java Objects and {@link JJNode} json representations.<br>
  * This mapper is a combination of a {@link JJReader} and a {@link JJWriter}  implemented
  * by a {@link JJDefaultReader} and {@link JJDefaultWriter}.<br>
- *
+ * @author Peter Muys
  */
 @Immutable
 public class JJMapper implements JJReader,JJWriter{
