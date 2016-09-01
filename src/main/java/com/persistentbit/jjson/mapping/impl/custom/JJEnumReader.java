@@ -45,6 +45,6 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
             }
         }
         doc = doc.plus("This is an enum with following possible values: " + values.toString(", "));
-        return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJNode.JType.jsonString),doc);
+        return new JJTypeDescription(new JJTypeSignature(cls.getName(),JJTypeSignature.JsonType.jsonString),doc);
     }
 }

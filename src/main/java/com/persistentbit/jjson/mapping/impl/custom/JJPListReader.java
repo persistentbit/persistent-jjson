@@ -49,6 +49,6 @@ public class JJPListReader  implements JJObjectReader,JJDescriber {
         ParameterizedType pt  = (ParameterizedType)type;
         Type itemType = pt.getActualTypeArguments()[0];
         JJTypeSignature itemTypeSig =  masterDescriber.describe(itemType,masterDescriber).getTypeSignature();
-        return new JJTypeDescription(new JJTypeSignature(supplier.get().getClass().getName(), JJNode.JType.jsonArray, PMap.<String,JJTypeSignature>empty().put("ITEM",itemTypeSig)));
+        return new JJTypeDescription(new JJTypeSignature(supplier.get().getClass().getName(), JJTypeSignature.JsonType.jsonArray, PMap.<String,JJTypeSignature>empty().put("ITEM",itemTypeSig)));
     }
 }

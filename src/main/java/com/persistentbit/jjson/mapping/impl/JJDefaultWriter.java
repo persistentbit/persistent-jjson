@@ -126,7 +126,7 @@ public class JJDefaultWriter implements JJWriter{
             done.add(value);
 
 
-            if(value instanceof Set || value instanceof List){
+            /*if(value instanceof Set || value instanceof List){
                 List<JJNode> s = new ArrayList<>();
                 for(Object v : (Collection<?>)value){
                     s.add(write(v));
@@ -134,7 +134,7 @@ public class JJDefaultWriter implements JJWriter{
                 JJNodeArray n = new JJNodeArray(s);
                 existing.put(cachedNode,n);
                 return n;
-            }
+            }*/
             if(value.getClass().isArray()){
                 List<JJNode> s = new ArrayList<>();
                 if(value.getClass().getComponentType().equals(int.class)){
@@ -197,15 +197,7 @@ public class JJDefaultWriter implements JJWriter{
                 existing.put(cachedNode,n);
                 return n;
             }
-            if(value instanceof Map){
-                List<JJNode> s = new ArrayList<>();
-                for(Map.Entry<?,?> entry : ((Map<?,?>)value).entrySet()){
-                    s.add(new JJNodeArray(write(entry.getKey()),write(entry.getValue())));
-                }
-                JJNodeArray n = new JJNodeArray(s);
-                existing.put(cachedNode,n);
-                return n;
-            }
+
 
             if(value instanceof Enum){
                 Enum<?> en = (Enum<?>)value;

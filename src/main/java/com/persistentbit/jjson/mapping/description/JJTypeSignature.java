@@ -2,7 +2,6 @@ package com.persistentbit.jjson.mapping.description;
 
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
-import com.persistentbit.jjson.nodes.JJNode;
 
 import java.util.Objects;
 
@@ -11,16 +10,19 @@ import java.util.Objects;
  * @since 31/08/2016
  */
 public class JJTypeSignature {
+    public enum JsonType{
+        jsonArray,jsonBoolean,jsonNull,jsonNumber,jsonObject,jsonString, jsonSet, jsonMap
+    }
     private final String        javaClassName;
-    private final JJNode.JType  jsonType;
+    private final JsonType  jsonType;
     private final PMap<String,JJTypeSignature> generics;
 
-    public JJTypeSignature(String javaClassName, JJNode.JType jsonType,  PMap<String,JJTypeSignature> generics) {
+    public JJTypeSignature(String javaClassName, JsonType jsonType,  PMap<String,JJTypeSignature> generics) {
         this.javaClassName = javaClassName;
         this.jsonType = jsonType;
         this.generics = Objects.requireNonNull(generics);
     }
-    public JJTypeSignature(String javaClassName, JJNode.JType jsonType){
+    public JJTypeSignature(String javaClassName, JsonType jsonType){
         this(javaClassName,jsonType,PMap.empty());
     }
 
@@ -28,7 +30,7 @@ public class JJTypeSignature {
         return javaClassName;
     }
 
-    public JJNode.JType getJsonType() {
+    public JsonType getJsonType() {
         return jsonType;
     }
 

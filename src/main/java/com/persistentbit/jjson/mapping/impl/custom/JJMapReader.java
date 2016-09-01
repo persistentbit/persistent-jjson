@@ -12,11 +12,12 @@ import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
+import com.persistentbit.jjson.nodes.JJNodeObject;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * User: petermuys
@@ -25,7 +26,11 @@ import java.util.Map;
  */
 public class JJMapReader  implements JJObjectReader,JJDescriber
 {
+    private final Supplier<Map> supplier;
 
+    public JJMapReader(Supplier<Map> supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public Object read(Type t, JJNode node, JJReader reader)
@@ -41,12 +46,13 @@ public class JJMapReader  implements JJObjectReader,JJDescriber
         Type valueType = pt.getActualTypeArguments()[1];
         Class<?> keyClass = ReflectionUtils.classFromType(keyType);
         Class<?> valueClass = ReflectionUtils.classFromType(valueType);
-        Map result = new LinkedHashMap<>();
+        Map result = supplier.get();
         JJNodeArray arr = node.asArray().get();
         for(JJNode entry : arr){
-            JJNodeArray entryArr = entry.asArray().get();
-            Object key = reader.read(entryArr.pstream().get(0),keyClass,keyType);
-            Object value = reader.read(entryArr.pstream().get(1),valueClass,valueType);
+
+            JJNodeObject obj = entry.asObject().get();
+            Object key = reader.read(obj.get("key").get(),keyClass,keyType);
+            Object value = reader.read(obj.get("value").get(),valueClass,valueType);
             result.put(key,value);
         }
 
@@ -59,15 +65,7 @@ public class JJMapReader  implements JJObjectReader,JJDescriber
 
 
         PMap<String,JJTypeSignature> td = JJDescriber.getGenericsParams(t,masterDescriber);
-
-
-
-        //Type keyType = pt.getActualTypeArguments()[0];
-        //Type valueType = pt.getActualTypeArguments()[1];
-        //JJTypeSignature keySig = masterDescriber.describe(keyType,masterDescriber).getTypeSignature();
-        //JJTypeSignature valueSig = masterDescriber.describe(valueType,masterDescriber).getTypeSignature();
-        //JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray, PList.<JJTypeSignature>empty().put("KEY",keySig,valueSig));
-        JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJNode.JType.jsonArray, td);
+        JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJTypeSignature.JsonType.jsonMap, td);
         PList<String> doc = PList.empty();
 
         return new JJTypeDescription(sig,doc);

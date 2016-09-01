@@ -7,8 +7,7 @@ import com.persistentbit.jjson.mapping.impl.custom.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 
@@ -54,12 +53,23 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(LocalDate.class,dw);
         s = s.withForClass(LocalDateTime.class,dw);
         s = s.withForClass(LocalTime.class,dw);
+        s = s.withAssignableTo(Map.class,new JJMapWriter());
+
 
         s = s.withForClass(Optional.class,new JJOptionalWriter());
-        JJPListWriter lw = new JJPListWriter();
-        s = s.withForClass(PList.class,lw).withForClass(LList.class,lw);
-        JJPSetWriter sw = new JJPSetWriter();
-        s = s.withForClass(PSet.class,sw).withForClass(POrderedSet.class,sw);
+
+        JJSetWriter sw = new JJSetWriter();
+        s = s.withForClass(Set.class,sw).withForClass(HashSet.class,sw).withForClass(LinkedHashSet.class,sw);
+
+        JJListWriter lw = new JJListWriter();
+        s = s.withForClass(List.class,lw).withForClass(ArrayList.class,lw).withForClass(LinkedList.class,lw);
+
+        JJPListWriter plw = new JJPListWriter();
+        s = s.withForClass(PList.class,plw).withForClass(LList.class,plw);
+
+        JJPSetWriter psw = new JJPSetWriter();
+        s = s.withForClass(PSet.class,psw).withForClass(POrderedSet.class,psw);
+
         JJPMapWriter mw = new JJPMapWriter();
         s = s.withForClass(PMap.class,mw).withForClass(POrderedMap.class,mw);
         s = s.withAssignableTo(Throwable.class,new JJExceptionWriter());

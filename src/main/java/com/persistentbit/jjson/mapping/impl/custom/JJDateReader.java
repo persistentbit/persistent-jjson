@@ -58,6 +58,6 @@ public class JJDateReader implements JJObjectReader,JJDescriber {
 
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-        return new JJTypeDescription(new JJTypeSignature(ReflectionUtils.classFromType(t).getName(), JJNode.JType.jsonString));
+        return new JJTypeDescription(new JJTypeSignature(ReflectionUtils.classFromType(t).getName(), JJTypeSignature.JsonType.jsonString));
     }
 }

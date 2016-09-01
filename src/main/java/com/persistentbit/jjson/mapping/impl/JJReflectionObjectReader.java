@@ -119,7 +119,7 @@ public class JJReflectionObjectReader implements JJObjectReader,JJDescriber
             JJTypeDescription td =masterDescriber.describe(pd.setter.getPropertyType(),masterDescriber);
             props = props.plus(new JJPropertyDescription(pd.propName,td.getTypeSignature(),pdoc));
         }
-        return new JJTypeDescription(new JJTypeSignature(objectClass.getName(), JJNode.JType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc,props);
+        return new JJTypeDescription(new JJTypeSignature(objectClass.getName(), JJTypeSignature.JsonType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc,props);
     }
 
     public JJReflectionObjectReader setCustomPropertyReader(String propName, PropertyDef.PropertyReader reader){

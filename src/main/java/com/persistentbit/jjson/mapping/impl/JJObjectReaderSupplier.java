@@ -31,10 +31,15 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         JJObjectReaderSupplier s = this;
 
 
-        JJArrayListReader listReader = new JJArrayListReader();
-        s = s.withForClass(List.class,listReader);
+
+        s = s.withForClass(List.class,new JJListReader(()-> new ArrayList()));
+        s = s.withForClass(ArrayList.class,new JJListReader(()-> new ArrayList()));
+        s = s.withForClass(LinkedList.class,new JJListReader(() -> new LinkedList()));
         s = s.withForClass(Set.class,new JJSetReader());
-        s = s.withForClass(Map.class,new JJMapReader());
+        s = s.withForClass(Map.class,new JJMapReader(() -> new LinkedHashMap()));//Linked so order of items stay the same after writing/reading
+        s = s.withForClass(HashMap.class,new JJMapReader(()-> new HashMap()));
+        s = s.withForClass(TreeMap.class, new JJMapReader(() -> new TreeMap()));
+        s = s.withForClass(LinkedHashMap.class, new JJMapReader(() -> new LinkedHashMap()));
         JJDateReader dr = new JJDateReader();
         s = s.withForClass(java.util.Date.class,dr);
         s = s.withForClass(java.sql.Date.class,dr);
