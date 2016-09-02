@@ -3,6 +3,9 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -12,15 +15,20 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author Peter Muys
  * @since 23/10/2015
  */
-public class JJArrayListReader implements JJObjectReader
+public class JJListReader implements JJObjectReader,JJDescriber
 {
 
+    private final Supplier<List> supplier;
 
+    public JJListReader(Supplier<List> supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public Object read(Type t, JJNode node, JJReader reader)
@@ -43,5 +51,10 @@ public class JJArrayListReader implements JJObjectReader
         return result;
     }
 
+    @Override
+    public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
 
+        Class cls = ReflectionUtils.classFromType(type);
+        return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJTypeSignature.JsonType.jsonArray, JJDescriber.getGenericsParams(type,masterDescriber)));
+    }
 }

@@ -2,12 +2,18 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.IPMap;
+import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeArray;
+import com.persistentbit.jjson.nodes.JJNodeObject;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,7 +24,7 @@ import java.util.function.Supplier;
  * Date: 26/08/16
  * Time: 09:00
  */
-public class JJPMapReader   implements JJObjectReader {
+public class JJPMapReader   implements JJObjectReader, JJDescriber {
 
     private Supplier<IPMap> ipMapSupplier;
 
@@ -42,9 +48,22 @@ public class JJPMapReader   implements JJObjectReader {
         Class clsValue = ReflectionUtils.classFromType(valueType);
         JJNodeArray arr = node.asArray().get();
         return  ipMapSupplier.get().plusAll(arr.pstream().map(n -> {
-            JJNodeArray itemArr = n.asArray().get();
-            Object[] tupleNodes = itemArr.pstream().toArray();
-            return new Tuple2(reader.read((JJNode)tupleNodes[0],clsKey,keyType),reader.read((JJNode)tupleNodes[1],clsValue,valueType));
+            JJNodeObject obj = n.asObject().get();
+            Object key = reader.read(obj.get("key").get(),clsKey,keyType);
+            Object value = reader.read(obj.get("value").get(),clsValue,valueType);
+            return new Tuple2(key,value);
         }));
+    }
+
+    @Override
+    public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
+        Class cls = ReflectionUtils.classFromType(t);
+
+
+        PMap<String,JJTypeSignature> td = JJDescriber.getGenericsParams(t,masterDescriber);
+        JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJTypeSignature.JsonType.jsonMap, td);
+        PList<String> doc = PList.empty();
+
+        return new JJTypeDescription(sig,doc);
     }
 }

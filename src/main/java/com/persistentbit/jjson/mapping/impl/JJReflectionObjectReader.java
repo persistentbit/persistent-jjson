@@ -1,14 +1,18 @@
 package com.persistentbit.jjson.mapping.impl;
 
+import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.properties.FieldNames;
 import com.persistentbit.core.properties.PropertySetter;
 import com.persistentbit.core.properties.PropertySetterField;
 import com.persistentbit.core.properties.PropertySetterMethod;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJPropertyDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeNull;
 import com.persistentbit.jjson.nodes.JJNodeObject;
-
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -17,7 +21,7 @@ import java.util.*;
  * @author Peter Muys
  * @since 29/10/2015
  */
-public class JJReflectionObjectReader implements JJObjectReader
+public class JJReflectionObjectReader implements JJObjectReader,JJDescriber
 {
 
     public static  class PropertyDef{
@@ -80,6 +84,8 @@ public class JJReflectionObjectReader implements JJObjectReader
 
     }
 
+
+
     private final Map<String,PropertyDef> properties  =   new HashMap<>();
 
     private List<PropertyDef> constructorProperities = new ArrayList<>();
@@ -104,6 +110,17 @@ public class JJReflectionObjectReader implements JJObjectReader
         return this;
     }
 
+    @Override
+    public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
+        PList<String> doc = PList.empty();
+        PList<JJPropertyDescription> props = PList.empty();
+        for(PropertyDef pd : constructorProperities){
+            PList<String> pdoc = PList.empty();
+            JJTypeDescription td =masterDescriber.describe(pd.setter.getPropertyType(),masterDescriber);
+            props = props.plus(new JJPropertyDescription(pd.propName,td.getTypeSignature(),pdoc));
+        }
+        return new JJTypeDescription(new JJTypeSignature(objectClass.getName(), JJTypeSignature.JsonType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc,props);
+    }
 
     public JJReflectionObjectReader setCustomPropertyReader(String propName, PropertyDef.PropertyReader reader){
         PropertyDef def = properties.get(propName);
@@ -253,7 +270,7 @@ public class JJReflectionObjectReader implements JJObjectReader
             if(constructor != null && constructor.getParameterCount() > c.getParameterCount()){
                 continue;
             }
-            //FieldNames fn = c.getDeclaredAnnotation(FieldNames.class);
+            FieldNames fn = c.getDeclaredAnnotation(FieldNames.class);
             Parameter[] allParams = c.getParameters();
             if(allParams.length > 0 && Modifier.isPublic(c.getModifiers()) == false){
                 continue;
@@ -261,8 +278,8 @@ public class JJReflectionObjectReader implements JJObjectReader
             List<PropertyDef> paramProps = new ArrayList<>();
             for(int t=0; t<allParams.length;t++){
                 Parameter p = allParams[t];
-                //String name = fn == null ? p.getName() : fn.names()[t];
-                String name = p.getName();
+                String name = fn == null ? p.getName() : fn.names()[t];
+                //String name = p.getName();
                 PropertyDef found = null;
                 for(PropertyDef pdef : properties.values()){
                     if(pdef.javaName.equals(name)){

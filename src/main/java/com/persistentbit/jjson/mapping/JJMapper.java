@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.mapping;
 
 import com.persistentbit.core.Immutable;
+import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.impl.*;
 import com.persistentbit.jjson.nodes.JJNode;
 
@@ -42,6 +43,11 @@ public class JJMapper implements JJReader,JJWriter{
     @Override
     public <T> T read(JJNode node, Class<T> cls, Type type) {
         return reader.read(node,cls,type);
+    }
+
+
+    public JJTypeDescription describe(Class<?> cls) {
+        return reader.describe(cls,cls);
     }
 
     public JJMapper readerWithForClass(Class<?> cls, JJObjectReader ow){

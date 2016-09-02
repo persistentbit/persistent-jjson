@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.mapping;
 
 
+import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.mapping.impl.JJDefaultReader;
 
@@ -14,7 +15,7 @@ import java.lang.reflect.Type;
  * @see JJNode
  * @see JJDefaultReader
  */
-@FunctionalInterface
+
 public interface JJReader
 {
     default <T>T read(JJNode node, Class<T> cls){

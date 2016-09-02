@@ -1,9 +1,9 @@
 package com.petsistentbit.jjson;
 
+import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
-import com.persistentbit.core.properties.FieldNames;
 import com.persistentbit.core.utils.ImTools;
 
 import java.util.Date;
@@ -16,6 +16,11 @@ import java.util.Map;
  * Time: 11:04
  */
 public class JJTest {
+    public enum EnumTest{
+        enum1,enum2, lastEnum
+    }
+
+
     private final List<JJSubTest>   subList;
     private final Boolean booleanValue;
     private final short shortValue;
@@ -28,10 +33,11 @@ public class JJTest {
     private final PMap<Integer,String>  pMap;
     private final PSet<Double> pSet;
     private final Map<String,String> map;
+    private final EnumTest enumTest;
+    private final Tuple2<Integer,Float> tuple;
 
 
-
-    public JJTest(List<JJSubTest> subList, Boolean booleanValue, short shortValue, Integer intValue, Long longValue, Float floatValue, double doubleValue, Date dateValue,PList<String> pList,PMap<Integer,String> pMap,PSet<Double> pSet,Map<String,String> map) {
+    public JJTest(List<JJSubTest> subList, Boolean booleanValue, short shortValue, Integer intValue, Long longValue, Float floatValue, double doubleValue, Date dateValue,PList<String> pList,PMap<Integer,String> pMap,PSet<Double> pSet,Map<String,String> map,EnumTest enumTest,Tuple2<Integer,Float> tuple) {
         this.subList = subList;
         this.booleanValue = booleanValue;
         this.shortValue = shortValue;
@@ -44,6 +50,8 @@ public class JJTest {
         this.pMap = pMap;
         this.pSet = pSet;
         this.map = map;
+        this.enumTest = enumTest;
+        this.tuple = tuple;
     }
 
     @Override
