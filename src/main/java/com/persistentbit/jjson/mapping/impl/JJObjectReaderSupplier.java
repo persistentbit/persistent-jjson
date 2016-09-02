@@ -69,7 +69,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         s = s.withAssignableTo(Exception.class,new JJExceptionReader());
         s = s.withAssignableTo(Enum.class,new JJEnumReader());
         s = s.withAssignableTo(List.class,new JJListReader(()-> new ArrayList()));
-        s = s.withForClass(Optional.class,new JJOptionalReader());
+
         return s;
     }
 

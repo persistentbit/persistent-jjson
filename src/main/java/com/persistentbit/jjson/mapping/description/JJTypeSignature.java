@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class JJTypeSignature {
     public enum JsonType{
-        jsonArray,jsonBoolean,jsonNull,jsonNumber,jsonObject,jsonString, jsonSet, jsonMap
+        jsonArray,jsonBoolean,jsonNull,jsonNumber,jsonObject,jsonString, jsonSet, jsonMap,jsonOptional
     }
     private final String        javaClassName;
     private final JsonType  jsonType;

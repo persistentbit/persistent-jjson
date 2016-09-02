@@ -2,10 +2,12 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 
 
+import com.persistentbit.core.collections.PMap;
 import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.mapping.impl.JJObjectWriter;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJNodeNull;
+import com.persistentbit.jjson.nodes.JJNodeObject;
 
 import java.util.Optional;
 
@@ -18,9 +20,12 @@ public class JJOptionalWriter implements JJObjectWriter {
     @Override
     public JJNode write(Object value, JJWriter masterWriter) {
         Optional v = (Optional)value;
-        if(v.isPresent()){
-            return masterWriter.write(v.get());
+        if(v == null){
+            return JJNodeNull.Null;
         }
-        return JJNodeNull.Null;
+        if(v.isPresent()){
+            return new JJNodeObject(PMap.<String,JJNode>empty().put("optionalValue",masterWriter.write(v.get())));
+        }
+        return new JJNodeObject(PMap.<String,JJNode>empty().put("optionalEmpty",JJNodeNull.Null));
     }
 }
