@@ -111,7 +111,7 @@ public class JJSigning {
         }
     }
 
-    private String sign(String data,String algorithm){
+    static public String sign(String data,String algorithm){
         try{
             MessageDigest md = MessageDigest.getInstance(algorithm);
             md.update(data.getBytes("UTF-8"));
