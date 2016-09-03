@@ -44,6 +44,6 @@ public class JJOptionalReader implements JJObjectReader,JJDescriber {
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
         PList<String> doc = PList.empty();
-        return new JJTypeDescription(new JJTypeSignature(Optional.class.getName(), JJTypeSignature.JsonType.jsonOptional,JJDescriber.getGenericsParams(t,masterDescriber)),doc);
+        return new JJTypeDescription(new JJTypeSignature(Optional.class.getName(), JJTypeSignature.JsonType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc);
     }
 }

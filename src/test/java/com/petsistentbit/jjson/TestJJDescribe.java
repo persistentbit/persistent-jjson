@@ -26,7 +26,7 @@ public class TestJJDescribe {
     @Test
     public void testGenerics() {
         JJMapper m = new JJMapper();
-        JJTypeDescription td = m.describe(Tuple2.class);
+        JJTypeDescription td = m.describe(GenericsTest.class);
         System.out.println(JJPrinter.print(true,m.write(td)));
     }
 }
