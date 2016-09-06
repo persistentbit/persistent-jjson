@@ -40,7 +40,11 @@ public class JJTypeSignature extends BaseValueClass{
     }
 
     public PSet<String> getAllUsedClassNames(){
-        return getGenerics().values().filter(c -> c.getJsonType() == JsonType.jsonObject).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty()).plus(javaClassName);
+        PSet<String> res =  getGenerics().values().filter(c -> c.getJsonType() == JsonType.jsonObject).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty());
+        if(jsonType == JsonType.jsonObject){
+            res = res.plus(javaClassName);
+        }
+        return res;
     }
 
 }
