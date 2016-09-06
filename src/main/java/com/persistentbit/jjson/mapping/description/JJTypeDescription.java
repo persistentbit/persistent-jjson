@@ -2,14 +2,16 @@ package com.persistentbit.jjson.mapping.description;
 
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PSet;
+import com.persistentbit.core.utils.BaseValueClass;
 import com.persistentbit.core.utils.ImTools;
+import com.persistentbit.core.utils.NoEqual;
 
 /**
  */
-public class JJTypeDescription {
+public class JJTypeDescription extends BaseValueClass{
     private final JJTypeSignature typeSignature;
-    private final PList<String> doc;
-    private final PList<JJPropertyDescription>  properties;
+    @NoEqual private final PList<String> doc;
+    @NoEqual private final PList<JJPropertyDescription>  properties;
 
 
     public JJTypeDescription(JJTypeSignature typeSignature){
