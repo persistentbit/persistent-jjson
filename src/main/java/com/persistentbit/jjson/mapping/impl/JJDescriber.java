@@ -23,7 +23,7 @@ public interface JJDescriber {
 
     static PMap<String,JJTypeSignature> getGenericsParams(Type t,JJDescriber masterDescriber) {
         if(t instanceof TypeVariable){
-            return PMap.<String,JJTypeSignature>empty().put(((TypeVariable) t).getName(),new JJTypeSignature("object", JJTypeSignature.JsonType.jsonObject));
+            return PMap.<String,JJTypeSignature>empty().put(((TypeVariable) t).getName(),new JJTypeSignature("java.lang.Object", JJTypeSignature.JsonType.jsonObject));
         }
         Class cls = ReflectionUtils.classFromType(t);
         if(cls.getTypeParameters().length ==0){

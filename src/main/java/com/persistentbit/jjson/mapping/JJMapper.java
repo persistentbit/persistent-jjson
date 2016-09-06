@@ -49,7 +49,9 @@ public class JJMapper implements JJReader,JJWriter{
     public JJTypeDescription describe(Class<?> cls) {
         return reader.describe(cls,cls);
     }
-
+    public JJTypeDescription describe(Class<?> cls,Type type) {
+        return reader.describe(cls,type);
+    }
     public JJMapper readerWithForClass(Class<?> cls, JJObjectReader ow){
         return new JJMapper(reader.withForClass(cls,ow),writer);
     }
