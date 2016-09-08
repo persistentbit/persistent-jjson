@@ -12,7 +12,13 @@ import java.util.Objects;
  */
 public class JJTypeSignature extends BaseValueClass{
     public enum JsonType{
-        jsonArray,jsonBoolean,jsonNull,jsonNumber,jsonObject,jsonString, jsonSet, jsonMap
+        jsonArray,jsonBoolean,jsonNull,jsonNumber,jsonObject,jsonString, jsonSet, jsonMap;
+        public boolean isJsonPrimitive() {
+            return this == jsonString || this == jsonBoolean || this == jsonNull || this == jsonNumber;
+        }
+        public boolean isJsonCollection() {
+            return this == jsonArray || this == jsonSet || this == jsonMap;
+        }
     }
     private final String    javaClassName;
     private final JsonType  jsonType;
