@@ -21,21 +21,22 @@ public class JJTypeSignature extends BaseValueClass{
             return this == jsonArray || this == jsonSet || this == jsonMap;
         }
     }
-    private final String    javaClassName;
+    private final JJClass cls;
     private final JsonType  jsonType;
     private final PMap<String,JJTypeSignature> generics;
 
-    public JJTypeSignature(String javaClassName, JsonType jsonType,  PMap<String,JJTypeSignature> generics) {
-        this.javaClassName = javaClassName;
+    public JJTypeSignature(JJClass cls, JsonType jsonType, PMap<String,JJTypeSignature> generics) {
+        this.cls = cls;
         this.jsonType = jsonType;
         this.generics = Objects.requireNonNull(generics);
     }
-    public JJTypeSignature(String javaClassName, JsonType jsonType){
-        this(javaClassName,jsonType,PMap.empty());
+
+    public JJTypeSignature(JJClass cls, JsonType jsonType){
+        this(cls,jsonType,PMap.empty());
     }
 
-    public String getJavaClassName() {
-        return javaClassName;
+    public JJClass getCls() {
+        return cls;
     }
 
     public JsonType getJsonType() {
@@ -46,11 +47,11 @@ public class JJTypeSignature extends BaseValueClass{
         return generics;
     }
 
-    public PSet<String> getAllUsedClassNames(){
-        Predicate<JJTypeSignature> include = c -> c.getJsonType() == JsonType.jsonObject && c.getJavaClassName().equals(Object.class.getName()) == false;
-        PSet<String> res =  getGenerics().values().filter(include).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty());
+    public PSet<JJClass> getAllUsedClassNames(){
+        Predicate<JJTypeSignature> include = c -> c.getJsonType() == JsonType.jsonObject && c.getCls().equals(Object.class.getName()) == false;
+        PSet<JJClass> res =  getGenerics().values().filter(include).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty());
         if(include.test(this)){
-            res = res.plus(javaClassName);
+            res = res.plus(cls);
         }
         return res;
     }

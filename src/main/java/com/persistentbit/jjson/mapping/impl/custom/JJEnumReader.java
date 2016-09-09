@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
@@ -45,6 +46,6 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
             }
         }
         doc = doc.plus("This is an enum with following possible values: " + values.toString(", "));
-        return new JJTypeDescription(new JJTypeSignature(cls.getName(),JJTypeSignature.JsonType.jsonString),doc);
+        return new JJTypeDescription(new JJTypeSignature(new JJClass(cls),JJTypeSignature.JsonType.jsonString),doc);
     }
 }

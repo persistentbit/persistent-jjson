@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 import com.persistentbit.core.collections.IPSet;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
@@ -45,6 +46,6 @@ public class JJPSetReader implements JJObjectReader, JJDescriber {
     public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
 
         Class cls = ReflectionUtils.classFromType(type);
-        return new JJTypeDescription(new JJTypeSignature(cls.getName(), JJTypeSignature.JsonType.jsonSet, JJDescriber.getGenericsParams(type,masterDescriber)));
+        return new JJTypeDescription(new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonSet, JJDescriber.getGenericsParams(type,masterDescriber)));
     }
 }

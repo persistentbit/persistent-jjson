@@ -4,6 +4,7 @@ import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PStream;
 import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 
@@ -23,14 +24,14 @@ public interface JJDescriber {
 
     static PMap<String,JJTypeSignature> getGenericsParams(Type t,JJDescriber masterDescriber) {
         if(t instanceof TypeVariable){
-            return PMap.<String,JJTypeSignature>empty().put(((TypeVariable) t).getName(),new JJTypeSignature("java.lang.Object", JJTypeSignature.JsonType.jsonObject));
+            return PMap.<String,JJTypeSignature>empty().put(((TypeVariable) t).getName(),new JJTypeSignature(new JJClass(Object.class), JJTypeSignature.JsonType.jsonObject));
         }
         Class cls = ReflectionUtils.classFromType(t);
         if(cls.getTypeParameters().length ==0){
             return PMap.empty();
         }
         if(t == cls){
-            PMap<String,JJTypeSignature> res =  PStream.from(cls.getTypeParameters()).groupByOneValue(i -> i.getName(),i->new JJTypeSignature(Object.class.getName(), JJTypeSignature.JsonType.jsonObject));
+            PMap<String,JJTypeSignature> res =  PStream.from(cls.getTypeParameters()).groupByOneValue(i -> i.getName(),i->new JJTypeSignature(new JJClass(Object.class), JJTypeSignature.JsonType.jsonObject));
             return res;
         }
 

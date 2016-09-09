@@ -5,6 +5,7 @@ import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
@@ -65,7 +66,7 @@ public class JJMapReader  implements JJObjectReader,JJDescriber
 
 
         PMap<String,JJTypeSignature> td = JJDescriber.getGenericsParams(t,masterDescriber);
-        JJTypeSignature sig = new JJTypeSignature(cls.getName(), JJTypeSignature.JsonType.jsonMap, td);
+        JJTypeSignature sig = new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonMap, td);
         PList<String> doc = PList.empty();
 
         return new JJTypeDescription(sig,doc);

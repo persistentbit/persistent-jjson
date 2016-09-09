@@ -4,6 +4,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
@@ -58,6 +59,6 @@ public class JJDateReader implements JJObjectReader,JJDescriber {
 
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-        return new JJTypeDescription(new JJTypeSignature(ReflectionUtils.classFromType(t).getName(), JJTypeSignature.JsonType.jsonString));
+        return new JJTypeDescription(new JJTypeSignature(new JJClass(ReflectionUtils.classFromType(t)), JJTypeSignature.JsonType.jsonString));
     }
 }

@@ -7,6 +7,7 @@ import com.persistentbit.core.properties.PropertySetterField;
 import com.persistentbit.core.properties.PropertySetterMethod;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJPropertyDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
@@ -119,7 +120,7 @@ public class JJReflectionObjectReader implements JJObjectReader,JJDescriber
             JJTypeDescription td =masterDescriber.describe(pd.setter.getPropertyType(),masterDescriber);
             props = props.plus(new JJPropertyDescription(pd.propName,td.getTypeSignature(),pdoc));
         }
-        return new JJTypeDescription(new JJTypeSignature(objectClass.getName(), JJTypeSignature.JsonType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc,props);
+        return new JJTypeDescription(new JJTypeSignature(new JJClass(objectClass), JJTypeSignature.JsonType.jsonObject,JJDescriber.getGenericsParams(t,masterDescriber)),doc,props);
     }
 
     public JJReflectionObjectReader setCustomPropertyReader(String propName, PropertyDef.PropertyReader reader){

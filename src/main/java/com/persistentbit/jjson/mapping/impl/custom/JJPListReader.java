@@ -4,6 +4,7 @@ import com.persistentbit.core.collections.IPList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
@@ -49,6 +50,6 @@ public class JJPListReader  implements JJObjectReader,JJDescriber {
         ParameterizedType pt  = (ParameterizedType)type;
         Type itemType = pt.getActualTypeArguments()[0];
         JJTypeSignature itemTypeSig =  masterDescriber.describe(itemType,masterDescriber).getTypeSignature();
-        return new JJTypeDescription(new JJTypeSignature(supplier.get().getClass().getName(), JJTypeSignature.JsonType.jsonArray, PMap.<String,JJTypeSignature>empty().put("ITEM",itemTypeSig)));
+        return new JJTypeDescription(new JJTypeSignature(new JJClass(supplier.get().getClass()), JJTypeSignature.JsonType.jsonArray, PMap.<String,JJTypeSignature>empty().put("ITEM",itemTypeSig)));
     }
 }

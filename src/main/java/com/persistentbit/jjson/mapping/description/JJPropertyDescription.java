@@ -32,7 +32,7 @@ public class JJPropertyDescription extends BaseValueClass{
         return doc;
     }
 
-    public PSet<String> getAllUsedClassNames(){
+    public PSet<JJClass> getAllUsedClassNames(){
         return typeSignature.getAllUsedClassNames();
     }
 }

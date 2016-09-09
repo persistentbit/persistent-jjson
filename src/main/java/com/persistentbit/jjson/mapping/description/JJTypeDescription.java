@@ -46,7 +46,7 @@ public class JJTypeDescription extends BaseValueClass{
     }
 
 
-    public PSet<String> getAllUsedClassNames() {
+    public PSet<JJClass> getAllUsedClassNames() {
         return properties.map(i -> i.getAllUsedClassNames()).join((a,b)-> a.plusAll(b)).orElse(PSet.empty()).plusAll(typeSignature.getAllUsedClassNames());
     }
 }
