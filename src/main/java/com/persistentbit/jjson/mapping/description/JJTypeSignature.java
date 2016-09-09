@@ -5,6 +5,7 @@ import com.persistentbit.core.collections.PSet;
 import com.persistentbit.core.utils.BaseValueClass;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * @author Peter Muys
@@ -46,8 +47,9 @@ public class JJTypeSignature extends BaseValueClass{
     }
 
     public PSet<String> getAllUsedClassNames(){
-        PSet<String> res =  getGenerics().values().filter(c -> c.getJsonType() == JsonType.jsonObject).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty());
-        if(jsonType == JsonType.jsonObject){
+        Predicate<JJTypeSignature> include = c -> c.getJsonType() == JsonType.jsonObject && c.getJavaClassName().equals(Object.class.getName()) == false;
+        PSet<String> res =  getGenerics().values().filter(include).map(JJTypeSignature::getAllUsedClassNames).join((a,b)-> a.plusAll(b)).orElse(PSet.empty());
+        if(include.test(this)){
             res = res.plus(javaClassName);
         }
         return res;
