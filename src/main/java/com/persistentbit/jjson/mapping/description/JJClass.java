@@ -39,4 +39,7 @@ public class JJClass extends BaseValueClass{
         return className;
     }
 
+    public String toString() {
+        return getPackageName() + "/" + getClassName();
+    }
 }
