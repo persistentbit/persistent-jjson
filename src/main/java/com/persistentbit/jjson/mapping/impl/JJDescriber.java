@@ -1,8 +1,8 @@
 package com.persistentbit.jjson.mapping.impl;
 
-import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PStream;
+import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;

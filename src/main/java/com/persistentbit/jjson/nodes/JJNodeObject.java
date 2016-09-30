@@ -1,13 +1,16 @@
 package com.persistentbit.jjson.nodes;
 
 
-import com.persistentbit.core.Tuple2;
-import com.persistentbit.core.collections.*;
+import com.persistentbit.core.collections.IPMap;
+import com.persistentbit.core.collections.POrderedMap;
+import com.persistentbit.core.collections.PStream;
+import com.persistentbit.core.collections.PStreamable;
 import com.persistentbit.core.lenses.Lens;
 import com.persistentbit.core.lenses.LensImpl;
+import com.persistentbit.core.tuples.Tuple2;
 
-
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A JJNode representing a json Object.

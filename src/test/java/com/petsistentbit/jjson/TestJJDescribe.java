@@ -1,6 +1,5 @@
 package com.petsistentbit.jjson;
 
-import com.persistentbit.core.Tuple2;
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.nodes.JJPrinter;

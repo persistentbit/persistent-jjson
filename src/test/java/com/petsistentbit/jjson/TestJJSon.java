@@ -1,9 +1,9 @@
 package com.petsistentbit.jjson;
 
-import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
+import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;

@@ -1,9 +1,9 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
-import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.IPMap;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;

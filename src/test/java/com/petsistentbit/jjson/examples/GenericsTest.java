@@ -1,6 +1,6 @@
 package com.petsistentbit.jjson.examples;
 
-import com.persistentbit.core.Tuple2;
+import com.persistentbit.core.tuples.Tuple2;
 
 /**
  * Created by petermuys on 3/09/16.

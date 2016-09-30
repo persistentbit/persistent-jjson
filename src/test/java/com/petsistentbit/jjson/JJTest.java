@@ -1,9 +1,9 @@
 package com.petsistentbit.jjson;
 
-import com.persistentbit.core.Tuple2;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
+import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.core.utils.ImTools;
 
 import java.util.Date;
