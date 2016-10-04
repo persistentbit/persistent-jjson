@@ -4,6 +4,7 @@ import com.persistentbit.core.collections.*;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.lang.reflect.Field;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -60,6 +61,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         s = s.withForClass(java.time.LocalTime.class,dr);
         s = s.withForClass(java.time.LocalDateTime.class,dr);
         s = s.withForClass(java.time.LocalDate.class,dr);
+        s = s.withForClass(ZonedDateTime.class,dr);
         s = s.withForClass(Optional.class,new JJOptionalReader());
         s = s.withForClass(PSet.class,new JJPSetReader(()-> PSet.empty()));
         s = s.withForClass(POrderedSet.class,new JJPSetReader(()-> POrderedSet.empty()));

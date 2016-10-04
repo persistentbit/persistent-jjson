@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -61,6 +62,7 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(LocalDate.class,dw);
         s = s.withForClass(LocalDateTime.class,dw);
         s = s.withForClass(LocalTime.class,dw);
+        s = s.withForClass(ZonedDateTime.class,dw);
 
 
         JJMapWriter mw = new JJMapWriter();
