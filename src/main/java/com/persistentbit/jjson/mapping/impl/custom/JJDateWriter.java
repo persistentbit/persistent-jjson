@@ -4,11 +4,13 @@ package com.persistentbit.jjson.mapping.impl.custom;
 import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.mapping.impl.JJObjectWriter;
 import com.persistentbit.jjson.nodes.JJNode;
+import com.persistentbit.jjson.nodes.JJNodeNull;
 import com.persistentbit.jjson.nodes.JJNodeString;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -17,21 +19,28 @@ import java.util.Date;
  */
 public class JJDateWriter implements JJObjectWriter
 {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     @Override
     public JJNode write(Object value, JJWriter master)
     {
-        if(value instanceof java.sql.Date){
-            java.sql.Date sd = (java.sql.Date) value;
-            return new JJNodeString(sd.toLocalDate().format(DateTimeFormatter.ISO_DATE));
+        if(value == null){
+            return JJNodeNull.Null;
         }
-        if(value instanceof Date){
-            return new JJNodeString(formatter.format(((Date)value).toInstant()));
-        }
-        if(value instanceof LocalDateTime){
+
+        String result;
+        if(value instanceof Timestamp){
+            result = ((Timestamp)value).toInstant().toString();
+        } else if(value instanceof java.sql.Date){
+           result = ((java.sql.Date)value).toInstant().toString();
+        }else if(value instanceof Date){
+            result = ((Date)value).toInstant().toString();
+        } else if(value instanceof LocalDateTime){
             LocalDateTime ldt = (LocalDateTime)value;
-            return new JJNodeString(ldt.format(DateTimeFormatter.ISO_DATE_TIME));
+            result = ZonedDateTime.of(ldt,ZoneId.systemDefault()).toInstant().toString();
+        } else if(value instanceof ZonedDateTime){
+            result = value.toString();
+        } else{
+            throw new RuntimeException("Don't know how to convert to json:" + value.getClass());
         }
-        return new JJNodeString(formatter.format((Instant)value));
+        return new JJNodeString(result);
     }
 }
