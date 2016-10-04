@@ -8,9 +8,11 @@ import com.persistentbit.jjson.nodes.JJNodeNull;
 import com.persistentbit.jjson.nodes.JJNodeString;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -38,7 +40,9 @@ public class JJDateWriter implements JJObjectWriter
             result = ZonedDateTime.of(ldt,ZoneId.systemDefault()).toInstant().toString();
         } else if(value instanceof ZonedDateTime){
             result = value.toString();
-        } else{
+        } else if(value instanceof LocalDate){
+            result = ((LocalDate)value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }else{
             throw new RuntimeException("Don't know how to convert to json:" + value.getClass());
         }
         return new JJNodeString(result);
