@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.tuples.Tuple2;
+import com.persistentbit.jjson.mapping.JJMapper;
 
 import java.io.*;
 
@@ -29,6 +30,15 @@ public class JJPrinter
         StringWriter sw = new StringWriter();
         print(pretty,node,sw);
         return sw.toString();
+    }
+
+    /**
+     * Helper utility to convert an object to a pretty printed String
+     * @param object The object to convert
+     * @return the pretty json String
+     */
+    static public String toJson(Object object){
+        return print(true,new JJMapper().write(object));
     }
 
     static public void print(boolean pretty,JJNode node,File file){
