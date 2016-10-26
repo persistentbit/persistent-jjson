@@ -42,17 +42,17 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
 
 
 
-        s = s.withForClass(ArrayList.class,new JJListReader(()-> new ArrayList()));
-        s = s.withForClass(LinkedList.class,new JJListReader(() -> new LinkedList()));
-        s = s.withAssignableTo(Set.class,new JJSetReader(() -> new LinkedHashSet()));
+        s = s.withForClass(ArrayList.class,new JJListReader(ArrayList::new));
+        s = s.withForClass(LinkedList.class,new JJListReader(LinkedList::new));
+        s = s.withAssignableTo(Set.class,new JJSetReader(LinkedHashSet::new));
 
-        s = s.withAssignableTo(HashSet.class, new JJSetReader(()-> new HashSet()));
-        s = s.withAssignableTo(TreeSet.class,new JJSetReader(() -> new TreeSet()));
+        s = s.withAssignableTo(HashSet.class, new JJSetReader(HashSet::new));
+        s = s.withAssignableTo(TreeSet.class,new JJSetReader(TreeSet::new));
 
-        s = s.withAssignableTo(Map.class,new JJMapReader(() -> new LinkedHashMap()));//Linked so order of items stay the same after writing/reading
-        s = s.withForClass(HashMap.class,new JJMapReader(()-> new HashMap()));
-        s = s.withForClass(TreeMap.class, new JJMapReader(() -> new TreeMap()));
-        s = s.withForClass(LinkedHashMap.class, new JJMapReader(() -> new LinkedHashMap()));
+        s = s.withAssignableTo(Map.class,new JJMapReader(LinkedHashMap::new));//Linked so order of items stay the same after writing/reading
+        s = s.withForClass(HashMap.class,new JJMapReader(HashMap::new));
+        s = s.withForClass(TreeMap.class, new JJMapReader(TreeMap::new));
+        s = s.withForClass(LinkedHashMap.class, new JJMapReader(LinkedHashMap::new));
         JJDateReader dr = new JJDateReader();
         s = s.withForClass(java.util.Date.class,dr);
         s = s.withForClass(java.sql.Date.class,dr);
@@ -63,14 +63,14 @@ public class JJObjectReaderSupplier implements Function<Class<?>,JJObjectReader>
         s = s.withForClass(java.time.LocalDate.class,dr);
         s = s.withForClass(ZonedDateTime.class,dr);
         s = s.withForClass(Optional.class,new JJOptionalReader());
-        s = s.withForClass(PSet.class,new JJPSetReader(()-> PSet.empty()));
-        s = s.withForClass(POrderedSet.class,new JJPSetReader(()-> POrderedSet.empty()));
-        s = s.withForClass(PList.class,new JJPListReader(() -> PList.empty()));
-        s = s.withForClass(PMap.class,new JJPMapReader(() -> PMap.empty()));
-        s = s.withForClass(POrderedMap.class,new JJPMapReader(() -> POrderedMap.empty()));
+        s = s.withForClass(PSet.class,new JJPSetReader(PSet::empty));
+        s = s.withForClass(POrderedSet.class,new JJPSetReader(POrderedSet::empty));
+        s = s.withForClass(PList.class,new JJPListReader(PList::empty));
+        s = s.withForClass(PMap.class,new JJPMapReader(PMap::empty));
+        s = s.withForClass(POrderedMap.class,new JJPMapReader(POrderedMap::empty));
         s = s.withAssignableTo(Exception.class,new JJExceptionReader());
         s = s.withAssignableTo(Enum.class,new JJEnumReader());
-        s = s.withAssignableTo(List.class,new JJListReader(()-> new ArrayList()));
+        s = s.withAssignableTo(List.class,new JJListReader(ArrayList::new));
 
         return s;
     }

@@ -26,8 +26,11 @@ import java.util.function.Supplier;
 public class JJListReader implements JJObjectReader,JJDescriber
 {
 
+    private final Supplier<List<?>> supplier;
 
-
+    public JJListReader(Supplier<List<?>> supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public Object read(Type t, JJNode node, JJReader reader)
@@ -43,7 +46,7 @@ public class JJListReader implements JJObjectReader,JJDescriber
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
         JJNodeArray arr = node.asArray().get();
-        List<Object> result = new ArrayList<>();
+        List result = supplier.get();
         for(JJNode i : arr){
             result.add(reader.read(i,cls,itemType));
         }
