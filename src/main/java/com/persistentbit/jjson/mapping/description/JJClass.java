@@ -5,7 +5,10 @@ import com.persistentbit.core.utils.BaseValueClass;
 
 
 /**
- * Created by petermuys on 9/09/16.
+ * User: petermuys
+ * Date: 9/09/16
+ * Time: 23:14
+ *
  */
 public class JJClass extends BaseValueClass{
     private final String packageName;

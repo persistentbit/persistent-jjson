@@ -31,15 +31,13 @@ public interface JJDescriber {
             return PMap.empty();
         }
         if(t == cls){
-            PMap<String,JJTypeSignature> res =  PStream.from(cls.getTypeParameters()).groupByOneValue(i -> i.getName(),i->new JJTypeSignature(new JJClass(Object.class), JJTypeSignature.JsonType.jsonObject));
-            return res;
+            return PStream.from(cls.getTypeParameters()).groupByOneValue(i -> i.getName(), i->new JJTypeSignature(new JJClass(Object.class), JJTypeSignature.JsonType.jsonObject));
         }
 
         ParameterizedType pt = (ParameterizedType)t;
         PStream<Tuple2<TypeVariable,Type>> genParams = from(pt.getActualTypeArguments()).zip(from(cls.getTypeParameters()));
 
-        PMap<String,JJTypeSignature> td = genParams.groupByOneValue(i -> i._1.getName(), i -> masterDescriber.describe(i._2,masterDescriber).getTypeSignature());
-        return td;
+        return genParams.groupByOneValue(i -> i._1.getName(), i -> masterDescriber.describe(i._2,masterDescriber).getTypeSignature());
     }
 
 }

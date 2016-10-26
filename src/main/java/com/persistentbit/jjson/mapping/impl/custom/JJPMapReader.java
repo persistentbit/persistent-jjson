@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  */
 public class JJPMapReader   implements JJObjectReader, JJDescriber {
 
-    private Supplier<IPMap> ipMapSupplier;
+    private final Supplier<IPMap> ipMapSupplier;
 
     public JJPMapReader(Supplier<IPMap> ipMapSupplier) {
         this.ipMapSupplier = ipMapSupplier;

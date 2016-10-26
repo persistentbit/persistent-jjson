@@ -6,7 +6,8 @@ import com.persistentbit.core.tuples.Tuple2;
  * @author Peter Muys
  * @since 31/08/2016
  */
-public class GenTest<A,B> {
+@SuppressWarnings("FieldCanBeLocal")
+class GenTest<A,B> {
     private final Tuple2<A,String> tupleAString;
     private final Tuple2<B,Integer> tupleBInteger;
     private final Tuple2<Float,Double> tupleFloatDouble;

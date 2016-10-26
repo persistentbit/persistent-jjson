@@ -16,7 +16,7 @@ import java.util.List;
 public class JJListWriter implements JJObjectWriter {
     @Override
     public JJNode write(Object value, JJWriter masterWriter) {
-        List v = (List)value;
+        List<?> v = (List<?>)value;
         return new JJNodeArray(PStream.from(v).map(i -> masterWriter.write(i)));
 
     }

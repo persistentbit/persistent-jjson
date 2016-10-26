@@ -38,7 +38,7 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
         PList<String> doc = PList.empty();
-        Class cls = ReflectionUtils.classFromType(t);
+        Class<?> cls = ReflectionUtils.classFromType(t);
         PList<String> values = PList.empty();
         for(Field f : cls.getDeclaredFields()){
             if(Modifier.isStatic(f.getModifiers()) && cls.isAssignableFrom(f.getType())){

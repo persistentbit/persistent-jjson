@@ -20,14 +20,13 @@ public class JJMapWriter  implements JJObjectWriter {
         Map v = (Map) value;
 
         PStream<Map.Entry> pstream = PStream.from(v.entrySet());
-        JJNodeArray arr = new JJNodeArray(
+        return new JJNodeArray(
                 pstream.map( e ->
                         new JJNodeObject(
                                 PMap.<String,JJNode>empty().put("key",masterWriter.write(e.getKey())).put("value",masterWriter.write(e.getValue()))
                         )
                 )
         );
-        return arr;
 
     }
 }

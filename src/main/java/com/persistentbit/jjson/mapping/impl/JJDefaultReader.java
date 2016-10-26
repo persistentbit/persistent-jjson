@@ -22,7 +22,7 @@ import java.util.function.Function;
  */
 @Immutable
 public class JJDefaultReader  implements JJReader {
-    JJObjectReaderSupplier supplier;
+    final JJObjectReaderSupplier supplier;
     public JJDefaultReader(JJObjectReaderSupplier supplier){
         this.supplier = supplier;
     }
@@ -37,7 +37,7 @@ public class JJDefaultReader  implements JJReader {
         this(new JJObjectReaderSupplier().addCoreReaders());
     }
 
-    static private PMap<String,Class> primitiveClassNamesMapping = PMap.<String,Class>empty()
+    static private final PMap<String,Class> primitiveClassNamesMapping = PMap.<String,Class>empty()
             .put("int",int.class)
             .put("float",float.class)
             .put("double",double.class)
@@ -50,6 +50,7 @@ public class JJDefaultReader  implements JJReader {
             ;
 
 
+    @SuppressWarnings("unchecked")
     public <T>T read(JJNode node, Class<T> cls, Type type){
         boolean isNull = node.getType() == JJNode.JType.jsonNull;
 

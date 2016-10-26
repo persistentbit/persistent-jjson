@@ -15,6 +15,7 @@ import java.util.Map;
  * Date: 22/07/16
  * Time: 11:04
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class JJTest {
     public enum EnumTest{
         enum1,enum2, lastEnum
