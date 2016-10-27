@@ -2,11 +2,11 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PStream;
-import com.persistentbit.core.collections.PStreamLazy;
 import com.persistentbit.core.collections.PStreamable;
 
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a JJNode for an array.<br>
