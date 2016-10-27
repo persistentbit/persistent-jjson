@@ -169,7 +169,7 @@ public class JJDefaultReader  implements JJReader {
             }
             return result;
         } else {
-            T[] result = (T[]) Array.newInstance(itemClass, elements.size());
+            @SuppressWarnings("unchecked") T[] result = (T[]) Array.newInstance(itemClass, elements.size());
             for (int t = 0; t < result.length; t++) {
                 result[t] = read(elements.get(t), itemClass, itemType);
             }

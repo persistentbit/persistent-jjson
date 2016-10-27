@@ -46,7 +46,7 @@ public class JJListReader implements JJObjectReader,JJDescriber
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
         JJNodeArray arr = node.asArray().get();
-        List result = supplier.get();
+        List<Object> result = (List<Object>) supplier.get();
         for(JJNode i : arr){
             result.add(reader.read(i,cls,itemType));
         }

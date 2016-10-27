@@ -5,6 +5,7 @@ import com.persistentbit.core.tuples.Tuple2;
 /**
  * Created by petermuys on 3/09/16.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class GenericsTest<GT> {
     private final GT gtValue;
     private final Tuple2<GT,String> tuple2_GT_String;
