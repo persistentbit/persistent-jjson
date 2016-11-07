@@ -4,7 +4,6 @@ import com.persistentbit.core.collections.*;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.lang.reflect.Field;
-import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -51,7 +50,6 @@ public class JJObjectReaderSupplier implements Function<Class<?>, JJObjectReader
 		JJObjectReaderSupplier s = this;
 
 
-		s = s.withForClass(PByteList.class, new JJPByteListReader());
 
 		s = s.withForClass(ArrayList.class, new JJListReader(ArrayList::new));
 		s = s.withForClass(LinkedList.class, new JJListReader(LinkedList::new));
@@ -66,8 +64,8 @@ public class JJObjectReaderSupplier implements Function<Class<?>, JJObjectReader
 		s = s.withForClass(TreeMap.class, new JJMapReader(TreeMap::new));
 		s = s.withForClass(LinkedHashMap.class, new JJMapReader(LinkedHashMap::new));
 		JJDateReader dr = new JJDateReader();
-		s = s.withForClass(Date.class, dr);
-		s = s.withForClass(Date.class, dr);
+		s = s.withForClass(java.util.Date.class, dr);
+		s = s.withForClass(java.sql.Date.class, dr);
 		s = s.withForClass(Timestamp.class, dr);
 		s = s.withForClass(Time.class, dr);
 		s = s.withForClass(LocalTime.class, dr);
@@ -75,6 +73,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>, JJObjectReader
 		s = s.withForClass(LocalDate.class, dr);
 		s = s.withForClass(ZonedDateTime.class, dr);
 		s = s.withForClass(Optional.class, new JJOptionalReader());
+		s = s.withForClass(PByteList.class, new JJPByteListReader());
 		s = s.withForClass(PSet.class, new JJPSetReader(PSet::empty));
 		s = s.withForClass(POrderedSet.class, new JJPSetReader(POrderedSet::empty));
 		s = s.withForClass(PList.class, new JJPListReader(PList::empty));

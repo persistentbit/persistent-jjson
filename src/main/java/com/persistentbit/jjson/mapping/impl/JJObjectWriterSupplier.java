@@ -64,7 +64,6 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(LocalTime.class,dw);
         s = s.withForClass(ZonedDateTime.class,dw);
 
-        s = s.withForClass(PByteList.class, new JJPByteListWriter());
 
         JJMapWriter mw = new JJMapWriter();
         s = s.withAssignableTo(Map.class,mw);
@@ -88,6 +87,7 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(PMap.class,pmw).withForClass(POrderedMap.class,pmw);
 
         s = s.withAssignableTo(Throwable.class,new JJExceptionWriter());
+        s = s.withForClass(PByteList.class, new JJPByteListWriter());
 
         return s;
     }
