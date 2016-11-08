@@ -4,7 +4,8 @@ import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.nodes.JJPrinter;
 import com.petsistentbit.jjson.examples.GenericsTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
+
 
 /**
  * @author Peter Muys

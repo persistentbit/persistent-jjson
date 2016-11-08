@@ -2,7 +2,8 @@ package com.petsistentbit.jjson;
 
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
+
 
 /**
  * @author Peter Muys

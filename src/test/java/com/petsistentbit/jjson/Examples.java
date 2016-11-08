@@ -8,7 +8,7 @@ import com.persistentbit.jjson.nodes.JJPrinter;
 import com.petsistentbit.jjson.examples.Address;
 import com.petsistentbit.jjson.examples.Person;
 import com.petsistentbit.jjson.examples.PersonName;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
