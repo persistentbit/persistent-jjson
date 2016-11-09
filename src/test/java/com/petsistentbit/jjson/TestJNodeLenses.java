@@ -11,7 +11,7 @@ import org.junit.Test;
  */
 public class TestJNodeLenses {
     @Test
-    void testJNodeUpdates() {
+    public void testJNodeUpdates() {
         JJMapper rw = new JJMapper();
         JJNode json = rw.write(new JJSubTest(0,"unknown")); //creates {"id":0,"name":"unknown"}
         JJNodeObject    root = json.asObject().get();
