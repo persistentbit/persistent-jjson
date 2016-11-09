@@ -1,9 +1,11 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.PByteList;
-import com.persistentbit.core.utils.ToDo;
+import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
+import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
+import com.persistentbit.jjson.mapping.description.JJTypeSignature;
 import com.persistentbit.jjson.mapping.impl.JJDescriber;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
 import com.persistentbit.jjson.nodes.JJNode;
@@ -23,7 +25,7 @@ public class JJPByteListReader implements JJObjectReader, JJDescriber{
 
 
 	@Override
-	public Object read(Type t, JJNode node, JJReader reader) {
+	public Object read(Type type, JJNode node, JJReader masterReader) {
 		if(node.getType() == JJNode.JType.jsonNull) {
 			return null;
 		}
@@ -35,10 +37,7 @@ public class JJPByteListReader implements JJObjectReader, JJDescriber{
 
 	@Override
 	public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
-
-		/*Class cls = ReflectionUtils.classFromType(type);
-		return new JJTypeDescription(new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonArray, JJDescriber
-			.getGenericsParams(type, masterDescriber)));*/
-		throw new ToDo();
+		return new JJTypeDescription(new JJTypeSignature(new JJClass(ReflectionUtils
+																		 .classFromType(type)), JJTypeSignature.JsonType.jsonString));
 	}
 }
