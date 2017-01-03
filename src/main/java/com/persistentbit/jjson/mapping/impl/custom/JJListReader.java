@@ -22,12 +22,13 @@ import java.util.function.Supplier;
  * @author Peter Muys
  * @since 23/10/2015
  */
+
 public class JJListReader implements JJObjectReader,JJDescriber
 {
 
-    private final Supplier<List> supplier;
+    private final Supplier<List<?>> supplier;
 
-    public JJListReader(Supplier<List> supplier) {
+    public JJListReader(Supplier<List<?>> supplier) {
         this.supplier = supplier;
     }
 
@@ -45,7 +46,7 @@ public class JJListReader implements JJObjectReader,JJDescriber
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
         JJNodeArray arr = node.asArray().get();
-        List result = new ArrayList();
+        List<Object> result = (List<Object>) supplier.get();
         for(JJNode i : arr){
             result.add(reader.read(i,cls,itemType));
         }

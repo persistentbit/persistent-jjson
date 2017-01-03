@@ -86,8 +86,8 @@ public class JJDefaultWriter implements JJWriter{
     }
 
     private class JJWriterWriter implements JJWriter{
-        private Set<Object> done = new HashSet<>();
-        private Map<CachedNode,JJNode> existing = new HashMap<>();
+        private final Set<Object> done = new HashSet<>();
+        private final Map<CachedNode,JJNode> existing = new HashMap<>();
 
 
 

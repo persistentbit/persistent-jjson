@@ -1,21 +1,21 @@
 package com.petsistentbit.jjson;
 
+import com.persistentbit.core.collections.PByteList;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
 import com.persistentbit.core.tuples.Tuple2;
-import com.persistentbit.core.utils.ImTools;
+import com.persistentbit.core.utils.BaseValueClass;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * User: petermuys
- * Date: 22/07/16
- * Time: 11:04
+ * @author Peter Muys
+ * @since 22/07/16
  */
-public class JJTest {
+public class JJTest extends BaseValueClass{
     public enum EnumTest{
         enum1,enum2, lastEnum
     }
@@ -35,9 +35,11 @@ public class JJTest {
     private final Map<String,String> map;
     private final EnumTest enumTest;
     private final Tuple2<Integer,Float> tuple;
+    private final PList<Byte> bytes;
+    private final PByteList byteList;
 
 
-    public JJTest(List<JJSubTest> subList, Boolean booleanValue, short shortValue, Integer intValue, Long longValue, Float floatValue, double doubleValue, Date dateValue,PList<String> pList,PMap<Integer,String> pMap,PSet<Double> pSet,Map<String,String> map,EnumTest enumTest,Tuple2<Integer,Float> tuple) {
+    public JJTest(List<JJSubTest> subList, Boolean booleanValue, short shortValue, Integer intValue, Long longValue, Float floatValue, double doubleValue, Date dateValue,PList<String> pList,PMap<Integer,String> pMap,PSet<Double> pSet,Map<String,String> map,EnumTest enumTest,Tuple2<Integer,Float> tuple, PList<Byte> bytes, PByteList byteList) {
         this.subList = subList;
         this.booleanValue = booleanValue;
         this.shortValue = shortValue;
@@ -52,15 +54,7 @@ public class JJTest {
         this.map = map;
         this.enumTest = enumTest;
         this.tuple = tuple;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return ImTools.get(JJTest.class).equalsAll(this,obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return ImTools.get(JJTest.class).hashCodeAll(this);
+        this.byteList = byteList;
+        this.bytes = bytes;
     }
 }

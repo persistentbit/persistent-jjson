@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  */
 public class JJPListReader  implements JJObjectReader,JJDescriber {
 
-    private Supplier<IPList> supplier;
+    private final Supplier<IPList> supplier;
 
     public JJPListReader(Supplier<IPList> supplier) {
         this.supplier = supplier;

@@ -99,6 +99,7 @@ public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
                     return new JJNodeObject(nm);
                 });
     }
+    @SuppressWarnings("unchecked")
     private static <C extends JJNode> C orNull(Class<C> cls, JJNode value){
         if(value == null || value instanceof JJNodeNull){
             return null;

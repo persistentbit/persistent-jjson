@@ -21,11 +21,11 @@ public class JJNodeBoolean implements JJNode
     /**
      * The One and Only True instance
      */
-    static public JJNodeBoolean True = new JJNodeBoolean(true);
+    static public final JJNodeBoolean True = new JJNodeBoolean(true);
     /**
      * The One and Only False instance
      */
-    static public JJNodeBoolean False = new JJNodeBoolean(false);
+    static public final JJNodeBoolean False = new JJNodeBoolean(false);
 
     /**
      * Get the JJNodeBoolean instance for the provided boolean

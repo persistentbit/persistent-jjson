@@ -87,6 +87,7 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
         s = s.withForClass(PMap.class,pmw).withForClass(POrderedMap.class,pmw);
 
         s = s.withAssignableTo(Throwable.class,new JJExceptionWriter());
+        s = s.withForClass(PByteList.class, new JJPByteListWriter());
 
         return s;
     }

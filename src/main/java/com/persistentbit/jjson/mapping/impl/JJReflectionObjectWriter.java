@@ -21,8 +21,8 @@ public class JJReflectionObjectWriter implements JJObjectWriter {
 
 
     private static class Getter {
-        public PropertyGetter getter;
-        public String jsonName;
+        public final PropertyGetter getter;
+        public final String jsonName;
         public Getter(PropertyGetter getter, String jsonName){
             this.getter = getter;
             this.jsonName = jsonName;
@@ -35,10 +35,9 @@ public class JJReflectionObjectWriter implements JJObjectWriter {
         }
     }
 
-    private final Class<?> cls;
-    private List<Getter> getters = new ArrayList<>();
+    private final List<Getter> getters = new ArrayList<>();
     public JJReflectionObjectWriter(Class<?> cls){
-        this.cls = cls;
+
         try{
             while(cls.equals(Object.class) == false){
                 for(Field f : cls.getDeclaredFields()){
@@ -86,7 +85,6 @@ public class JJReflectionObjectWriter implements JJObjectWriter {
                 throw new JJsonException("Error writing "+ g + " from " + value,e);
             }
         }
-        JJNodeObject n = new JJNodeObject(props);
-        return n;
+        return new JJNodeObject(props);
     }
 }

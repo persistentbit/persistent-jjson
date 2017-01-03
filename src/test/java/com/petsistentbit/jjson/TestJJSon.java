@@ -1,5 +1,6 @@
 package com.petsistentbit.jjson;
 
+import com.persistentbit.core.collections.PByteList;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
@@ -7,7 +8,7 @@ import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -35,8 +36,9 @@ public class TestJJSon {
                 PList.forString().plusAll("Hello","World","From","Peter"),
                 PMap.<Integer,String>empty().put(1,"Peter").put(2,"Muys"),
                 PSet.<Double>empty().plusAll(1.2,2.3,3.4),
-                PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map(), JJTest.EnumTest.enum2,new Tuple2<>(1234,567.8f)
-
+                PMap.<String,String>empty().put("prop1","value1").put("prop2","value2").map(), JJTest.EnumTest.enum2,new Tuple2<>(1234,567.8f),
+                PList.<Byte>empty().plus((byte)1).plus((byte)10).plus((byte)5).plus((byte)100),
+                PByteList.from(new byte[]{3,4,5,10,100 })
         );
         JJMapper rw = new JJMapper();
         JJNode node = rw.write(t1);

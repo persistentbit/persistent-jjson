@@ -107,8 +107,8 @@ public class JJMapper implements JJReader,JJWriter{
     public JJMapper withNextSupplier(Function<Class<?>,JJObjectReaderWriter>...next){
         JJMapper res = this;
         for(Function<Class<?>,JJObjectReaderWriter> i : next){
-            res = res.readerWithNextSupplier(c ->  i.apply(c));
-            res = res.writerWithNextSupplier(c -> i.apply(c));
+            res = res.readerWithNextSupplier(i::apply);
+            res = res.writerWithNextSupplier(i::apply);
         }
         return res;
 
@@ -117,8 +117,8 @@ public class JJMapper implements JJReader,JJWriter{
     public JJMapper withPrevSupplier(Function<Class<?>,JJObjectReaderWriter>...prev){
         JJMapper res = this;
         for(Function<Class<?>,JJObjectReaderWriter> i : prev){
-            res = res.readerWithPrevSupplier(c ->  i.apply(c));
-            res = res.writerWithPrevSupplier(c -> i.apply(c));
+            res = res.readerWithPrevSupplier(i::apply);
+            res = res.writerWithPrevSupplier(i::apply);
         }
         return res;
     }

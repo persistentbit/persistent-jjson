@@ -11,8 +11,8 @@ import java.io.*;
  */
 public class JJPrinter
 {
-    private Writer out;
-    private boolean pretty;
+    private final Writer out;
+    private final boolean pretty;
     private String indent = "";
     private boolean needIndent = true;
 

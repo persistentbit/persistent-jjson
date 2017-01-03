@@ -2,7 +2,8 @@ package com.petsistentbit.jjson;
 
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
+
 
 /**
  * @author Peter Muys
@@ -10,7 +11,7 @@ import org.testng.annotations.Test;
  */
 public class TestJNodeLenses {
     @Test
-    void testJNodeUpdates() {
+    public void testJNodeUpdates() {
         JJMapper rw = new JJMapper();
         JJNode json = rw.write(new JJSubTest(0,"unknown")); //creates {"id":0,"name":"unknown"}
         JJNodeObject    root = json.asObject().get();
