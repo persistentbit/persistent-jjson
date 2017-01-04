@@ -26,7 +26,7 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
         if(node.getType() == JJNode.JType.jsonNull){
             return null;
         }
-        String name = node.asString().get().getValue();
+        String name = node.asString().orElseThrow().getValue();
         Class cls = ReflectionUtils.classFromType(type);
         try {
             return cls.getDeclaredField(name).get(null);

@@ -48,7 +48,7 @@ public class JJPMapReader implements JJObjectReader, JJDescriber{
 		Type              valueType = typeArgs[1];
 		Class             clsKey    = ReflectionUtils.classFromType(keyType);
 		Class             clsValue  = ReflectionUtils.classFromType(valueType);
-		JJNodeArray       arr       = node.asArray().get();
+		JJNodeArray       arr       = node.asArray().orElseThrow();
 		return ipMapSupplier.get().plusAll(arr.pstream().map(n -> {
 			JJNodeArray entryArr = n.asArray().orElseThrow(() -> new RuntimeException("Expected an array"));
 			Object      key      = reader.read(entryArr.pstream().get(0), clsKey, keyType);

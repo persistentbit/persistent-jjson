@@ -94,8 +94,8 @@ public class JJSigning {
      */
     public Result<JJNode>    unsigned(JJNode signed){
         return Result.function(signed).code(log ->
-            Result.fromOpt(signed.asObject()).flatMap(obj -> {
-                String signedSecret= obj.getValue().get("signed").asString().get().getValue();
+            signed.asObject().flatMap(obj -> {
+                String signedSecret= obj.getValue().get("signed").asString().orElseThrow().getValue();
                 int i = signedSecret.indexOf('.');
                 String algorithm = signedSecret.substring(0,i);
                 String onlySignedSecret = signedSecret.substring(i+1);
@@ -146,7 +146,7 @@ public class JJSigning {
     static public void main(String...args){
         LogPrinter.consoleInColor().registerAsGlobalHandler().executeAndPrint(() -> {
             JJMapper mapper = new JJMapper();
-            JJNodeObject unsigned = mapper.write(new TestClass(1234,"userx")).asObject().get();
+            JJNodeObject unsigned = mapper.write(new TestClass(1234,"userx")).asObject().orElseThrow();
             System.out.println("Unsigned: " + JJPrinter.print(true,unsigned));
             JJSigning signing = new JJSigning("Dit is een test signing key","SHA-256");
             JJNode signed = signing.sign(unsigned).orElseThrow();
@@ -162,7 +162,7 @@ public class JJSigning {
             System.out.println("Verified from token: " + signing.unsignedFromString(token));
 
 
-            JJNode changed = signed.asObject().get().plus("data", mapper.write(new TestClass(1234,"usery")));
+            JJNode changed = signed.asObject().orElseThrow().plus("data", mapper.write(new TestClass(1234,"usery")));
 
             System.out.println("changed: " + JJPrinter.print(true,changed));
             System.out.println("VerifiedChanged: " + signing.unsigned(changed));

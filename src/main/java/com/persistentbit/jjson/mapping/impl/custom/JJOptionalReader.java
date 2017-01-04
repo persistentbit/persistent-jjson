@@ -35,7 +35,7 @@ public class JJOptionalReader implements JJObjectReader,JJDescriber {
         }
         ParameterizedType pt  = (ParameterizedType)type;
         Type itemType = pt.getActualTypeArguments()[0];
-        JJNodeObject obj = node.asObject().get();
+        JJNodeObject obj = node.asObject().orElseThrow();
         if(obj.get("optionalValue").isPresent()){
             return Optional.of(reader.read(obj.get("optionalValue").get(),ReflectionUtils.classFromType(itemType),itemType));
         }

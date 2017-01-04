@@ -1,8 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
 
-
-import java.util.Optional;
+import com.persistentbit.core.result.Result;
 
 /**
  * JJNode representing a boolean value
@@ -56,9 +55,9 @@ public class JJNodeBoolean implements JJNode
     }
 
     @Override
-    public Optional<JJNodeBoolean> asBoolean()
+    public Result<JJNodeBoolean> asBoolean()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
     @Override

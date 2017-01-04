@@ -14,7 +14,7 @@ public class TestJNodeLenses {
     public void testJNodeUpdates() {
         JJMapper rw = new JJMapper();
         JJNode json = rw.write(new JJSubTest(0,"unknown")); //creates {"id":0,"name":"unknown"}
-        JJNodeObject    root = json.asObject().get();
+        JJNodeObject    root = json.asObject().orElseThrow();
         System.out.println(JJPrinter.print(false,root));
 
         root = JJNodeObject.arrayLens("test").set(root,new JJNodeArray(new JJNodeString("item1"),new JJNodeString("item2")));
@@ -28,7 +28,7 @@ public class TestJNodeLenses {
         System.out.println(JJPrinter.print(false,obj)); //prints {"greeting":"hello","id":1234}
         System.out.println(JJPrinter.print(false,changed)); //prints {"greeting":"Good Morning","id":1234}
         assert obj != changed;  //obj and changed are different instances
-        assert obj.get("greeting").get().asString().get().getValue().equals("hello");
-        assert changed.get("greeting").get().asString().get().getValue().equals("Good Morning");
+        assert obj.get("greeting").get().asString().orElseThrow().getValue().equals("hello");
+        assert changed.get("greeting").get().asString().orElseThrow().getValue().equals("Good Morning");
     }
 }

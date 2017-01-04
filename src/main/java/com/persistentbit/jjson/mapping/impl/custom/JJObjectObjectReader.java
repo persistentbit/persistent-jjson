@@ -25,11 +25,11 @@ public class JJObjectObjectReader implements JJObjectReader
             return null;
         }
         if(node.asString().isPresent()){
-            return node.asString().get().getValue();
+            return node.asString().orElseThrow().getValue();
         }
 
-        JJNodeObject jobj = node.asObject().get();
-        String clsName = jobj.get("objectClass").get().asString().get().getValue();
+        JJNodeObject jobj = node.asObject().orElseThrow();
+        String clsName = jobj.get("objectClass").get().asString().orElseThrow().getValue();
         try
         {
             Class<?> cls = getClass().getClassLoader().loadClass(clsName);

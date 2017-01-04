@@ -37,7 +37,7 @@ public class Examples {
         JJNode rootNode = mapper.write(person);
 
         //cast  the general JJNode to a json object node
-        JJNodeObject personObject = rootNode.asObject().get();
+        JJNodeObject personObject = rootNode.asObject().orElseThrow();
 
         String jsonString = JJPrinter.print(true,personObject);
 

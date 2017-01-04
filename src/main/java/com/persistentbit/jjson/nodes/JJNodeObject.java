@@ -7,6 +7,7 @@ import com.persistentbit.core.collections.PStream;
 import com.persistentbit.core.collections.PStreamable;
 import com.persistentbit.core.lenses.Lens;
 import com.persistentbit.core.lenses.LensImpl;
+import com.persistentbit.core.result.Result;
 import com.persistentbit.core.tuples.Tuple2;
 
 import java.util.Objects;
@@ -60,9 +61,9 @@ public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
     }
 
     @Override
-    public Optional<JJNodeObject> asObject()
+    public Result<JJNodeObject> asObject()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
 

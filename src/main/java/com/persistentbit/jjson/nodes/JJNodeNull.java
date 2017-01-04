@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.nodes;
-import java.util.Optional;
+
+import com.persistentbit.core.result.Result;
 
 /**
  * A JJNode representing the null value
@@ -29,9 +30,9 @@ public class JJNodeNull implements JJNode
     }
 
     @Override
-    public Optional<JJNodeNull> asNull()
+    public Result<JJNodeNull> asNull()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
 

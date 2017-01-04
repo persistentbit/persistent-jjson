@@ -3,10 +3,10 @@ package com.persistentbit.jjson.nodes;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PStream;
 import com.persistentbit.core.collections.PStreamable;
+import com.persistentbit.core.result.Result;
 
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Represents a JJNode for an array.<br>
@@ -77,9 +77,9 @@ public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable<JJNode>
 
 
     @Override
-    public Optional<JJNodeArray> asArray()
+    public Result<JJNodeArray> asArray()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
     @Override

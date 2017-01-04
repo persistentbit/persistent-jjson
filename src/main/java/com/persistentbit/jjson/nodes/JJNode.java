@@ -1,6 +1,6 @@
 package com.persistentbit.jjson.nodes;
 
-import java.util.Optional;
+import com.persistentbit.core.result.Result;
 
 /**
  * JSON Node representation.<br>
@@ -30,37 +30,37 @@ public interface JJNode
      * Get this node typecasted to a JNodeString
      * @return Optional JNodeString
      */
-    default Optional<JJNodeString> asString() { return Optional.empty();}
+    default Result<JJNodeString> asString() { return Result.empty();}
 
     /**
      * Get this node typecasted to a JNodeBoolean
      * @return Optional JNodeBoolean
      */
-    default Optional<JJNodeBoolean> asBoolean() { return Optional.empty();}
+    default Result<JJNodeBoolean> asBoolean() { return Result.empty();}
 
     /**
      * Get this node typecasted to a JNodeNull
      * @return Optional JNodeNull
      */
-    default Optional<JJNodeNull> asNull() { return Optional.empty();}
+    default Result<JJNodeNull> asNull() { return Result.empty();}
 
     /**
      * Get this node typecasted to a JNodeNumber
      * @return Optional JNodeNumber
      */
-    default Optional<JJNodeNumber> asNumber() { return Optional.empty();}
+    default Result<JJNodeNumber> asNumber() { return Result.empty();}
 
     /**
      * Get this node typecasted to a JJNodeObject
      * @return Optional JJNodeObject
      */
-    default Optional<JJNodeObject> asObject() { return Optional.empty();}
+    default Result<JJNodeObject> asObject() { return Result.empty();}
 
     /**
      * Get this node typecasted to a JJNodeArray
      * @return Optional JJNodeArray
      */
-    default Optional<JJNodeArray> asArray() { return Optional.empty();}
+    default Result<JJNodeArray> asArray() { return Result.empty();}
 
 
 }

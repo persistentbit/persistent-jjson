@@ -31,7 +31,7 @@ public class JJDateReader implements JJObjectReader,JJDescriber {
         }
 
         Class<?> cls = ReflectionUtils.classFromType(type);
-        String str = node.asString().get().getValue();
+        String str = node.asString().orElseThrow().getValue();
         Instant in;
 
         if(cls.equals(ZonedDateTime.class)){

@@ -3,8 +3,7 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.lenses.Lens;
 import com.persistentbit.core.lenses.LensImpl;
-
-import java.util.Optional;
+import com.persistentbit.core.result.Result;
 
 /**
  * @author Peter Muys
@@ -33,9 +32,9 @@ public class JJNodeString implements JJNode
     }
 
     @Override
-    public Optional<JJNodeString> asString()
+    public Result<JJNodeString> asString()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
     static public Lens<JJNodeString,String> valueLens = new LensImpl<>((s)-> s.getValue(), (p, c)-> new JJNodeString(c));

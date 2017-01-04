@@ -14,7 +14,6 @@ import com.persistentbit.jjson.nodes.JJNodeArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -45,7 +44,7 @@ public class JJListReader implements JJObjectReader,JJDescriber
         ParameterizedType pt  = (ParameterizedType)t;
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
-        JJNodeArray arr = node.asArray().get();
+        JJNodeArray arr = node.asArray().orElseThrow();
         List<Object> result = (List<Object>) supplier.get();
         for(JJNode i : arr){
             result.add(reader.read(i,cls,itemType));

@@ -43,7 +43,7 @@ public class JJSetReader  implements JJObjectReader,JJDescriber
         ParameterizedType pt  = (ParameterizedType)t;
         Type itemType = pt.getActualTypeArguments()[0];
         Class cls = ReflectionUtils.classFromType(itemType);
-        JJNodeArray arr = node.asArray().get();
+        JJNodeArray arr = node.asArray().orElseThrow();
         Set result = supplier.get();
         for(JJNode i : arr){
             result.add(reader.read(i,cls,itemType));

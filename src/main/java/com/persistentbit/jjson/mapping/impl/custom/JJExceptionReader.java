@@ -21,9 +21,9 @@ public class JJExceptionReader implements JJObjectReader
     public Object read(Type type, JJNode node, JJReader reader)
     {
         if(node.getType() ==JJNode.JType.jsonNull ){ return null; }
-        JJNodeObject obj = node.asObject().get();
-        String className = obj.get("exceptionType").get().asString().get().getValue();
-        String message = obj.get("message").get().asString().get().getValue();
+        JJNodeObject obj = node.asObject().orElseThrow();
+        String className = obj.get("exceptionType").get().asString().orElseThrow().getValue();
+        String message = obj.get("message").get().asString().orElseThrow().getValue();
         try{
             return getClass().getClassLoader().loadClass(className).getDeclaredConstructor(String.class).newInstance(message);
         }catch(Exception e){

@@ -1,6 +1,6 @@
 package com.persistentbit.jjson.nodes;
 
-import java.util.Optional;
+import com.persistentbit.core.result.Result;
 
 /**
  * @author Peter Muys
@@ -29,9 +29,9 @@ public class JJNodeNumber implements JJNode
     }
 
     @Override
-    public Optional<JJNodeNumber> asNumber()
+    public Result<JJNodeNumber> asNumber()
     {
-        return Optional.of(this);
+        return Result.success(this);
     }
 
     @Override
