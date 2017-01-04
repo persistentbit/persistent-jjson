@@ -1,13 +1,17 @@
 package com.persistentbit.jjson.security;
 
+import com.persistentbit.core.Nothing;
+import com.persistentbit.core.logging.LogPrinter;
+import com.persistentbit.core.result.Result;
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.*;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Objects;
-import java.util.Optional;
 
 import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
 import static javax.xml.bind.DatatypeConverter.printBase64Binary;
@@ -56,10 +60,15 @@ public class JJSigning {
      * @param unsigned The JJNode to sign
      * @return A new JJNodeObject with the data and the hash code
      */
-    public JJNode  sign(JJNode unsigned){
-        String str = JJPrinter.print(false,unsigned)+"."+new String(secret);
-        String signed = hashAlgorithm+"."+sign(str,hashAlgorithm);
-        return new JJNodeObject().plus("data",unsigned).plus("signed",new JJNodeString(signed));
+    public Result<JJNode> sign(JJNode unsigned){
+        return Result.function(unsigned).code(log -> {
+            String str = JJPrinter.print(false,unsigned)+"."+new String(secret);
+            return sign(str,hashAlgorithm)
+                .map(signed -> hashAlgorithm+"."+signed)
+                .map(signed -> new JJNodeObject().plus("data",unsigned).plus("signed",new JJNodeString(signed)));
+
+        });
+
     }
 
     /**
@@ -69,12 +78,12 @@ public class JJSigning {
      * @param unsigned The unsinged JJNode
      * @return Base64 encode string.
      */
-    public String signAsString(JJNode unsigned){
-        try {
-            return printBase64Binary(JJPrinter.print(false, sign(unsigned)).getBytes("UTF-8"));
-        }catch (Exception e){
-            throw new JJsonException(e);
-        }
+    public Result<String> signAsString(JJNode unsigned){
+        return Result.function(unsigned).code(log ->
+            sign(unsigned)
+                .map(us -> JJPrinter.print(false,us).getBytes(Charset.forName("UTF-8")))
+                .map(DatatypeConverter::printBase64Binary)
+        );
     }
 
     /**
@@ -83,18 +92,21 @@ public class JJSigning {
      * @return empty if verification failed, or unsigned version of the JJNode
      * @see #sign(JJNode)
      */
-    public Optional<JJNode>    unsigned(JJNode signed){
-        JJNodeObject obj = signed.asObject().get();
-        String signedSecret= obj.getValue().get("signed").asString().get().getValue();
-        int i = signedSecret.indexOf('.');
-        String algorithm = signedSecret.substring(0,i);
-        signedSecret = signedSecret.substring(i+1);
-        String str = JJPrinter.print(false,obj.getValue().get("data"))+"."+new String(secret);
-        String sstr = sign(str,algorithm);
-        if(sstr.equals(signedSecret)){
-            return Optional.of(obj.getValue().get("data"));
-        }
-        return Optional.empty();
+    public Result<JJNode>    unsigned(JJNode signed){
+        return Result.function(signed).code(log ->
+            Result.fromOpt(signed.asObject()).flatMap(obj -> {
+                String signedSecret= obj.getValue().get("signed").asString().get().getValue();
+                int i = signedSecret.indexOf('.');
+                String algorithm = signedSecret.substring(0,i);
+                String onlySignedSecret = signedSecret.substring(i+1);
+                log.info("onlySignedSecret = " + onlySignedSecret);
+                String str = JJPrinter.print(false,obj.getValue().get("data"))+"."+new String(secret);
+                return sign(str,algorithm)
+                    .verify(sstr -> sstr.equals(onlySignedSecret))
+                    .map(sstr -> obj.getValue().get("data"));
+
+			})
+        );
     }
     /**
      * Verify and return the Unsinged JJNode object from a signed String
@@ -102,24 +114,22 @@ public class JJSigning {
      * @return empty if verification failed, or unsigned version of the JJNode
      * @see #signAsString(JJNode)
      */
-    public Optional<JJNode>    unsignedFromString(String str){
+    public Result<JJNode>    unsignedFromString(String str){
         try {
-            JJNode node = JJParser.parse(new String(parseBase64Binary(str),"UTF-8"));
+            JJNode node = JJParser.parse(new String(parseBase64Binary(str),"UTF-8")).orElseThrow();
             return unsigned(node);
         } catch (UnsupportedEncodingException e) {
             throw new JJsonException(e);
         }
     }
 
-    static public String sign(String data,String algorithm){
-        try{
+    static public Result<String> sign(String data,String algorithm){
+        return Result.function(data,algorithm).code(log ->{
             MessageDigest md = MessageDigest.getInstance(algorithm);
             md.update(data.getBytes("UTF-8"));
             byte[] mdbytes = md.digest();
-            return printBase64Binary(mdbytes);
-        }catch(Exception e){
-            throw new JJsonException(e);
-        }
+            return Result.success(printBase64Binary(mdbytes));
+        });
     }
 
 
@@ -134,34 +144,38 @@ public class JJSigning {
     }
 
     static public void main(String...args){
-        JJMapper mapper = new JJMapper();
-        JJNodeObject unsigned = mapper.write(new TestClass(1234,"userx")).asObject().get();
-        System.out.println("Unsigned: " + JJPrinter.print(true,unsigned));
-        JJSigning signing = new JJSigning("Dit is een test signing key","SHA-256");
-        JJNode signed = signing.sign(unsigned);
-        String token = signing.signAsString(unsigned);
+        LogPrinter.consoleInColor().registerAsGlobalHandler().executeAndPrint(() -> {
+            JJMapper mapper = new JJMapper();
+            JJNodeObject unsigned = mapper.write(new TestClass(1234,"userx")).asObject().get();
+            System.out.println("Unsigned: " + JJPrinter.print(true,unsigned));
+            JJSigning signing = new JJSigning("Dit is een test signing key","SHA-256");
+            JJNode signed = signing.sign(unsigned).orElseThrow();
+            String token = signing.signAsString(unsigned).orElseThrow();
 
 
 
-        System.out.println("Signed: " + JJPrinter.print(true,signed));
+            System.out.println("Signed: " + JJPrinter.print(true,signed));
 
-        System.out.println("SignedAsString: " + token);
+            System.out.println("SignedAsString: " + token);
 
-        System.out.println("Verified: " + signing.unsigned(signed));
-        System.out.println("Verified from token: " + signing.unsignedFromString(token));
+            System.out.println("Verified: " + signing.unsigned(signed));
+            System.out.println("Verified from token: " + signing.unsignedFromString(token));
 
 
-        JJNode changed = signed.asObject().get().plus("data", mapper.write(new TestClass(1234,"usery")));
+            JJNode changed = signed.asObject().get().plus("data", mapper.write(new TestClass(1234,"usery")));
 
-        System.out.println("changed: " + JJPrinter.print(true,changed));
-        System.out.println("VerifiedChanged: " + signing.unsigned(changed));
-        long start = System.currentTimeMillis();
-        for(int t=0; t<100000;t++){
-            signing.unsignedFromString(token).get();
-        }
-        long time = System.currentTimeMillis()-start;
+            System.out.println("changed: " + JJPrinter.print(true,changed));
+            System.out.println("VerifiedChanged: " + signing.unsigned(changed));
+            long start = System.currentTimeMillis();
+            for(int t=0; t<100000;t++){
+                signing.unsignedFromString(token).orElseThrow();
+            }
+            long time = System.currentTimeMillis()-start;
 
-        System.out.println("Time:" + (time));
+            System.out.println("Time:" + (time));
+            return Nothing.inst;
+        });
+
     }
 
 }

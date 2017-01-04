@@ -1,6 +1,9 @@
 package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.collections.POrderedMap;
+import com.persistentbit.core.logging.Log;
+import com.persistentbit.core.result.Result;
+import com.persistentbit.core.utils.IO;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -27,17 +30,20 @@ public final class JJParser
 
 
 
-    private JJNode parse() {
-        skipSpace();
-        switch(current()){
-            case '{':   return parseObject();
-            case '[':   return parseArray();
-            case '\"':  return parseString();
-            case 't': return parseTrue();
-            case 'f': return parseFalse();
-            case 'n': return parseNull();
-            default:    return parseNumber();
-        }
+    private Result<JJNode> parse() {
+        return Result.function().code(log -> {
+            skipSpace();
+            switch(current()){
+                case '{':   return Result.success(parseObject());
+                case '[':   return Result.success(parseArray());
+                case '\"':  return Result.success(parseString());
+                case 't': return Result.success(parseTrue());
+                case 'f': return Result.success(parseFalse());
+                case 'n': return Result.success(parseNull());
+                default:    return Result.success(parseNumber());
+            }
+        });
+
     }
 
 
@@ -46,12 +52,10 @@ public final class JJParser
      * @param file The file to read
      * @return The {@link JJNode} representing the json from the file
      */
-    static public JJNode parse(File file){
-        try(FileReader fr = new FileReader(file)){
-            return parse(fr);
-        }catch (IOException e){
-            throw new JJParserException(1,1,"IO exception",e);
-        }
+    static public Result<JJNode> parse(File file){
+        return IO.fileToReader(file)
+            .flatMap(fr -> parse(fr));
+
     }
 
     /**
@@ -60,7 +64,7 @@ public final class JJParser
      * @param r The {@link Reader}
      * @return The {@link JJNode} read from the json stream;
      */
-    static public JJNode parse(Reader r){
+    static public Result<JJNode> parse(Reader r){
         return new JJParser(r).parse();
     }
     /**
@@ -68,51 +72,57 @@ public final class JJParser
      * @param str The json string to read
      * @return The {@link JJNode} read from the json stream;
      */
-    static public JJNode parse(String str){
+    static public Result<JJNode> parse(String str){
         return new JJParser(new StringReader(str)).parse();
     }
 
 
 
     private JJNodeObject parseObject(){
-        POrderedMap<String,JJNode> elements = POrderedMap.empty();
-        next(); //skip {
-        skipSpace();
-        while( current() != '}')
-        {
+        return Log.function().code(log -> {
+            POrderedMap<String,JJNode> elements = POrderedMap.empty();
+            next(); //skip {
             skipSpace();
-            String name = readString();
-            skipSpace();
-            if (current() != ':')
+            while( current() != '}')
             {
-                throw new JJParserException(row,col,"Expected ':' while parsing json object property '" + name + "'");
+                skipSpace();
+                String name = readString();
+                skipSpace();
+                if (current() != ':')
+                {
+                    throw new JJParserException(row,col,"Expected ':' while parsing json object property '" + name + "'");
+                }
+                next();//skip ":"
+                elements = elements.put(name,parse().orElseThrow());
+                skipSpace();
+                if(current() == ','){
+                    next();//skipt ,
+                }
             }
-            next();//skip ":"
-            elements = elements.put(name,parse());
-            skipSpace();
-            if(current() == ','){
-                next();//skipt ,
-            }
-        }
-        next(); //Skip }
-        return new JJNodeObject(elements);
+            next(); //Skip }
+            return new JJNodeObject(elements);
+        });
+
     }
 
 
     private JJNodeArray parseArray() {
-        List<JJNode> elements = new ArrayList<>();
-        next(); //skip [
-        skipSpace();
-        while(current() != ']'){
-            elements.add(parse());
+        return Log.function().code(log -> {
+            List<JJNode> elements = new ArrayList<>();
+            next(); //skip [
             skipSpace();
-            if(current() == ','){
-                next(); //skip ,
+            while(current() != ']'){
+                elements.add(parse().orElseThrow());
+                skipSpace();
+                if(current() == ','){
+                    next(); //skip ,
+                }
+                skipSpace();
             }
-            skipSpace();
-        }
-        next(); //skip ']'
-        return new JJNodeArray(elements);
+            next(); //skip ']'
+            return new JJNodeArray(elements);
+        });
+
     }
 
     private JJNodeString parseString() {

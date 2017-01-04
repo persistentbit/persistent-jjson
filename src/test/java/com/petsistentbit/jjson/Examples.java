@@ -43,7 +43,7 @@ public class Examples {
 
         System.out.println(jsonString);
 
-        JJNode fromJsonString = JJParser.parse(jsonString);
+        JJNode fromJsonString = JJParser.parse(jsonString).orElseThrow();
 
         Person personFromJSon = mapper.read(fromJsonString,Person.class);
 
