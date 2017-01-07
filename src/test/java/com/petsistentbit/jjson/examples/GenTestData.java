@@ -1,4 +1,4 @@
-package com.petsistentbit.jjson;
+package com.petsistentbit.jjson.examples;
 
 import com.persistentbit.core.tuples.Tuple2;
 
@@ -7,17 +7,20 @@ import com.persistentbit.core.tuples.Tuple2;
  * @since 31/08/2016
  */
 @SuppressWarnings("FieldCanBeLocal")
-class GenTest<A,B> {
-    private final Tuple2<A,String> tupleAString;
+class GenTestData<A, B>{
+
+	private final Tuple2<A,String> tupleAString;
     private final Tuple2<B,Integer> tupleBInteger;
     private final Tuple2<Float,Double> tupleFloatDouble;
 
-    public GenTest() {
-        this(null,null,null);
+	public GenTestData() {
+		this(null,null,null);
     }
 
-    public GenTest(Tuple2<A, String> tupleAString, Tuple2<B, Integer> tupleBInteger,Tuple2<Float,Double> tupleFloatDouble) {
-        this.tupleAString = tupleAString;
+	public GenTestData(Tuple2<A, String> tupleAString, Tuple2<B, Integer> tupleBInteger,
+					   Tuple2<Float, Double> tupleFloatDouble
+	) {
+		this.tupleAString = tupleAString;
         this.tupleBInteger = tupleBInteger;
         this.tupleFloatDouble = tupleFloatDouble;
     }

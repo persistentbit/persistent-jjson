@@ -48,14 +48,13 @@ public class TestJJSigning{
 		JJSigning signing = new JJSigning("Dit is een test signing key", "SHA-256");
 		JJNodeObject signed = signing.sign(unsigned).orElseThrow().asObject().orElseThrow();
 		JJNodeString sign = signed.get("signed").get().asString().orElseThrow();
-		JJNodeObject signedToUnsigned = new JJNodeObject(
-			signed.getValue().removeKey("signed")
-		);
+		JJNodeObject signedToUnsigned = signed.get("data")
+			.get().asObject().orElseThrow();
 		tr.isEquals(unsigned, signedToUnsigned);
-		tr.isEquals(signing.unsigned(unsigned),unsigned);
+		tr.isEquals(signing.unsigned(signed).orElseThrow(), unsigned);
 
 		String unsingedStr = signing.signAsString(unsigned).orElseThrow();
-		tr.isEquals(signing.unsignedFromString(unsingedStr),unsigned);
+		tr.isEquals(signing.unsignedFromString(unsingedStr).orElseThrow(), unsigned);
 		return signed;
 	}
 

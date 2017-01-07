@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.result.Result;
+import com.persistentbit.core.utils.NumberUtils;
 
 /**
  * @author Peter Muys
@@ -40,8 +41,7 @@ public class JJNodeNumber implements JJNode
         if (o == null || getClass() != o.getClass()) return false;
 
         JJNodeNumber that = (JJNodeNumber) o;
-
-        return value.equals(that.value);
+		return NumberUtils.numberComparator.compare(value, that.value) == 0;
 
     }
 
