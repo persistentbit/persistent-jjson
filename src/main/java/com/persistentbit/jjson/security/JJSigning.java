@@ -1,9 +1,6 @@
 package com.persistentbit.jjson.security;
 
-import com.persistentbit.core.Nothing;
-import com.persistentbit.core.logging.LogPrinter;
 import com.persistentbit.core.result.Result;
-import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.*;
 
@@ -133,49 +130,6 @@ public class JJSigning {
     }
 
 
-    static public class TestClass{
-        private final int id;
-        private final String userName;
 
-        public TestClass(int id, String userName) {
-            this.id = id;
-            this.userName = userName;
-        }
-    }
-
-    static public void main(String...args){
-        LogPrinter.consoleInColor().registerAsGlobalHandler().executeAndPrint(() -> {
-            JJMapper mapper = new JJMapper();
-            JJNodeObject unsigned = mapper.write(new TestClass(1234,"userx")).asObject().orElseThrow();
-            System.out.println("Unsigned: " + JJPrinter.print(true,unsigned));
-            JJSigning signing = new JJSigning("Dit is een test signing key","SHA-256");
-            JJNode signed = signing.sign(unsigned).orElseThrow();
-            String token = signing.signAsString(unsigned).orElseThrow();
-
-
-
-            System.out.println("Signed: " + JJPrinter.print(true,signed));
-
-            System.out.println("SignedAsString: " + token);
-
-            System.out.println("Verified: " + signing.unsigned(signed));
-            System.out.println("Verified from token: " + signing.unsignedFromString(token));
-
-
-            JJNode changed = signed.asObject().orElseThrow().plus("data", mapper.write(new TestClass(1234,"usery")));
-
-            System.out.println("changed: " + JJPrinter.print(true,changed));
-            System.out.println("VerifiedChanged: " + signing.unsigned(changed));
-            long start = System.currentTimeMillis();
-            for(int t=0; t<100000;t++){
-                signing.unsignedFromString(token).orElseThrow();
-            }
-            long time = System.currentTimeMillis()-start;
-
-            System.out.println("Time:" + (time));
-            return Nothing.inst;
-        });
-
-    }
 
 }

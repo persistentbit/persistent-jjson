@@ -8,7 +8,6 @@ import com.persistentbit.core.tuples.Tuple2;
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.JJNode;
 import com.persistentbit.jjson.nodes.JJPrinter;
-import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -21,7 +20,7 @@ import java.util.Date;
 
 public class TestJJSon {
 
-    @Test
+
     public void test1() {
 
         JJTest t1 = new JJTest(

@@ -5,8 +5,12 @@ import com.persistentbit.core.logging.Log;
 import com.persistentbit.core.result.Result;
 import com.persistentbit.core.utils.IO;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +56,8 @@ public final class JJParser
      * @param file The file to read
      * @return The {@link JJNode} representing the json from the file
      */
-    static public Result<JJNode> parse(File file){
-        return IO.fileToReader(file)
+    static public Result<JJNode> parse(File file, Charset charset){
+        return IO.fileToReader(file,charset)
             .flatMap(fr -> parse(fr));
 
     }

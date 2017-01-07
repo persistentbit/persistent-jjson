@@ -2,7 +2,6 @@ package com.petsistentbit.jjson;
 
 import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.nodes.*;
-import org.junit.Test;
 
 
 /**
@@ -10,7 +9,7 @@ import org.junit.Test;
  * @since 29/08/2016
  */
 public class TestJNodeLenses {
-    @Test
+
     public void testJNodeUpdates() {
         JJMapper rw = new JJMapper();
         JJNode json = rw.write(new JJSubTest(0,"unknown")); //creates {"id":0,"name":"unknown"}

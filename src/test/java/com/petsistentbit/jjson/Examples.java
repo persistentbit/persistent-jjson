@@ -8,7 +8,6 @@ import com.persistentbit.jjson.nodes.JJPrinter;
 import com.petsistentbit.jjson.examples.Address;
 import com.petsistentbit.jjson.examples.Person;
 import com.petsistentbit.jjson.examples.PersonName;
-import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class Examples {
 
 
-    @Test
+
     public void mapper() {
         //create a default mapper
         JJMapper    mapper = new JJMapper();

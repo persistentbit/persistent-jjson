@@ -4,7 +4,6 @@ import com.persistentbit.jjson.mapping.JJMapper;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.nodes.JJPrinter;
 import com.petsistentbit.jjson.examples.GenericsTest;
-import org.junit.Test;
 
 
 /**
@@ -12,7 +11,7 @@ import org.junit.Test;
  * @since 31/08/2016
  */
 public class TestJJDescribe {
-    @Test
+
     public void test1() {
         JJMapper m = new JJMapper();
         JJTypeDescription td = m.describe(JJTest.class);
@@ -23,7 +22,7 @@ public class TestJJDescribe {
         System.out.println(JJPrinter.print(true,m.write(m.describe(GenTest.class))));
     }
 
-    @Test
+
     public void testGenerics() {
         JJMapper m = new JJMapper();
         JJTypeDescription td = m.describe(GenericsTest.class);
