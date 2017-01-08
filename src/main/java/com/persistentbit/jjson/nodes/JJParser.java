@@ -54,6 +54,7 @@ public final class JJParser
     /**
      * Read and parse json from the provided file
      * @param file The file to read
+     * @param charset the Character Encoding to use
      * @return The {@link JJNode} representing the json from the file
      */
     static public Result<JJNode> parse(File file, Charset charset){
