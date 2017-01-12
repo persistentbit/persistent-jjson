@@ -52,7 +52,7 @@ public class TestJJSon {
 
 
 	public void testAll() {
-		TestRunner.runAndPrint(TestJJSon.class);
+		TestRunner.runAndPrint(JJSonTestUtils.testPrinter, TestJJSon.class);
 	}
 
 	public static void main(String[] args) {

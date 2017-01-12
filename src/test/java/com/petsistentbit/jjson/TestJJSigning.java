@@ -60,7 +60,7 @@ public class TestJJSigning{
 
 
 	public void testAll() {
-		TestRunner.runAndPrint(TestJJSigning.class);
+		TestRunner.runAndPrint(JJSonTestUtils.testPrinter, TestJJSigning.class);
 	}
 
 
