@@ -4,6 +4,10 @@ import com.persistentbit.core.collections.PByteList;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
+import com.persistentbit.core.logging.LogMessageLevel;
+import com.persistentbit.core.logging.entries.LogContext;
+import com.persistentbit.core.logging.entries.LogEntryMessage;
+import com.persistentbit.core.result.Result;
 import com.persistentbit.core.testing.TestCase;
 import com.persistentbit.core.testing.TestRunner;
 import com.persistentbit.core.tuples.Tuple2;
@@ -38,7 +42,11 @@ public class TestJJSon {
 			PMap.<String, String>empty().put("prop1", "value1").put("prop2", "value2")
 				.map(), JJTest.EnumTest.enum2, new Tuple2<>(1234, 567.8f),
 			PList.<Byte>empty().plus((byte) 1).plus((byte) 10).plus((byte) 5).plus((byte) 100),
-			PByteList.from(new byte[]{3, 4, 5, 10, 100})
+			PByteList.from(new byte[]{3, 4, 5, 10, 100}),
+			Result.failure("This is a failure"),
+			Result.success(1234).mapLog(l -> l.append(LogEntryMessage
+														  .of(LogMessageLevel.important, new LogContext("file", "class", "method", 1234), "Hallo"))),
+			Result.empty("This should be an empty result")
 		);
         JJMapper rw = new JJMapper();
         JJNode node = rw.write(t1);

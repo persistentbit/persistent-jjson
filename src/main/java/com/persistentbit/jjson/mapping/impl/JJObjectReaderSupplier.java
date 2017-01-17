@@ -81,7 +81,7 @@ public class JJObjectReaderSupplier implements Function<Class<?>, JJObjectReader
 		s = s.withForClass(PList.class, new JJPListReader(PList::empty));
 		s = s.withForClass(PMap.class, new JJPMapReader(PMap::empty));
 		s = s.withForClass(POrderedMap.class, new JJPMapReader(POrderedMap::empty));
-		s = s.withAssignableTo(Exception.class, new JJExceptionReader());
+		s = s.withAssignableTo(Throwable.class, new JJExceptionReader());
 		s = s.withAssignableTo(Enum.class, new JJEnumReader());
 		s = s.withAssignableTo(List.class, new JJListReader(ArrayList::new));
 		s = s.withForClass(LogEntry.class, new JJLogEntryReader());

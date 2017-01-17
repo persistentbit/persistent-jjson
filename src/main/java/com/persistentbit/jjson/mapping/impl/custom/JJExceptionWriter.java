@@ -21,7 +21,7 @@ public class JJExceptionWriter implements JJObjectWriter
         if(value == null){
             return JJNodeNull.Null;
         }
-        Exception exception = (Exception) value;
+        Throwable exception = (Throwable) value;
         JJNodeObject result = new JJNodeObject()
                 .plus("exceptionType",new JJNodeString(value.getClass().getName()))
                 .plus("message",new JJNodeString(exception.getMessage()));
