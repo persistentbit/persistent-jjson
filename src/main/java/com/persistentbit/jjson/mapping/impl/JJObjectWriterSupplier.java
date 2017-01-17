@@ -2,6 +2,8 @@ package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.*;
+import com.persistentbit.core.logging.entries.*;
+import com.persistentbit.core.result.Result;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.lang.reflect.Field;
@@ -88,7 +90,12 @@ public class JJObjectWriterSupplier implements Function<Class<?>,JJObjectWriter>
 
         s = s.withAssignableTo(Throwable.class,new JJExceptionWriter());
         s = s.withForClass(PByteList.class, new JJPByteListWriter());
-
+        s = s.withForClass(LogEntryEmpty.class, new JJLogEntryWriter(LogEntryEmpty.class));
+        s = s.withForClass(LogEntryFunction.class, new JJLogEntryWriter(LogEntryFunction.class));
+        s = s.withForClass(LogEntryException.class, new JJLogEntryWriter(LogEntryException.class));
+        s = s.withForClass(LogEntryMessage.class, new JJLogEntryWriter(LogEntryMessage.class));
+        s = s.withForClass(LogEntryGroup.class, new JJLogEntryWriter(LogEntryGroup.class));
+        s = s.withAssignableTo(Result.class, new JJResultReaderWriter());
         return s;
     }
 

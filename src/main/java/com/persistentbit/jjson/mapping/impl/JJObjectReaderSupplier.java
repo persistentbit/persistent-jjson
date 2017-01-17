@@ -1,6 +1,8 @@
 package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.collections.*;
+import com.persistentbit.core.logging.entries.LogEntry;
+import com.persistentbit.core.result.Result;
 import com.persistentbit.jjson.mapping.impl.custom.*;
 
 import java.lang.reflect.Field;
@@ -82,6 +84,8 @@ public class JJObjectReaderSupplier implements Function<Class<?>, JJObjectReader
 		s = s.withAssignableTo(Exception.class, new JJExceptionReader());
 		s = s.withAssignableTo(Enum.class, new JJEnumReader());
 		s = s.withAssignableTo(List.class, new JJListReader(ArrayList::new));
+		s = s.withForClass(LogEntry.class, new JJLogEntryReader());
+		s = s.withAssignableTo(Result.class, new JJResultReaderWriter());
 
 		return s;
 	}
