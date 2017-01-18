@@ -1,17 +1,20 @@
 package com.petsistentbit.jjson;
 
 import com.persistentbit.core.ModuleCore;
-import com.persistentbit.core.logging.printing.LogPrinter;
+import com.persistentbit.core.logging.printing.LogFormatter;
+import com.persistentbit.core.logging.printing.LogPrint;
+import com.persistentbit.core.logging.printing.LogPrintStream;
 
 /**
- * TODOC
+ * Logging and other utils for testing
  *
  * @author petermuys
  * @since 12/01/17
  */
 public class JJSonTestUtils{
 
-	static public LogPrinter testPrinter = ModuleCore.createLogPrinter(true);
+	public static LogFormatter testLogFormatter = ModuleCore.createLogFormatter(true);
+	public static LogPrint     testLogPrint     = LogPrintStream.sysOut(testLogFormatter);
 
 
 }

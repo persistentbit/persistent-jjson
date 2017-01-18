@@ -34,7 +34,7 @@ public class TestJNodeLenses {
 	});
 
 	public void testAll() {
-		TestRunner.runAndPrint(JJSonTestUtils.testPrinter, TestJNodeLenses.class);
+		TestRunner.runAndPrint(JJSonTestUtils.testLogPrint, TestJNodeLenses.class);
 	}
 
 	public static void main(String[] args) {
