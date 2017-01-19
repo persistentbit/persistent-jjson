@@ -1,27 +1,22 @@
 package com.persistentbit.jjson.utils;
 
-import com.persistentbit.jjson.mapping.JJReader;
-import com.persistentbit.jjson.mapping.impl.JJObjectReader;
-import com.persistentbit.jjson.mapping.impl.JJsonException;
-import com.persistentbit.jjson.nodes.JJNode;
-import com.persistentbit.jjson.nodes.JJNodeObject;
-
-import java.lang.reflect.Type;
+import com.persistentbit.core.result.Result;
 
 /**
  * @author Peter Muys
  * @since 1/09/2016
  */
 public class ObjectWithTypeName {
-    private final String typeName;
-    private final Object value;
 
-    public ObjectWithTypeName(Object value){
+    private final String         typeName;
+    private final Result<Object> value;
+
+    public ObjectWithTypeName(Result<Object> value) {
         this.typeName = value == null ? null: value.getClass().getName();
         this.value = value;
     }
 
-    public ObjectWithTypeName(String typeName, Object value) {
+    public ObjectWithTypeName(String typeName, Result<Object> value) {
         this.typeName = typeName;
         this.value = value;
     }
@@ -30,10 +25,10 @@ public class ObjectWithTypeName {
         return typeName;
     }
 
-    public Object getValue() {
+    public Result<Object> getValue() {
         return value;
     }
-
+/*
     static public JJObjectReader jsonReader = new JJObjectReader() {
         @Override
         public Object read(Type type, JJNode node, JJReader masterReader) {
@@ -48,5 +43,5 @@ public class ObjectWithTypeName {
                 throw new JJsonException("can't find class '" + tn + "'" ,e);
             }
         }
-    };
+    };*/
 }
