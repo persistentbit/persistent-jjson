@@ -2,6 +2,8 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.result.Result;
 
+import java.util.function.Function;
+
 /**
  * JSON Node representation.<br>
  * A json file can be parsed and translated to a JJNode by using {@link JJParser}.<br>
@@ -30,7 +32,9 @@ public interface JJNode
      * Get this node typecasted to a JNodeString
      * @return Optional JNodeString
      */
-    default Result<JJNodeString> asString() { return Result.empty();}
+    default Result<JJNodeString> asString() {
+        return Result.empty();
+    }
 
     /**
      * Get this node typecasted to a JNodeBoolean
@@ -62,5 +66,14 @@ public interface JJNode
      */
     default Result<JJNodeArray> asArray() { return Result.empty();}
 
+
+    <T> T match(
+        Function<JJNodeArray, T> anArray,
+        Function<JJNodeBoolean, T> aBoolean,
+        Function<JJNodeNull, T> aNull,
+        Function<JJNodeNumber, T> aNumber,
+        Function<JJNodeObject, T> anObject,
+        Function<JJNodeString, T> aString
+    );
 
 }

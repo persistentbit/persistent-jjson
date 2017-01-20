@@ -5,6 +5,8 @@ import com.persistentbit.core.lenses.Lens;
 import com.persistentbit.core.lenses.LensImpl;
 import com.persistentbit.core.result.Result;
 
+import java.util.function.Function;
+
 /**
  * @author Peter Muys
  * @since 22/10/2015
@@ -53,5 +55,13 @@ public class JJNodeString implements JJNode
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return aString.apply(this);
     }
 }

@@ -3,6 +3,8 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.result.Result;
 
+import java.util.function.Function;
+
 /**
  * JJNode representing a boolean value
  * @author Peter Muys
@@ -74,5 +76,13 @@ public class JJNodeBoolean implements JJNode
     @Override
     public int hashCode() {
         return (value ? 1 : 0);
+    }
+
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return aBoolean.apply(this);
     }
 }

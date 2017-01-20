@@ -3,6 +3,8 @@ package com.persistentbit.jjson.nodes;
 import com.persistentbit.core.result.Result;
 import com.persistentbit.core.utils.NumberUtils;
 
+import java.util.function.Function;
+
 /**
  * @author Peter Muys
  * @since 22/10/2015
@@ -48,5 +50,13 @@ public class JJNodeNumber implements JJNode
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return aNumber.apply(this);
     }
 }

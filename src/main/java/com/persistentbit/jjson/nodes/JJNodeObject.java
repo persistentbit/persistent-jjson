@@ -12,6 +12,7 @@ import com.persistentbit.core.tuples.Tuple2;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * A JJNode representing a json Object.
@@ -125,5 +126,13 @@ public class JJNodeObject implements JJNode,PStreamable<Tuple2<String,JJNode>>
     @Override
     public int hashCode() {
         return items.hashCode();
+    }
+
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return anObject.apply(this);
     }
 }

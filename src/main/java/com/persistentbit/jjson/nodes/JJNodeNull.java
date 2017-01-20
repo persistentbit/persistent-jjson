@@ -2,6 +2,8 @@ package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.result.Result;
 
+import java.util.function.Function;
+
 /**
  * A JJNode representing the null value
  * @author Peter Muys
@@ -36,4 +38,11 @@ public class JJNodeNull implements JJNode
     }
 
 
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return aNull.apply(this);
+    }
 }

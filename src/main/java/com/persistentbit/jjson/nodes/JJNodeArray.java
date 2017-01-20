@@ -7,6 +7,7 @@ import com.persistentbit.core.result.Result;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a JJNode for an array.<br>
@@ -96,5 +97,13 @@ public class JJNodeArray implements Iterable<JJNode>,JJNode,PStreamable<JJNode>
     @Override
     public int hashCode() {
         return elements.hashCode();
+    }
+
+    @Override
+    public <T> T match(Function<JJNodeArray, T> anArray, Function<JJNodeBoolean, T> aBoolean,
+                       Function<JJNodeNull, T> aNull, Function<JJNodeNumber, T> aNumber,
+                       Function<JJNodeObject, T> anObject, Function<JJNodeString, T> aString
+    ) {
+        return anArray.apply(this);
     }
 }
