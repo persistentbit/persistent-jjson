@@ -1,5 +1,6 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
+import com.persistentbit.core.logging.Log;
 import com.persistentbit.core.logging.entries.LogEntry;
 import com.persistentbit.core.logging.entries.LogEntryEmpty;
 import com.persistentbit.core.result.Empty;
@@ -58,30 +59,35 @@ public class JJResultReaderWriter implements JJObjectReader, JJObjectWriter{
 
     @Override
     public Object read(Type type, JJNode node, JJReader masterReader) {
-        if(node.getType() == JJNode.JType.jsonNull){
-            return null;
-        }
-        if(type instanceof ParameterizedType == false){
-            throw new JJsonException("Expected a parameterized Result, not just a Result");
-        }
-        ParameterizedType pt  = (ParameterizedType)type;
-        Type itemType = pt.getActualTypeArguments()[0];
-        JJNodeObject obj = node.asObject().orElseThrow();
-        LogEntry log = obj.get("log").map( logNode -> masterReader.read(logNode,LogEntry.class)).orElse(LogEntryEmpty.inst);
+        return Log.function(type, node).code(l -> {
+            if(node.getType() == JJNode.JType.jsonNull) {
+                return null;
+            }
+            if(type instanceof ParameterizedType == false) {
+                throw new JJsonException("Expected a parameterized Result, not just a Result");
+            }
+            ParameterizedType pt       = (ParameterizedType) type;
+            Type              itemType = pt.getActualTypeArguments()[0];
+            JJNodeObject      obj      = node.asObject().orElseThrow();
+            LogEntry          log      =
+                obj.get("log").map(logNode -> masterReader.read(logNode, LogEntry.class)).orElse(LogEntryEmpty.inst);
 
-        switch(obj.get("type").get().asString().orElseThrow().getValue()){
-            case "Success":
-                Object value = masterReader.read(obj.get("value").get(),ReflectionUtils.classFromType(itemType),itemType);
-                return new Success(value,log);
-            case "Empty":
-                Throwable emptyException = (Throwable)masterReader.read(obj.get("exception").get(),Throwable.class);
-                return new Empty(emptyException,log);
-            case "Failure":
-                Throwable failureException = (Throwable)masterReader.read(obj.get("exception").get(),Throwable.class);
-                return new Failure(failureException,log);
-            default:
-                throw new RuntimeException("Unknown: " + obj.get("type").get());
-        }
-
+            switch(obj.get("type").get().asString().orElseThrow().getValue()) {
+                case "Success":
+                    Object value =
+                        masterReader.read(obj.get("value").get(), ReflectionUtils.classFromType(itemType), itemType);
+                    return new Success(value, log);
+                case "Empty":
+                    Throwable emptyException =
+                        (Throwable) masterReader.read(obj.get("exception").get(), Throwable.class);
+                    return new Empty(emptyException, log);
+                case "Failure":
+                    Throwable failureException =
+                        (Throwable) masterReader.read(obj.get("exception").get(), Throwable.class);
+                    return new Failure(failureException, log);
+                default:
+                    throw new RuntimeException("Unknown: " + obj.get("type").get());
+            }
+        });
     }
 }

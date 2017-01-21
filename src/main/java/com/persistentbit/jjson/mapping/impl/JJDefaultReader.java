@@ -3,6 +3,7 @@ package com.persistentbit.jjson.mapping.impl;
 import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
+import com.persistentbit.core.logging.Log;
 import com.persistentbit.core.utils.ReflectionUtils;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
@@ -52,69 +53,69 @@ public class JJDefaultReader  implements JJReader {
 
     @SuppressWarnings("unchecked")
     public <T>T read(JJNode node, Class<T> cls, Type type){
-        boolean isNull = node.getType() == JJNode.JType.jsonNull;
+        return Log.function(cls, type, node).code(l -> {
+            boolean isNull = node.getType() == JJNode.JType.jsonNull;
 
-        if(cls.equals(int.class) || cls.equals(Integer.class)){
-            return isNull ? null : (T) Integer.valueOf(number(node).intValue());
-        }
-        if(cls.equals(long.class) || cls.equals(Long.class)){
-            return isNull ? null :(T) Long.valueOf(number(node).longValue());
-        }
-        if(cls.equals(short.class) || cls.equals(Short.class)){
-            return isNull ? null :(T) Short.valueOf(number(node).shortValue());
-        }
-        if(cls.equals(byte.class) || cls.equals(Byte.class)){
-            return isNull ? null :(T) Byte.valueOf(number(node).byteValue());
-        }
-        if(cls.equals(float.class) || cls.equals(Float.class)){
-            return isNull ? null : (T) Float.valueOf(number(node).floatValue());
-        }
-        if(cls.equals(double.class) || cls.equals(Double.class)){
-            return isNull ? null :(T) Double.valueOf(number(node).doubleValue());
-        }
-        if(cls.equals(char.class) || cls.equals(Character.class)){
-            return isNull ? null :(T) Character.valueOf(string(node).charAt(0));
-        }
-        if(cls.equals(String.class)){
-            return isNull ? null :(T)string(node);
-        }
-        if(cls.equals(Boolean.class) || cls.equals(boolean.class)){
-            return isNull ? null :(T) bool(node);
-        }
-
-        if(cls.equals(Class.class)){
-            if(isNull) {
-                return null;
+            if(cls.equals(int.class) || cls.equals(Integer.class)) {
+                return isNull ? null : (T) Integer.valueOf(number(node).intValue());
             }
-            String className = ((JJNodeString)node).getValue();
-            return (T)primitiveClassNamesMapping.getOpt(className).orElseGet(() ->{
-                try {
+            if(cls.equals(long.class) || cls.equals(Long.class)) {
+                return isNull ? null : (T) Long.valueOf(number(node).longValue());
+            }
+            if(cls.equals(short.class) || cls.equals(Short.class)) {
+                return isNull ? null : (T) Short.valueOf(number(node).shortValue());
+            }
+            if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+                return isNull ? null : (T) Byte.valueOf(number(node).byteValue());
+            }
+            if(cls.equals(float.class) || cls.equals(Float.class)) {
+                return isNull ? null : (T) Float.valueOf(number(node).floatValue());
+            }
+            if(cls.equals(double.class) || cls.equals(Double.class)) {
+                return isNull ? null : (T) Double.valueOf(number(node).doubleValue());
+            }
+            if(cls.equals(char.class) || cls.equals(Character.class)) {
+                return isNull ? null : (T) Character.valueOf(string(node).charAt(0));
+            }
+            if(cls.equals(String.class)) {
+                return isNull ? null : (T) string(node);
+            }
+            if(cls.equals(Boolean.class) || cls.equals(boolean.class)) {
+                return isNull ? null : (T) bool(node);
+            }
 
-                    return this.getClass().getClassLoader().loadClass(className);
-
-                } catch (ClassNotFoundException e) {
-                    throw new JJsonException(e);
+            if(cls.equals(Class.class)) {
+                if(isNull) {
+                    return null;
                 }
-            });
+                String className = ((JJNodeString) node).getValue();
+                return (T) primitiveClassNamesMapping.getOpt(className).orElseGet(() -> {
+                    try {
+
+                        return this.getClass().getClassLoader().loadClass(className);
+
+                    } catch(ClassNotFoundException e) {
+                        throw new JJsonException(e);
+                    }
+                });
 
 
-        }
-        if(type instanceof GenericArrayType){
-            GenericArrayType gat = (GenericArrayType)type;
-            return isNull ? null :(T) array(cls.getComponentType(),gat.getGenericComponentType(),node);
-        }
-        if(cls.isArray()){
-            return isNull ? null : (T) array(cls.getComponentType(),cls.getComponentType(),node);
-        }
-        try {
+            }
+            if(type instanceof GenericArrayType) {
+                GenericArrayType gat = (GenericArrayType) type;
+                return isNull ? null : (T) array(cls.getComponentType(), gat.getGenericComponentType(), node);
+            }
+            if(cls.isArray()) {
+                return isNull ? null : (T) array(cls.getComponentType(), cls.getComponentType(), node);
+            }
+            try {
+                JJObjectReader reader = supplier.apply(cls);
+                return (T) reader.read(type, node, this);
+            } catch(Exception e) {
+                throw new JJsonException("Error reading " + node, e);
+            }
 
-
-
-            JJObjectReader reader = supplier.apply(cls);
-            return (T) reader.read(type, node, this);
-        }catch(Exception e){
-            throw new JJsonException("Error reading "  + node,e);
-        }
+        });
     }
 
     private <T> Object array(Class<T> itemClass, Type itemType, JJNode node){

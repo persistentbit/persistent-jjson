@@ -1,6 +1,7 @@
 package com.persistentbit.jjson.mapping.impl;
 
 import com.persistentbit.core.collections.PList;
+import com.persistentbit.core.logging.Log;
 import com.persistentbit.core.properties.FieldNames;
 import com.persistentbit.core.properties.PropertySetter;
 import com.persistentbit.core.properties.PropertySetterField;
@@ -296,41 +297,43 @@ public class JJReflectionObjectReader implements JJObjectReader, JJDescriber{
 
 	@Override
 	public Object read(Type type, JJNode node, JJReader reader) {
-		if(node.getType() == JJNode.JType.jsonNull) {
-			return null;
-		}
-		if(node instanceof JJNodeObject == false) {
-			throw new JJsonException("Can't cast to JJNodeObject: " + node + " for type " + type);
-		}
-		JJNodeObject jobj = (JJNodeObject) node;
-
-		try {
-			Object result = null;
-			if(constructor == null) {
-				result = objectClass.newInstance();
+		return Log.function(type, node).code(l -> {
+			if(node.getType() == JJNode.JType.jsonNull) {
+				return null;
 			}
-			else {
-				Object[] args = new Object[constructorProperities.size()];
-				for(int t = 0; t < args.length; t++) {
-					PropertyDef pd = constructorProperities.get(t);
-					args[t] = pd.read(type, jobj, reader);
-					//args[t] = reader.read(jobj.getByType(pd.propName).getByType(),pd.setter.getPropertyClass(),pd.setter.getPropertyType());
-				}
-				if(args.length == 0) {
-					result = constructor.newInstance();
+			if(node instanceof JJNodeObject == false) {
+				throw new JJsonException("Can't cast to JJNodeObject: " + node + " for type " + type);
+			}
+			JJNodeObject jobj = (JJNodeObject) node;
+
+			try {
+				Object result = null;
+				if(constructor == null) {
+					result = objectClass.newInstance();
 				}
 				else {
-					result = constructor.newInstance(args);
+					Object[] args = new Object[constructorProperities.size()];
+					for(int t = 0; t < args.length; t++) {
+						PropertyDef pd = constructorProperities.get(t);
+						args[t] = pd.read(type, jobj, reader);
+						//args[t] = reader.read(jobj.getByType(pd.propName).getByType(),pd.setter.getPropertyClass(),pd.setter.getPropertyType());
+					}
+					if(args.length == 0) {
+						result = constructor.newInstance();
+					}
+					else {
+						result = constructor.newInstance(args);
+					}
 				}
+				for(PropertyDef pd : properties.values()) {
+					Object value = pd.read(type, jobj, reader);
+					pd.setter.set(result, value);
+				}
+				return result;
+			} catch(InstantiationException | IllegalAccessException | InvocationTargetException e) {
+				throw new JJsonException("Reading " + objectClass, e);
 			}
-			for(PropertyDef pd : properties.values()) {
-				Object value = pd.read(type, jobj, reader);
-				pd.setter.set(result, value);
-			}
-			return result;
-		} catch(InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			throw new JJsonException("Reading " + objectClass, e);
-		}
+		});
 	}
 
 	public static class PropertyDef{
