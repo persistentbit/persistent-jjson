@@ -309,6 +309,8 @@ public class JJReflectionObjectReader implements JJObjectReader, JJDescriber{
 			try {
 				Object result = null;
 				if(constructor == null) {
+					l.info("No Constructor found for " + type);
+					l.info("Trying to invoke the default constructor...");
 					result = objectClass.newInstance();
 				}
 				else {
