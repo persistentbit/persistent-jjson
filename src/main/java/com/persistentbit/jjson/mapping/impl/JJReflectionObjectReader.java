@@ -6,7 +6,7 @@ import com.persistentbit.core.properties.FieldNames;
 import com.persistentbit.core.properties.PropertySetter;
 import com.persistentbit.core.properties.PropertySetterField;
 import com.persistentbit.core.properties.PropertySetterMethod;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJPropertyDescription;
@@ -370,13 +370,13 @@ public class JJReflectionObjectReader implements JJObjectReader, JJDescriber{
 
 				if(containerType instanceof ParameterizedType) {
 					Type[] params         = ((ParameterizedType) containerType).getActualTypeArguments();
-					Class  containerClass = ReflectionUtils.classFromType(containerType);
+					Class  containerClass = UReflect.classFromType(containerType);
 					for(int i = 0; i < params.length; i++) {
 						TypeVariable tv = containerClass.getTypeParameters()[i];
 						//System.out.println("Typevar:  " + tv);
 						if(type.toString().equals(tv.toString())) {
 							//System.out.println("Found class: " + params[i]);
-							cls = ReflectionUtils.classFromType(params[i]);
+							cls = UReflect.classFromType(params[i]);
 							type = params[i];
 							break;
 						}

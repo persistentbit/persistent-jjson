@@ -1,7 +1,7 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.PByteList;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -37,7 +37,7 @@ public class JJPByteListReader implements JJObjectReader, JJDescriber{
 
 	@Override
 	public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
-		return new JJTypeDescription(new JJTypeSignature(new JJClass(ReflectionUtils
+		return new JJTypeDescription(new JJTypeSignature(new JJClass(UReflect
 																		 .classFromType(type)), JJTypeSignature.JsonType.jsonString));
 	}
 }

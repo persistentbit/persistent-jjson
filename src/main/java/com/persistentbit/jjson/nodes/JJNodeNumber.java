@@ -1,7 +1,7 @@
 package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.result.Result;
-import com.persistentbit.core.utils.NumberUtils;
+import com.persistentbit.core.utils.UNumber;
 
 import java.util.function.Function;
 
@@ -43,7 +43,7 @@ public class JJNodeNumber implements JJNode
         if (o == null || getClass() != o.getClass()) return false;
 
         JJNodeNumber that = (JJNodeNumber) o;
-		return NumberUtils.numberComparator.compare(value, that.value) == 0;
+		return UNumber.numberComparator.compare(value, that.value) == 0;
 
     }
 

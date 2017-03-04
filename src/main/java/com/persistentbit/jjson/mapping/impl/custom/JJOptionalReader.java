@@ -3,7 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 
 import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -37,8 +37,8 @@ public class JJOptionalReader implements JJObjectReader,JJDescriber {
         Type itemType = pt.getActualTypeArguments()[0];
         JJNodeObject obj = node.asObject().orElseThrow();
         if(obj.get("optionalValue").isPresent()){
-            return Optional.of(reader.read(obj.get("optionalValue").get(),ReflectionUtils.classFromType(itemType),itemType));
-        }
+			return Optional.of(reader.read(obj.get("optionalValue").get(), UReflect.classFromType(itemType), itemType));
+		}
         return Optional.empty();
     }
 

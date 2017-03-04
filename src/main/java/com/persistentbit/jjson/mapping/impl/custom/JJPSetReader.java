@@ -1,7 +1,7 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.IPSet;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -36,16 +36,16 @@ public class JJPSetReader implements JJObjectReader, JJDescriber {
         if(type instanceof ParameterizedType == false){
             throw new JJsonException("Expected a parameterized PSet, not just a PSet or PSet<Object>");
         }
-        ParameterizedType pt  = (ParameterizedType)type;
-        Type itemType = pt.getActualTypeArguments()[0];
-        Class cls = ReflectionUtils.classFromType(itemType);
-        JJNodeArray arr = node.asArray().orElseThrow();
+        ParameterizedType pt       = (ParameterizedType)type;
+        Type              itemType = pt.getActualTypeArguments()[0];
+		Class             cls      = UReflect.classFromType(itemType);
+		JJNodeArray       arr      = node.asArray().orElseThrow();
         return  supplier.get().plusAll(arr.pstream().map(n -> reader.read(n,cls,itemType)));
     }
     @Override
     public JJTypeDescription describe(Type type, JJDescriber masterDescriber) {
 
-        Class cls = ReflectionUtils.classFromType(type);
-        return new JJTypeDescription(new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonSet, JJDescriber.getGenericsParams(type,masterDescriber)));
+		Class cls = UReflect.classFromType(type);
+		return new JJTypeDescription(new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonSet, JJDescriber.getGenericsParams(type,masterDescriber)));
     }
 }

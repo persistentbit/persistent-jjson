@@ -7,7 +7,7 @@ import com.persistentbit.core.result.Empty;
 import com.persistentbit.core.result.Failure;
 import com.persistentbit.core.result.Result;
 import com.persistentbit.core.result.Success;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.JJWriter;
 import com.persistentbit.jjson.mapping.impl.JJObjectReader;
@@ -75,8 +75,8 @@ public class JJResultReaderWriter implements JJObjectReader, JJObjectWriter{
             switch(obj.get("type").get().asString().orElseThrow().getValue()) {
                 case "Success":
                     Object value =
-                        masterReader.read(obj.get("value").get(), ReflectionUtils.classFromType(itemType), itemType);
-                    return new Success(value, log);
+						masterReader.read(obj.get("value").get(), UReflect.classFromType(itemType), itemType);
+					return new Success(value, log);
                 case "Empty":
                     Throwable emptyException =
                         (Throwable) masterReader.read(obj.get("exception").get(), Throwable.class);

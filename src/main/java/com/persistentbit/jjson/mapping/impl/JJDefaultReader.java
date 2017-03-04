@@ -4,7 +4,7 @@ import com.persistentbit.core.Immutable;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.logging.Log;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -272,8 +272,8 @@ public class JJDefaultReader  implements JJReader {
             JJObjectReader reader = supplier.apply(cls);
             if(reader instanceof JJDescriber){
                 JJDescriber describer = (JJDescriber)reader;
-                return describer.describe(type,(t,md)-> describe(ReflectionUtils.classFromType(t),t));
-            }
+				return describer.describe(type, (t, md) -> describe(UReflect.classFromType(t), t));
+			}
             return new JJTypeDescription(new JJTypeSignature(new JJClass(cls), JJTypeSignature.JsonType.jsonObject),PList.<String>empty().plus("Don't know how to describe!"));
         }catch(Exception e){
             throw new JJsonException("Error describing "  + type,e);

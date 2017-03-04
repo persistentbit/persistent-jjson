@@ -3,7 +3,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -45,8 +45,8 @@ public class JJMapReader implements JJObjectReader, JJDescriber{
 		ParameterizedType   pt         = (ParameterizedType) t;
 		Type                keyType    = pt.getActualTypeArguments()[0];
 		Type                valueType  = pt.getActualTypeArguments()[1];
-		Class<?>            keyClass   = ReflectionUtils.classFromType(keyType);
-		Class<?>            valueClass = ReflectionUtils.classFromType(valueType);
+		Class<?>            keyClass   = UReflect.classFromType(keyType);
+		Class<?>            valueClass = UReflect.classFromType(valueType);
 		Map<Object, Object> result     = supplier.get();
 		JJNodeArray         arr        = node.asArray().orElseThrow(() -> new RuntimeException("Expected an array for map entries"));
 		for (JJNode entry : arr) {
@@ -61,7 +61,7 @@ public class JJMapReader implements JJObjectReader, JJDescriber{
 
 	@Override
 	public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-		Class cls = ReflectionUtils.classFromType(t);
+		Class cls = UReflect.classFromType(t);
 
 
 		PMap<String, JJTypeSignature> td  = JJDescriber.getGenericsParams(t, masterDescriber);

@@ -1,8 +1,7 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 
-
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -30,9 +29,9 @@ public class JJDateReader implements JJObjectReader,JJDescriber {
             return null;
         }
 
-        Class<?> cls = ReflectionUtils.classFromType(type);
-        String str = node.asString().orElseThrow().getValue();
-        Instant in;
+		Class<?> cls = UReflect.classFromType(type);
+		String   str = node.asString().orElseThrow().getValue();
+        Instant  in;
 
         if(cls.equals(ZonedDateTime.class)){
             return ZonedDateTime.parse(str);
@@ -70,6 +69,7 @@ public class JJDateReader implements JJObjectReader,JJDescriber {
 
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-        return new JJTypeDescription(new JJTypeSignature(new JJClass(ReflectionUtils.classFromType(t)), JJTypeSignature.JsonType.jsonString));
-    }
+		return new JJTypeDescription(new JJTypeSignature(new JJClass(UReflect
+			.classFromType(t)), JJTypeSignature.JsonType.jsonString));
+	}
 }

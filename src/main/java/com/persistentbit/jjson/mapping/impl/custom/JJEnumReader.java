@@ -1,7 +1,7 @@
 package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.PList;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -27,8 +27,8 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
             return null;
         }
         String name = node.asString().orElseThrow().getValue();
-        Class cls = ReflectionUtils.classFromType(type);
-        try {
+		Class  cls  = UReflect.classFromType(type);
+		try {
             return cls.getDeclaredField(name).get(null);
         }catch(Exception e){
             throw new JJsonException("Error reading field " + name + " for enum " + cls.getName(),e);
@@ -37,9 +37,9 @@ public class JJEnumReader implements JJObjectReader,JJDescriber {
 
     @Override
     public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-        PList<String> doc = PList.empty();
-        Class<?> cls = ReflectionUtils.classFromType(t);
-        PList<String> values = PList.empty();
+        PList<String> doc    = PList.empty();
+		Class<?>      cls    = UReflect.classFromType(t);
+		PList<String> values = PList.empty();
         for(Field f : cls.getDeclaredFields()){
             if(Modifier.isStatic(f.getModifiers()) && cls.isAssignableFrom(f.getType())){
                 values = values.plus(f.getName());

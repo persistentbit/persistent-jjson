@@ -2,7 +2,7 @@ package com.persistentbit.jjson.mapping.impl.custom;
 
 import com.persistentbit.core.collections.IPList;
 import com.persistentbit.core.collections.PMap;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -38,10 +38,10 @@ public class JJPListReader  implements JJObjectReader,JJDescriber {
         if(type instanceof ParameterizedType == false){
             throw new JJsonException("Expected a parameterized PList, not just a PList");
         }
-        ParameterizedType pt  = (ParameterizedType)type;
-        Type itemType = pt.getActualTypeArguments()[0];
-        Class cls = ReflectionUtils.classFromType(itemType);
-        JJNodeArray arr = node.asArray().orElseThrow();
+        ParameterizedType pt       = (ParameterizedType)type;
+        Type              itemType = pt.getActualTypeArguments()[0];
+		Class             cls      = UReflect.classFromType(itemType);
+		JJNodeArray       arr      = node.asArray().orElseThrow();
         return  supplier.get().plusAll(arr.pstream().map(n -> reader.read(n,cls,itemType)));
     }
 

@@ -3,7 +3,7 @@ package com.persistentbit.jjson.mapping.impl;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PStream;
 import com.persistentbit.core.tuples.Tuple2;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
 import com.persistentbit.jjson.mapping.description.JJTypeSignature;
@@ -26,8 +26,8 @@ public interface JJDescriber {
         if(t instanceof TypeVariable){
             return PMap.<String,JJTypeSignature>empty().put(((TypeVariable) t).getName(),new JJTypeSignature(new JJClass(Object.class), JJTypeSignature.JsonType.jsonObject));
         }
-        Class cls = ReflectionUtils.classFromType(t);
-        if(cls.getTypeParameters().length ==0){
+		Class cls = UReflect.classFromType(t);
+		if(cls.getTypeParameters().length ==0){
             return PMap.empty();
         }
         if(t == cls){

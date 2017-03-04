@@ -4,7 +4,7 @@ import com.persistentbit.core.collections.IPMap;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.tuples.Tuple2;
-import com.persistentbit.core.utils.ReflectionUtils;
+import com.persistentbit.core.utils.UReflect;
 import com.persistentbit.jjson.mapping.JJReader;
 import com.persistentbit.jjson.mapping.description.JJClass;
 import com.persistentbit.jjson.mapping.description.JJTypeDescription;
@@ -46,8 +46,8 @@ public class JJPMapReader implements JJObjectReader, JJDescriber{
 		Type[]            typeArgs  = pt.getActualTypeArguments();
 		Type              keyType   = typeArgs[0];
 		Type              valueType = typeArgs[1];
-		Class             clsKey    = ReflectionUtils.classFromType(keyType);
-		Class             clsValue  = ReflectionUtils.classFromType(valueType);
+		Class             clsKey    = UReflect.classFromType(keyType);
+		Class             clsValue  = UReflect.classFromType(valueType);
 		JJNodeArray       arr       = node.asArray().orElseThrow();
 		return ipMapSupplier.get().plusAll(arr.pstream().map(n -> {
 			JJNodeArray entryArr = n.asArray().orElseThrow(() -> new RuntimeException("Expected an array"));
@@ -59,7 +59,7 @@ public class JJPMapReader implements JJObjectReader, JJDescriber{
 
 	@Override
 	public JJTypeDescription describe(Type t, JJDescriber masterDescriber) {
-		Class cls = ReflectionUtils.classFromType(t);
+		Class cls = UReflect.classFromType(t);
 
 
 		PMap<String, JJTypeSignature> td  = JJDescriber.getGenericsParams(t, masterDescriber);
