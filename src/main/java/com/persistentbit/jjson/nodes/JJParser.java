@@ -1,9 +1,9 @@
 package com.persistentbit.jjson.nodes;
 
 import com.persistentbit.core.collections.POrderedMap;
+import com.persistentbit.core.io.IOStreams;
 import com.persistentbit.core.logging.Log;
 import com.persistentbit.core.result.Result;
-import com.persistentbit.core.utils.IO;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,8 +58,8 @@ public final class JJParser
      * @return The {@link JJNode} representing the json from the file
      */
     static public Result<JJNode> parse(File file, Charset charset){
-        return IO.fileToReader(file,charset)
-            .flatMap(fr -> parse(fr));
+        return IOStreams.fileToReader(file,charset)
+						.flatMap(fr -> parse(fr));
 
     }
 
