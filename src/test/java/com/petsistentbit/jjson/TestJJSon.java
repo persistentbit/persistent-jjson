@@ -4,7 +4,7 @@ import com.persistentbit.core.collections.PByteList;
 import com.persistentbit.core.collections.PList;
 import com.persistentbit.core.collections.PMap;
 import com.persistentbit.core.collections.PSet;
-import com.persistentbit.core.logging.LogMessageLevel;
+import com.persistentbit.core.logging.entries.LogMessageLevel;
 import com.persistentbit.core.logging.entries.LogContext;
 import com.persistentbit.core.logging.entries.LogEntryMessage;
 import com.persistentbit.core.result.Result;
