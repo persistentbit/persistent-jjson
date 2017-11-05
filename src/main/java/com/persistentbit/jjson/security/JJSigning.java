@@ -4,14 +4,13 @@ import com.persistentbit.core.result.Result;
 import com.persistentbit.jjson.mapping.impl.JJsonException;
 import com.persistentbit.jjson.nodes.*;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.Objects;
 
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
-import static javax.xml.bind.DatatypeConverter.printBase64Binary;
+
 
 /**
  * JJSigning makes it possible to sign a JJNode.<br>
@@ -79,7 +78,7 @@ public class JJSigning {
         return Result.function(unsigned).code(log ->
             sign(unsigned)
                 .map(us -> JJPrinter.print(false,us).getBytes(Charset.forName("UTF-8")))
-                .map(DatatypeConverter::printBase64Binary)
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
         );
     }
 
@@ -113,7 +112,7 @@ public class JJSigning {
      */
     public Result<JJNode>    unsignedFromString(String str){
         try {
-            JJNode node = JJParser.parse(new String(parseBase64Binary(str),"UTF-8")).orElseThrow();
+            JJNode node = JJParser.parse(new String(Base64.getDecoder().decode(str),"UTF-8")).orElseThrow();
             return unsigned(node);
         } catch (UnsupportedEncodingException e) {
             throw new JJsonException(e);
@@ -125,7 +124,7 @@ public class JJSigning {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             md.update(data.getBytes("UTF-8"));
             byte[] mdbytes = md.digest();
-            return Result.success(printBase64Binary(mdbytes));
+            return Result.success(Base64.getEncoder().encodeToString(mdbytes));
         });
     }
 
