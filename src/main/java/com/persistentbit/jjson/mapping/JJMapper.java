@@ -73,23 +73,23 @@ public class JJMapper implements JJReader,JJWriter{
     }
 
 
-    public JJMapper writerWithForClass(Class<?> cls, JJObjectWriter ow){
+    public JJMapper withWriterForClass(Class<?> cls, JJObjectWriter ow){
         return new JJMapper(reader,writer.withForClass(cls,ow));
     }
 
-    public JJMapper writerWithAssignableTo(Class<?> clsAssignableTo, JJObjectWriter ow){
+    public JJMapper withWriterAssignableTo(Class<?> clsAssignableTo, JJObjectWriter ow){
         return new JJMapper(reader,writer.withAssignableTo(clsAssignableTo,ow));
     }
 
-    public JJMapper writerWithNextSupplier(Function<Class<?>,JJObjectWriter>...next){
+    public JJMapper withWriterNextSupplier(Function<Class<?>,JJObjectWriter>...next){
         return new JJMapper(reader,writer.withNextSupplier(next));
     }
 
-    public JJMapper writerWithPrevSupplier(Function<Class<?>,JJObjectWriter>...prev){
+    public JJMapper withWriterPrevSupplier(Function<Class<?>,JJObjectWriter>...prev){
         return new JJMapper(reader,writer.withPrevSupplier(prev));
     }
 
-    public JJMapper writerWithFallbackSupplier(Function<Class<?>,JJObjectWriter> fallBack){
+    public JJMapper withWriterFallbackSupplier(Function<Class<?>,JJObjectWriter> fallBack){
         return new JJMapper(reader,writer.withFallbackSupplier(fallBack));
     }
 
@@ -108,7 +108,7 @@ public class JJMapper implements JJReader,JJWriter{
         JJMapper res = this;
         for(Function<Class<?>,JJObjectReaderWriter> i : next){
             res = res.readerWithNextSupplier(i::apply);
-            res = res.writerWithNextSupplier(i::apply);
+            res = res.withWriterNextSupplier(i::apply);
         }
         return res;
 
@@ -118,7 +118,7 @@ public class JJMapper implements JJReader,JJWriter{
         JJMapper res = this;
         for(Function<Class<?>,JJObjectReaderWriter> i : prev){
             res = res.readerWithPrevSupplier(i::apply);
-            res = res.writerWithPrevSupplier(i::apply);
+            res = res.withWriterPrevSupplier(i::apply);
         }
         return res;
     }
